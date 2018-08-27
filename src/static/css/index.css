@@ -1,0 +1,349 @@
+input[type=button], input[type=submit], input[type=file],input[type=radio], button { cursor: pointer; -webkit-appearance: none; }
+html,body{
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+}
+
+/*登陆*/
+.main-bac{
+    width: 100%;
+    height: auto;
+    padding-top: 17.5rem;
+    background:url("../images/logobac.jpg") top center no-repeat;
+    background-size: cover;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    /*overflow: scroll;*/
+}
+.login-head{
+    position: fixed;
+    top:0;
+    width: 100%;
+    z-index: 1;
+}
+.login-head-logo{
+    float: left;
+    padding-top: 0.25rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.login-head-logo img{
+    display: block;
+    width:4.3rem;
+    height: 2.375rem;
+}
+.login-head-close{
+    float: right;
+}
+.login-head-close a{
+    display: block;
+    width: 2.4rem;
+    height: 2.4rem;
+}
+.login-head-close a img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.logo-input-wrap{
+    width: 14.85rem;
+    height: auto;
+    padding:1.2rem 1rem;
+    background-color: #b11b18;
+    margin:2rem auto;
+    box-shadow: 0rem 0rem 5rem rgba(84,91,2,.2);
+    -webkit-border-radius: 1.55rem;
+    -moz-border-radius: 1.55rem;
+    border-radius: 1.55rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.logo-input-wrap-phone{
+    padding:0 0.3rem;
+    position: relative;
+    margin-bottom: 0.9rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.logo-input-wrap-phone input[type='text']{
+    display: block;
+    width: 100%;
+    height: 1.5rem;
+    background-color: #c9605e;
+    padding:0 0.3rem 0 1.5rem;
+    border:0;
+    outline: none;
+    font-size: 0.6rem;
+    line-height: 1.5rem;
+    color: #fff;
+    -webkit-border-radius: 0.35rem;
+    -moz-border-radius: 0.35rem;
+    border-radius: 0.35rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.logo-input-wrap-phone  img{
+    display: block;
+    position: absolute;
+    top:0.4rem;
+    left: 0.6rem;
+    width: 0.675rem;
+    height: 0.75rem;
+}
+.logo-input-wrap-code{
+    padding:0 0.3rem;
+    position: relative;
+    margin-bottom: 0.9rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; 
+}
+.logo-input-wrap-code input[type='text']{
+    display: block;
+    width: 49%;
+    float: left;
+    height: 1.5rem;
+    background-color: #c9605e;
+    padding:0 0.3rem 0 1.5rem;
+    border:0;
+    outline: none;
+    font-size: 0.6rem;
+    line-height: 1.5rem;
+    color: #fff;
+    -webkit-border-radius: 0.35rem;
+    -moz-border-radius: 0.35rem;
+    border-radius: 0.35rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.logo-input-wrap-code img{
+    display: block;
+    position: absolute;
+    top:0.4rem;
+    left: 0.6rem;
+    width: 0.675rem;
+    height: 0.75rem;
+}
+.logo-input-wrap-code a{
+    display: block;
+    width: 49%;
+    float: right;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    font-size: 0.6rem;
+    color: #9f0000;
+    background-color: #fff;
+    -webkit-border-radius: 0.35rem;
+    -moz-border-radius: 0.35rem;
+    border-radius: 0.35rem;
+}
+
+.logo-input-wrap-check input[type='checkbox']{
+    display: inline-block;
+    font-size: 0;
+    width: 0.7rem;
+    height: 0.7rem;
+    color: #fff;
+    vertical-align: -0.15rem;
+}
+.logo-input-wrap-check span{
+    font-size: 0.5rem;
+    color: #fff;
+    line-height: 0.9rem;
+}
+.logo-input-wrap-check span a{
+    font-weight: 500;
+    text-decoration: underline;
+    color: #fff;
+}
+.logo-input-btn{
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.logo-input-btn button{
+    display: inline-block;
+    text-align: center;
+    border:0;
+    outline: none;
+    background-color: transparent;
+}
+.logo-input-btn  img{
+    display: inline-block;
+    font-size: 0;
+    width: 10.575rem;
+    height: 2.125rem;
+}
+
+.logo-clause{
+    display: none;
+    position: fixed;
+    width: 100%;
+    top:0;
+    bottom:0;
+    z-index: 5;
+    background-color: #fff;
+    overflow: scroll;
+}
+.logo-clause-title{
+    background-color: #9f0101;
+    padding-bottom: 0.3rem;
+}
+
+.logo-clause-main{
+    background-color: #fff;
+    padding:1rem 0.5rem;
+    overflow: scroll;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.logo-clause-main h2{
+    font-size: 0.7rem;
+    color: #303030;
+    text-align: center;
+    margin:0.3rem auto;
+    font-weight:500;
+}
+.logo-clause-main h3{
+    font-size: 0.6rem;
+    color: #303030;
+    line-height: 0.9rem;
+    font-weight: 500;
+    margin:0.3rem 0;
+}
+.logo-clause-main p{
+    font-size: 0.6rem;
+    color: #303030;
+    line-height: 0.9rem;
+    text-indent: 1rem;
+}
+.logo-clause-btn{
+    text-align: center;
+    background-color: #fff;
+    padding:0.6rem 0;
+}
+.logo-clause-btn button{
+    width: 7.325rem;
+    border:0;
+    outline: none;
+    background-color: transparent;
+}
+.logo-clause-btn img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+/*登陆 end */
+
+
+/*活动*/
+.Active-header{
+    background-color: #700101;
+    height: 1.3rem;
+    text-align: right;
+    overflow: hidden;
+}
+.Active-header > img{
+    float: right;
+    display: inline-block;
+    width: 0.65rem;
+    height: 0.7rem;
+    margin-top: 0.3rem;
+    margin-right: 0.2rem;
+}
+.Active-header span{
+    float: right;
+    display: inline-block;
+    font-size: 0.6rem;
+    color: #fff;
+    line-height: 1.3rem;
+}
+.Active-header a{
+    float: right;
+    display: inline-block;
+    height:1.3rem;
+}
+
+.Active-header a img{
+    display: inline-block;
+    width:1.6rem;
+    height:1.6rem;
+}
+
+.Active-main{
+    background:url("../images/bac01.jpg") top center no-repeat;
+    height: 51.675rem;
+    background-size: 100% 51.675rem;
+    padding-top: 14.8rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+/*转盘样式*/
+.Active-turntable{
+    background-color: #fff;
+    height: 11rem;
+}
+
+.active-frequency{
+    padding: 0.3rem 0;
+    text-align: center;
+}
+.active-frequency a{
+    display: block;
+    text-align: center;
+    font-size: 0.6rem;
+    color: #fff;
+    text-decoration: underline;
+}
+.active-frequency h2{
+    font-size: 1.5rem;
+    font-weight: 800;
+    color:#fff;
+    margin:0.3rem 0;
+}
+
+.active-detail{
+    padding:0.5rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.active-detail-wrap{
+    background-color:rgba(255,255,255,0.3);
+    -webkit-border-radius: 0.3rem;
+    -moz-border-radius: 0.3rem;
+    border-radius: 0.3rem;
+    padding:0.3rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.active-detail-wrap h2{
+    font-size: 0.65rem;
+    color: #fff;
+    line-height: 1rem;
+    font-weight: normal;
+}
+.active-detail-wrap p{
+    font-size: 0.6rem;
+    color: #fff;
+    line-height: 0.9rem;
+}
+.active-detail-wrap img{
+    display: block;
+    width: 11.95rem;
+    height: auto;
+}
+
+
+/*活动 end */
+
