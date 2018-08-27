@@ -8,6 +8,7 @@ import button01 from '../static/images/button01.png';
 import {Form, Icon, Input, Button, Checkbox} from 'antd';
 
 const FormItem = Form.Item;
+let wait = 60;
 
 class Login extends React.Component{
     constructor(props, context){
@@ -66,6 +67,21 @@ class Login extends React.Component{
             checkFlag: !this.state.checkFlag,
         });
     }
+    headleGetCode=()=>{
+        let getCode = document.getElementById('getCode');
+        if (wait===0) {
+            getCode.removeAttribute("disabled");
+            getCode.innerHTML = "获取验证码";
+            wait = 60;
+        }else{
+            getCode.setAttribute("disabled","disabled");
+            getCode.innerHTML = wait + "秒后重试";
+            wait--;
+            setTimeout(()=>{
+                this.headleGetCode();
+            },1000);
+        }
+    }
     render(){
         const { getFieldDecorator } = this.props.form;
         return (
@@ -101,8 +117,7 @@ class Login extends React.Component{
                                         <div>
                                         <input type="text" placeholder="输入验证码" />
                                         <img src={password} alt="" />
-                                            <a>点击获取验证码</a>
-                                            {/*<a href="javascript:;">60s后重新获取验证码</a>*/}
+                                            <a href='javascript:;' id="getCode" onClick={this.headleGetCode}>获取验证码</a>
                                         </div>
                                     )}
                                 </FormItem>
