@@ -5,12 +5,15 @@ import person from '../static/images/person.png';
 import password from '../static/images/password.png';
 import logoBtn from '../static/images/logo-btn.png';
 import button01 from '../static/images/button01.png';
+import {Form, Icon, Input, Button, Checkbox} from 'antd';
+
+const FormItem = Form.Item;
 
 class Login extends React.Component{
     constructor(props, context){
         super(props, context);
         this.state={
-
+            checkFlag: true,
         }
     }
 
@@ -49,7 +52,22 @@ class Login extends React.Component{
         Modal.style.display='block';
     }
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+    }
+
+    onCheckChange = (e) => {
+        this.setState({
+            checkFlag: !this.state.checkFlag,
+        });
+    }
     render(){
+        const { getFieldDecorator } = this.props.form;
         return (
             <main className="main-bac" id="Main">
                 <section className="login-head clearfix">
@@ -61,27 +79,60 @@ class Login extends React.Component{
                     </div>
                 </section>
                 <section className="logo-input">
-                    <div className="logo-input-wrap">
-                        <div className="logo-input-wrap-phone">
-                            <input type="text" placeholder="手机号" />
-                            <img src={person} alt="" />
+                    <Form onSubmit={this.handleSubmit}>
+                        <div className="logo-input-wrap">
+                            <div className="logo-input-wrap-phone">
+                                <FormItem>
+                                    {getFieldDecorator('phone', {
+                                        rules: [{ required: true, message: '请输入手机号', pattern: /^1[3|4|5|8][0-9]\d{4,8}$/ }],
+                                    })(
+                                        <div>
+                                            <input type="text" placeholder="手机号" />
+                                            <img src={person} alt="" />
+                                        </div>
+                                    )}
+                                </FormItem>
+                            </div>
+                            <div className="logo-input-wrap-code clearfix">
+                                <FormItem>
+                                    {getFieldDecorator('verificationCode', {
+                                        rules: [{ required: true, message: '请输入验证码', pattern: /\d/ }],
+                                    })(
+                                        <div>
+                                        <input type="text" placeholder="输入验证码" />
+                                        <img src={password} alt="" />
+                                            <a>点击获取验证码</a>
+                                            {/*<a href="javascript:;">60s后重新获取验证码</a>*/}
+                                        </div>
+                                    )}
+                                </FormItem>
+                            </div>
+                            <div className="logo-input-wrap-check">
+                                <FormItem>
+                                    {getFieldDecorator('remember', {
+                                        initialValue: true,
+                                    })(
+                                        <div>
+                                            <Checkbox
+                                                onChange={this.onCheckChange}
+                                                checked={this.state.checkFlag}
+                                            />
+                                            <span>温馨提示：未注册联通旅行的手机号，登录时将自动注册，且代表您已同意
+                                                <a onClick={this.modalOpen}>《用户服务协议》、《隐私政策》与《太平金服服务协议》。</a>
+                                            </span>
+                                        </div>
+                                    )}
+                                </FormItem>
+                            </div>
                         </div>
-                        <div className="logo-input-wrap-code clearfix">
-                            <input type="text" placeholder="输入验证码" />
-                            <img src={password} alt="" />
-                            <a>点击获取验证码</a>
-                            {/*<a href="javascript:;">60s后重新获取验证码</a>*/}
+                        <div className="logo-input-btn">
+                            <FormItem>
+                                <Button type="primary" htmlType="submit">
+                                    <img src={logoBtn} alt="" />
+                                </Button>
+                            </FormItem>
                         </div>
-                        <div className="logo-input-wrap-check">
-                            <input type="checkbox"  />
-                                <span>温馨提示：未注册联通旅行的手机号，登录时将自动注册，且代表您已同意
-                                    <a onClick={this.modalOpen}>《用户服务协议》、《隐私政策》与《太平金服服务协议》。</a>
-                                </span>
-                        </div>
-                    </div>
-                    <div className="logo-input-btn">
-                        <button type="button"><img src={logoBtn} alt="" /></button>
-                    </div>
+                    </Form>
                 </section>
                 <section className="logo-clause" id="Modal">
                     <div className="logo-clause-title clearfix" id="logo-clause-title">
@@ -256,4 +307,4 @@ class Login extends React.Component{
     }
 }
 
-export default Login;
+export default (Form.create()(Login));

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #dial{
+            background: #ccc;
+            width: 200px;
+            height:200px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div id="dial" style='transform: rotate(360deg);'>21</div>
+<button id="rotate">旋转</button>
+<script>
+    let count=0;
+    rotate.onclick=()=>{
+        let id=setInterval(()=>{
+            if(count<360)
+                dial.style.transform=`rotate(${count++}deg)`;
+            else count=0;
+        },1);
+        setTimeout(()=>{
+            clearInterval(id);
+            alert(`当前角度为:${count-1}`)
+        },3000)
+    }
+
+</script>
+</body>
+</html>
