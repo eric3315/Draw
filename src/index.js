@@ -12,6 +12,8 @@ import './static/css/index.css';
 
 /*IMPORT COMPONENT*/
 import Login from './routes/Login';
+import FirstPrize from './routes/FirstPrize';
+
 
 render(
         <Router>
@@ -20,6 +22,7 @@ render(
                     <main className='container'>
                         <Switch>
                             <Route path='/login' component={Login} />
+                            <Route path='/firstPrize' component={FirstPrize} />
                             <Redirect from="/" to='/login'/>
                         </Switch>
                     </main>

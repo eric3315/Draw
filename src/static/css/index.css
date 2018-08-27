@@ -555,6 +555,7 @@ html,body{
 
 .ant-form-explain{
     font-size: 0.25rem;
+    margin-top: -9px;
     color: #fff;
 }
 

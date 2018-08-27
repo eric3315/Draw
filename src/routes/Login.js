@@ -5,7 +5,7 @@ import person from '../static/images/person.png';
 import password from '../static/images/password.png';
 import logoBtn from '../static/images/logo-btn.png';
 import button01 from '../static/images/button01.png';
-import {Form, Icon, Input, Button, Checkbox} from 'antd';
+import {Form, Button, Checkbox} from 'antd';
 
 const FormItem = Form.Item;
 let wait = 60;
@@ -314,7 +314,7 @@ class Login extends React.Component{
                         </p>
                     </div>
                     <div className="logo-clause-btn" id="logo-clause-btn">
-                        <button type="button"><img src={button01} alt="" /></button>
+                        <button type="button"  onClick={this.modalClose}><img src={button01} alt="" /></button>
                     </div>
                 </section>
             </main>
