@@ -5,7 +5,7 @@ import person from '../static/images/person.png';
 import password from '../static/images/password.png';
 import logoBtn from '../static/images/logo-btn.png';
 import button01 from '../static/images/button01.png';
-import {Form, Button, Checkbox} from 'antd';
+import {Form, Button, Checkbox, message} from 'antd';
 
 const FormItem = Form.Item;
 let wait = 60;
@@ -15,6 +15,8 @@ class Login extends React.Component{
         super(props, context);
         this.state={
             checkFlag: true,
+            clickFlag: true,
+            phoneFlag: true,
         }
     }
 
@@ -57,7 +59,7 @@ class Login extends React.Component{
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+
             }
         });
     }
@@ -68,20 +70,45 @@ class Login extends React.Component{
         });
     }
     headleGetCode=()=>{
-        let getCode = document.getElementById('getCode');
-        if (wait===0) {
-            getCode.removeAttribute("disabled");
-            getCode.innerHTML = "获取验证码";
-            wait = 60;
-        }else{
-            getCode.setAttribute("disabled","disabled");
-            getCode.innerHTML = wait + "秒后重试";
-            wait--;
-            setTimeout(()=>{
-                this.headleGetCode();
-            },1000);
+        let phone = this.props.form.getFieldValue('phone');
+        if(typeof phone==='undefined'){
+            this.setState({
+                phoneFlag: false,
+            })
+            return false;
+        } else {
+            this.headleTimer();
         }
     }
+
+    headleTimer=()=>{
+        let getCode = document.getElementById('getCode');
+        if (wait===0) {
+            this.setState({
+                clickFlag: true,
+            },()=>{
+                getCode.innerHTML ="获取验证码";
+                wait = 60;
+            })
+        }else{
+            this.setState({
+                clickFlag: false,
+            },()=>{
+                let getCode = document.getElementById('getCode');
+                getCode.innerHTML = wait + "秒后重试";
+                wait--;
+                setTimeout(()=>{
+                    this.headleTimer();
+                },1000);
+            })
+        }
+    }
+    inputFocus=(e)=>{
+        this.setState({
+            phoneFlag: true,
+        });
+    }
+
     render(){
         const { getFieldDecorator } = this.props.form;
         return (
@@ -103,8 +130,14 @@ class Login extends React.Component{
                                         rules: [{ required: true, message: '请输入手机号', pattern: /^1[3|4|5|8][0-9]\d{4,8}$/ }],
                                     })(
                                         <div>
-                                            <input type="text" placeholder="手机号" />
+                                            <input type="text" placeholder="手机号" onFocus={e=>this.inputFocus(e)}/>
                                             <img src={person} alt="" />
+                                            {
+                                                !this.state.phoneFlag && <div style={{
+                                                    fontSize: '0.25rem',
+                                                    color: '#fff',
+                                                }}>请输入手机号</div>
+                                            }
                                         </div>
                                     )}
                                 </FormItem>
@@ -117,7 +150,12 @@ class Login extends React.Component{
                                         <div>
                                         <input type="text" placeholder="输入验证码" />
                                         <img src={password} alt="" />
-                                            <a href='javascript:;' id="getCode" onClick={this.headleGetCode}>获取验证码</a>
+                                            {
+                                                this.state.clickFlag ? (
+                                                    <a href='javascript:;' onClick={this.headleGetCode}>获取验证码</a>
+                                                ):(<a href='javascript:;' id="getCode" >获取验证码</a>)
+                                            }
+
                                         </div>
                                     )}
                                 </FormItem>

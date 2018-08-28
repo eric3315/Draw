@@ -554,9 +554,12 @@ html,body{
 }
 
 .ant-form-explain{
+    margin-top: -0.5rem;
     font-size: 0.25rem;
-    margin-top: -9px;
     color: #fff;
+}
+.logo-input-wrap-phone .ant-form-explain{
+    margin-top: 0.02rem!important;
 }
 
 /*活动 end */

@@ -51,24 +51,31 @@ class FirstPrize extends React.Component{
                             <p>恭喜!您已获得机场贵宾厅权益和价值100万的交通意外险，请及时领取。</p>
                             <Form onSubmit={this.handleSubmit}>
                                 <FormItem>
-                                    {getFieldDecorator('name', {
+                                    {getFieldDecorator('userName', {
                                         rules: [{ required: true, message: '请输入姓名' }],
                                     })(
-                                       <input type="text" placeholder="姓名" />
+                                        <div>
+                                            <input type="text" placeholder="姓名" />
+                                        </div>
                                     )}
                                 </FormItem>
                                 <FormItem>
                                     {getFieldDecorator('address', {
                                         rules: [{ required: true, message: '请输入地址' }],
                                     })(
-                                        <input type="text" placeholder="地址" />
+                                        <div>
+                                            <input type="text" placeholder="地址" />
+                                        </div>
+
                                     )}
                                 </FormItem>
                                 <FormItem>
                                     {getFieldDecorator('phoneNumber', {
                                         rules: [{ required: true, message: '请输入联系电话', pattern: /^1[3|4|5|8][0-9]\d{4,8}$/ }],
                                     })(
-                                        <input type="text" placeholder="地址" />
+                                        <div>
+                                            <input type="text" placeholder="地址" />
+                                        </div>
                                     )}
                                 </FormItem>
                                 <FormItem>
