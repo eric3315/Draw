@@ -2,33 +2,27 @@ import React from 'react';
 import Top from '../component/Top';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
-import button02 from '../static/images/button02.png';
-import {Form, DatePicker } from 'antd';
+import button04 from '../static/images/button04.png';
+import {Form} from 'antd';
 
 const FormItem = Form.Item;
 
-class FirstPrize extends React.Component{
+class NumberFinished extends React.Component{
     constructor(props, context){
         super(props, context);
         this.state={
 
         }
     }
-
     componentDidMount(){
     }
-
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.props.history.push('/prizeAddress');
+                console.log('Received values of form: ', values);
             }
         });
-    }
-
-    handleEffectiveChange=(date, dateString)=>{
-        console.log(date, dateString);
     }
 
     render(){
@@ -36,54 +30,16 @@ class FirstPrize extends React.Component{
         return (
             <div>
                 <Top/>
-                <main className="Active-main" id="Active-main"  style={{
+                <main className="Active-main" id="Active-main" style={{
                     height: 'auto'
                 }}>
                     <section className="Active-main-logo"><img src={logo} alt="" /></section>
-                    <section className="Active-prize" style={{
-                        paddingTop:'5rem',
+                    <section className="Active-over" style={{
+                        paddingTop:'2.5rem',
                     }}>
-                        <div className="Active-prize-wrap">
-                            <p>恭喜!您已获得机场贵宾厅权益和价值100万的交通意外险，请及时领取。</p>
-                            <Form onSubmit={this.handleSubmit}>
-                                <FormItem>
-                                    {getFieldDecorator('userName', {
-                                        rules: [{ required: true, message: '请输入姓名' }],
-                                    })(
-                                        <div>
-                                            <input type="text" placeholder="姓名" />
-                                        </div>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator('identityCard', {
-                                        rules: [{ required: true, message: '请输入身份证' , pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/}],
-                                    })(
-                                        <div>
-                                            <input type="text" placeholder="身份证" />
-                                        </div>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator('effectiveDate', {
-                                        rules: [{ required: true, message: '请选择生效日期'}],
-                                    })(
-                                            <DatePicker
-                                                onChange={this.handleEffectiveChange}
-                                                style={{
-                                                    display: 'block',
-                                                    width: '100%',
-                                                }}
-                                                placeholder='生效日期'
-                                           />
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    <button type="submit">
-                                        <img src={button02} alt="" />
-                                    </button>
-                                </FormItem>
-                            </Form>
+                        <div className="Active-over-wrap">
+                            <h2>抱歉</h2>
+                            <span>您的抽奖次数已用尽</span>
                         </div>
                     </section>
                     <section className="active-frequency">
@@ -125,4 +81,4 @@ class FirstPrize extends React.Component{
         )
     }
 }
-export default (Form.create()(FirstPrize));
+export default (Form.create()(NumberFinished));

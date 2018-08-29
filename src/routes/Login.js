@@ -57,11 +57,19 @@ class Login extends React.Component{
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
+        this.setState({
+            phoneFlag: true,
+        },()=>{
+            this.props.form.validateFields((err, values) => {
+                if (typeof values.phone!=='undefined' && /^1[3|4|5|8][0-9]\d{4,8}$/.test(values.phone)&& typeof values.phone!=='verificationCode' && values.remember) {
+                    this.props.history.push('/firstPrize');
+                } else {
+                    return false;
+                }
+            });
+        })
 
-            }
-        });
+
     }
 
     onCheckChange = (e) => {
@@ -112,7 +120,7 @@ class Login extends React.Component{
     render(){
         const { getFieldDecorator } = this.props.form;
         return (
-            <main className="main-bac" id="Main">
+            <main className="main-bac" id="Main" >
                 <section className="login-head clearfix">
                     <div className="login-head-logo">
                         <h1><img src={logo} alt="" /></h1>
@@ -180,9 +188,9 @@ class Login extends React.Component{
                         </div>
                         <div className="logo-input-btn">
                             <FormItem>
-                                <Button type="primary" htmlType="submit">
+                                <button type="submit">
                                     <img src={logoBtn} alt="" />
-                                </Button>
+                                </button>
                             </FormItem>
                         </div>
                     </Form>
