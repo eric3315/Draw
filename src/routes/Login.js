@@ -5,7 +5,9 @@ import person from '../static/images/person.png';
 import password from '../static/images/password.png';
 import logoBtn from '../static/images/logo-btn.png';
 import button01 from '../static/images/button01.png';
-import {Form, Button, Checkbox, message} from 'antd';
+import {Form, Checkbox} from 'antd';
+import axios from '../api';
+
 
 const FormItem = Form.Item;
 let wait = 60;
@@ -61,8 +63,23 @@ class Login extends React.Component{
             phoneFlag: true,
         },()=>{
             this.props.form.validateFields((err, values) => {
-                if (typeof values.phone!=='undefined' && /^1[3|4|5|8][0-9]\d{4,8}$/.test(values.phone)&& typeof values.phone!=='verificationCode' && values.remember) {
-                    this.props.history.push('/firstPrize');
+                if (typeof values.phone!=='undefined' &&
+                    /^1[3|4|5|8][0-9]\d{4,8}$/.test(values.phone) &&
+                    typeof values.verificationCode!=='undefined' &&
+                    values.remember) {
+                    axios({
+                        method: 'POST',
+                        url: 'http://test.admin.skepay.com/login',
+                        data: {
+                            userMobile: values.phone,
+                            validateCode: values.verificationCode,
+                            isAgreement: values.remember,
+                            urlChannel: 'c22',
+                        },
+                    }).then(result=>{
+                        console.info(`调用登录接口获取返回数据：${JSON.stringify(result)}`);
+                    });
+                    // this.props.history.push('/firstPrize');
                 } else {
                     return false;
                 }
@@ -77,19 +94,20 @@ class Login extends React.Component{
             checkFlag: !this.state.checkFlag,
         });
     }
-    headleGetCode=()=>{
+    handleGetCode=()=>{
         let phone = this.props.form.getFieldValue('phone');
-        if(typeof phone==='undefined'){
+        if(typeof phone==='undefined' && !/^1[3|4|5|8][0-9]\d{4,8}$/.test(phone)){
             this.setState({
                 phoneFlag: false,
             })
             return false;
         } else {
-            this.headleTimer();
+            this.handleVerificationCode(phone);
+            this.handleTimer();
         }
     }
 
-    headleTimer=()=>{
+    handleTimer=()=>{
         let getCode = document.getElementById('getCode');
         if (wait===0) {
             this.setState({
@@ -106,7 +124,7 @@ class Login extends React.Component{
                 getCode.innerHTML = wait + "秒后重试";
                 wait--;
                 setTimeout(()=>{
-                    this.headleTimer();
+                    this.handleTimer();
                 },1000);
             })
         }
@@ -114,6 +132,19 @@ class Login extends React.Component{
     inputFocus=(e)=>{
         this.setState({
             phoneFlag: true,
+        });
+    }
+
+    handleVerificationCode=(phone)=>{
+        axios({
+            method: 'POST',
+            url: 'http://test.admin.skepay.com/sendVlidateCode',
+            data: {
+                urlChannel: 'c22',
+                userMobile: phone,
+            },
+        }).then(result=>{
+            console.info(`调用验证码获取返回数据：${JSON.stringify(result)}`);
         });
     }
 
@@ -160,7 +191,7 @@ class Login extends React.Component{
                                         <img src={password} alt="" />
                                             {
                                                 this.state.clickFlag ? (
-                                                    <a href='javascript:;' onClick={this.headleGetCode}>获取验证码</a>
+                                                    <a href='javascript:;' onClick={this.handleGetCode}>获取验证码</a>
                                                 ):(<a href='javascript:;' id="getCode" >获取验证码</a>)
                                             }
 

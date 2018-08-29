@@ -291,15 +291,11 @@ p {
 }
 /*转盘样式*/
 .Active-main-logo{
-    margin-bottom: 16rem;
+    margin-bottom: 21rem;
 }
 .Active-main-logo img{
     display: block;
     width: 3.3rem;
-}
-.Active-turntable{
-    background-color: #fff;
-    height: 11rem;
 }
 
 .active-frequency{
@@ -665,5 +661,43 @@ p {
 .has-error .ant-form-explain, .has-error .ant-form-split{
     color: #fff;
 }
+
+
+.Active-turntable{
+    height: 10rem;
+    padding:0.5rem;
+    position: relative;
+    margin-bottom: 3rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.Active-turntable .Active-turntable-rotary{
+    position: absolute;
+    top:-5rem;
+    left: 50%;
+    margin-left: -9.5rem;
+    width: 19rem;
+    height: auto;
+    z-index: 3;
+}
+.Active-turntable .Active-turntable-pointer{
+    width: 6rem;
+    position: absolute;
+    top:-0.5rem;
+    left:50%;
+    margin-left: -3rem;
+    z-index: 4;
+}
+.Active-turntable .Active-turntable-start{
+    width: 3rem;
+    position: absolute;
+    top:3rem;
+    left:50%;
+    margin-left: -1.5rem;
+    z-index: 5;
+}
+
+
 /*活动 end */
 
