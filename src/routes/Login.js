@@ -23,8 +23,8 @@ class Login extends React.Component{
     }
 
     componentDidMount(){
-        this.computeMain();
-        this.modalHandle();
+        // this.computeMain();
+        // this.modalHandle();
     }
 
     computeMain() {
