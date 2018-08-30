@@ -9,6 +9,17 @@ p {
     margin-top: 0;
     margin-bottom: 0;
 }
+
+input,
+textarea {
+    font-size: 24px;
+    padding: 10px;
+    color: #fff;
+    text-shadow: 0px 0px 0px #fff;
+    -webkit-text-fill-color: transparent;
+}
+
+
 /*登陆*/
 .main-bac{
     width: 100%;
