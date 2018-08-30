@@ -2,10 +2,9 @@ import React from 'react';
 import Top from '../component/Top';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
-import rotary from '../static/images/rotary.png';
+import chassis from '../static/images/chassis.png';
 import pointer from '../static/images/pointer.png';
-import start from '../static/images/start.png';
-
+import turn from '../static/images/turn.png';
 
 
 class RotaryDraw extends React.Component{
@@ -18,6 +17,44 @@ class RotaryDraw extends React.Component{
     componentDidMount(){
     }
 
+    handleRotating=(e)=>{
+        let target = e.target;
+        let turnId = document.getElementById('turnId');
+        let cat = 40; //总共9个扇形区域，每个区域约40度
+        let num = 0; //转圈结束后停留的度数
+        let offOn = true; //是否正在抽奖
+        if (offOn) {
+            turnId.style.transform = "rotate(0deg)";
+            offOn = !offOn;
+            this.handleRatating(turnId,offOn,num);
+        }
+    }
+
+    handleRatating=(turnId,offOn,num)=>{
+        let timer = null;
+        let rdm = 0; //随机度数
+        clearInterval(timer);
+        timer = setInterval(function () {
+            if (Math.floor(rdm / 360) < 3) { rdm = Math.floor(Math.random() * 3600); }
+            else {
+                turnId.style.transform = "rotate(" + rdm + "deg)";
+                clearInterval(timer);
+                setTimeout(function () {
+                    offOn = !offOn;
+                    num = rdm % 360;
+                    console.info(num);
+                    // if (num <= cat * 1) { alert("4999元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "4999元"); }
+                    // else if (num <= cat * 2) { alert("50元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "50元"); }
+                    // else if (num <= cat * 3) { alert("10元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "10元"); }
+                    // else if (num <= cat * 4) { alert("5元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "5元"); }
+                    // else if (num <= cat * 5) { alert("免息服务"); console.log("rdm=" + rdm + "，num=" + num + "，" + "免息服务"); }
+                    // else if (num <= cat * 6) { alert("提交白金"); console.log("rdm=" + rdm + "，num=" + num + "，" + "提交白金"); }
+                    // else if (num <= cat * 7) { alert("未中奖"); console.log("rdm=" + rdm + "，num=" + num + "，" + "未中奖"); }
+                }, 4000);
+            }
+        }, 30);
+    }
+
     render(){
         return (
             <div>
@@ -27,9 +64,9 @@ class RotaryDraw extends React.Component{
                 }}>
                     <section className="Active-main-logo"><img src={logo} alt="" /></section>
                     <section className="Active-turntable">
-                        <img src={rotary} alt="" className="Active-turntable-rotary"/>
-                        <img src={pointer} alt="" className="Active-turntable-pointer"/>
-                        <img src={start} alt="" className="Active-turntable-start"/>
+                        <img src={chassis} alt="" className="Active-turntable-rotary" />
+                        <img src={turn} alt="" className="Active-turntable-pointer" id='turnId'/>
+                        <img src={pointer} alt="" className="Active-turntable-start" onClick={e=>this.handleRotating(e)}/>
                     </section>
                     <section className="active-frequency">
                         <a href="javascript:;">查看我的奖品</a>

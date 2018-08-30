@@ -682,22 +682,21 @@ p {
     z-index: 3;
 }
 .Active-turntable .Active-turntable-pointer{
-    width: 6rem;
+    width: 14.2rem;
     position: absolute;
-    top:-0.5rem;
+    top:-2.4rem;
     left:50%;
-    margin-left: -3rem;
+    margin-left: -7.2rem;
     z-index: 4;
+    transition: all 4s;
 }
 .Active-turntable .Active-turntable-start{
-    width: 3rem;
+    width: 5rem;
     position: absolute;
-    top:3rem;
+    top:0rem;
     left:50%;
-    margin-left: -1.5rem;
+    margin-left: -2.5rem;
     z-index: 5;
 }
-
-
 /*活动 end */
 

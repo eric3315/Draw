@@ -39,7 +39,9 @@ class FirstPrize extends React.Component{
                 <main className="Active-main" id="Active-main"  style={{
                     height: 'auto'
                 }}>
-                    <section className="Active-main-logo"><img src={logo} alt="" /></section>
+                    <section className="Active-main-logo" style={{
+                        marginBottom: '17rem',
+                    }}><img src={logo} alt="" /></section>
                     <section className="Active-prize" style={{
                         paddingTop:'5rem',
                     }}>

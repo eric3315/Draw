@@ -33,7 +33,9 @@ class PrizeAddress extends React.Component{
                 <main className="Active-main" id="Active-main" style={{
                     height: 'auto'
                 }}>
-                    <section className="Active-main-logo"><img src={logo} alt="" /></section>
+                    <section className="Active-main-logo" style={{
+                        marginBottom: '16rem',
+                    }}><img src={logo} alt="" /></section>
                     <section className="Active-prize" style={{
                         paddingTop:'4rem',
                     }}>

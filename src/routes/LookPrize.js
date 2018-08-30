@@ -23,7 +23,9 @@ class LookPrize extends React.Component{
                 <main className="Active-main" id="Active-main" style={{
                     height: 'auto'
                 }}>
-                    <section className="Active-main-logo"><img src={logo} alt="" /></section>
+                    <section className="Active-main-logo" style={{
+                        marginBottom: '16rem',
+                    }}><img src={logo} alt="" /></section>
                     <section className="Active-over" style={{
                         paddingTop: '2.5rem'
                     }}>
