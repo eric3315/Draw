@@ -1,7 +1,7 @@
 {
   "name": "lucky_draw",
   "version": "0.1.0",
-  "homepage": "/build",
+  "homepage":".",
   "private": true,
   "dependencies": {
     "antd": "^3.6.4",
