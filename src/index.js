@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM, {render} from 'react-dom';
 import {HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
+/*REDUX STORE*/
+import {Provider} from 'react-redux';
+import store from './store';
+
 /*ANTD*/
 import { LocaleProvider } from 'antd';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
@@ -25,7 +29,8 @@ import RotaryDraw from './routes/RotaryDraw';/*转盘抽奖*/
 
 moment.locale('en');
 render(
-        <Router>
+    <Provider store={store}>
+    <Router>
             <LocaleProvider locale={zh_CN}>
                 <div>
                     <main className='container'>
@@ -45,4 +50,5 @@ render(
                 </div>
             </LocaleProvider>
         </Router>
-    ,document.getElementById("root"));
+    </Provider>
+,document.getElementById("root"));

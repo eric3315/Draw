@@ -1,10 +1,12 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Top from '../component/Top';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import chassis from '../static/images/chassis.png';
 import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
+import action from "../store/action";
 
 
 class RotaryDraw extends React.Component{
@@ -107,4 +109,4 @@ class RotaryDraw extends React.Component{
         )
     }
 }
-export default RotaryDraw;
+export default connect(state=>({...state.login}), action.login)((RotaryDraw));

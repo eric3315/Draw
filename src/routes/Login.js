@@ -1,12 +1,14 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {loginIn, sendVlidateCode} from '../api/loginApi';
+import action from '../store/action';
 import logo from '../static/images/logo.png';
 import close01 from'../static/images/close01.png';
 import person from '../static/images/person.png';
 import password from '../static/images/password.png';
 import logoBtn from '../static/images/logo-btn.png';
 import button01 from '../static/images/button01.png';
-import {Form, Checkbox} from 'antd';
-import axios from '../api';
+import {Form, Checkbox, Modal} from 'antd';
 
 
 const FormItem = Form.Item;
@@ -21,32 +23,24 @@ class Login extends React.Component{
             phoneFlag: true,
         }
     }
-
     componentDidMount(){
-        // this.computeMain();
-        // this.modalHandle();
-    }
 
-    computeMain() {
-        var winddowH = document.documentElement.scrollHeight;
-        var Main = document.getElementById('Main');
-        var fontSize = parseFloat(document.documentElement.style.fontSize);
-        var MainH = winddowH / fontSize + 'rem';
-        Main.style.height = MainH;
     }
-
-    modalHandle() {
-        var winddowH = document.documentElement.clientHeight;
-        var modal = document.getElementById('logo-clause-main');
-        var Header = document.getElementById('logo-clause-title');
-        var HeaderH = Header.offsetHeight;
-        var btn = document.getElementById('logo-clause-btn');
-        var btnH = btn.offsetHeight;
-        var fontSize = parseFloat(document.documentElement.style.fontSize);
-        var modalH = (winddowH - HeaderH - btnH) / fontSize + 'rem';
-        modal.style.height = modalH;
+    loginFail =(flag, messageTip) =>{
+        let modal=null;
+        if(flag){
+            modal = Modal.success({
+                title: '登录成功',
+                content: ''
+            });
+        } else{
+            modal = Modal.error({
+                title: '登录失败',
+                content: messageTip
+            });
+        }
+        setTimeout(() => modal.destroy(), 1000);
     }
-
     modalClose=()=> {
         let Modal= document.getElementById('Modal');
         Modal.style.display='none';
@@ -69,25 +63,32 @@ class Login extends React.Component{
         this.setState({
             phoneFlag: true,
         },()=>{
-            this.props.form.validateFields((err, values) => {
+            this.props.form.validateFields(async (err, values) => {
                 if (typeof values.phone!=='undefined' &&
                     /^1[3|4|5|8][0-9]\d{4,8}$/.test(values.phone) &&
                     typeof values.verificationCode!=='undefined' &&
                     values.remember) {
-                    axios({
-                        method: 'POST',
-                        url: 'http://test.admin.skepay.com/login',
-                        data: {
-                            userMobile: values.phone,
-                            validateCode: values.verificationCode,
-                            isAgreement: values.remember,
-                            urlChannel: 'c22',
-                        },
-                    }).then(result=>{
-                        console.info(`调用登录接口获取返回数据：${JSON.stringify(result)}`);
+                    let result = await loginIn({
+                        userMobile: values.phone,
+                        validateCode: values.verificationCode,
+                        isAgreement: values.remember,
+                        urlChannel: 'c22',
                     });
-                    // this.props.history.push('/firstPrize');
+                    if(result.success){
+                        //记录手机号和次数到store
+                        this.props.queryUserInfo({
+                            userMobile: result.userMobile,
+                            luckDrawNum: result.luckDrawNum,
+                        });
+                        //跳转到抽奖页面
+                        this.props.history.push('/rotaryDraw');
+                        return;
+                    } else {
+                        this.loginFail(false, result.messageTip);
+                        return;
+                    }
                 } else {
+
                     return false;
                 }
             });
@@ -143,16 +144,10 @@ class Login extends React.Component{
     }
 
     handleVerificationCode=(phone)=>{
-        axios({
-            method: 'POST',
-            url: 'http://test.admin.skepay.com/sendVlidateCode',
-            data: {
-                urlChannel: 'c22',
-                userMobile: phone,
-            },
-        }).then(result=>{
-            console.info(`调用验证码获取返回数据：${JSON.stringify(result)}`);
-        });
+        sendVlidateCode({
+            urlChannel: 'c22',
+            userMobile: phone,
+        })
     }
 
     render(){
@@ -479,4 +474,4 @@ class Login extends React.Component{
     }
 }
 
-export default (Form.create()(Login));
+export default connect(state=>({...state.login}), action.login)(Form.create()(Login));
