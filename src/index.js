@@ -15,6 +15,7 @@ import './static/css/index.css';
 /*IMPORT COMPONENT*/
 import Login from './routes/Login';/*登录*/
 import FirstPrize from './routes/FirstPrize';/*首次获奖*/
+import FirstPrizeOne from './routes/FirstPrizeOne';/*首次获奖*/
 import PrizeAddress from './routes/PrizeAddress';/*实物奖品填写地址*/
 import LookPrize from './routes/LookPrize';/*查看奖品*/
 import VirtualPrize from  './routes/VirtualPrize';/*虚拟奖品*/
@@ -31,6 +32,7 @@ render(
                         <Switch>
                             <Route path='/login' component={Login} />
                             <Route path='/firstPrize' component={FirstPrize} />
+                            <Route path='/firstPrizeOne' component={FirstPrizeOne} />
                             <Route path='/prizeAddress' component={PrizeAddress} />
                             <Route path='/virtualPrize' component={VirtualPrize} />
                             <Route path='/lookPrize' component={LookPrize} />

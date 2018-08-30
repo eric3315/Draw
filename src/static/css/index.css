@@ -709,5 +709,42 @@ textarea {
     margin-left: -2.5rem;
     z-index: 5;
 }
+
+
+
+.Active-prize-wrap01{
+    height: 16.3rem;
+    background:url("../images/bgc05.png") top center no-repeat;
+    background-size: cover;
+    padding:6rem 2rem 0 2rem;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.Active-prize-wrap01 p{
+    font-size: 1rem;
+    color: #fff;
+    line-height: 1.5rem;
+    text-indent: 2rem;
+    margin-bottom: 1.2rem;
+}
+.Active-prize-wrap01 button{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    border:0;
+    outline: none;
+    background-color:transparent;
+}
+.Active-prize-wrap01 img{
+    display:inline-block;
+    width: 6rem;
+    height: auto;
+}
+
+
+
+
+
 /*活动 end */
 

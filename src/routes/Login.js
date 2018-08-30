@@ -51,6 +51,13 @@ class Login extends React.Component{
         let Modal= document.getElementById('Modal');
         Modal.style.display='none';
     }
+    modalConfirm=()=> {
+        this.setState({
+            checkFlag: true,
+        });
+        let Modal= document.getElementById('Modal');
+        Modal.style.display='none';
+    }
 
     modalOpen=()=> {
         let Modal= document.getElementById('Modal');
@@ -155,9 +162,6 @@ class Login extends React.Component{
                 <section className="login-head clearfix">
                     <div className="login-head-logo">
                         <h1><img src={logo} alt="" /></h1>
-                    </div>
-                    <div className="login-head-close">
-                        <a><img src={close01} alt="" /></a>
                     </div>
                 </section>
                 <section className="logo-input">
@@ -467,7 +471,7 @@ class Login extends React.Component{
                         </p>
                     </div>
                     <div className="logo-clause-btn" id="logo-clause-btn">
-                        <button type="button"  onClick={this.modalClose}><img src={button01} alt="" /></button>
+                        <button type="button"  onClick={this.modalConfirm}><img src={button01} alt="" /></button>
                     </div>
                 </section>
             </main>
