@@ -22,7 +22,7 @@ class RotaryDraw extends React.Component{
     handleRotating=(e)=>{
         let target = e.target;
         let turnId = document.getElementById('turnId');
-        let cat = 40; //总共9个扇形区域，每个区域约40度
+        let cat = 51.4; //总共7个扇形区域，每个区域约51.4度
         let num = 0; //转圈结束后停留的度数
         let offOn = true; //是否正在抽奖
         if (offOn) {
