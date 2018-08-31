@@ -8,7 +8,8 @@ import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
 import action from "../store/action";
 
-
+let rotateArr = [25.7,77.1,128.5,180,231.4,283,334];
+let rotateStr = ['电子导游','快速安检通道','旅行收纳包','10元','旅行枕','机场贵宾厅','手机'];
 class RotaryDraw extends React.Component{
     constructor(props, context){
         super(props, context);
@@ -20,42 +21,78 @@ class RotaryDraw extends React.Component{
     }
 
     handleRotating=(e)=>{
-        let target = e.target;
+        let timer = null;
+        let rotate=0;
+        let turnId = document.getElementById('turnId');
+        turnId.style.transform = "rotate(0deg)";
+        let count =10;
+        if(timer){
+            clearInterval(timer);
+            return;
+        }
+        timer=setInterval(()=>{
+            if(rotate>360){
+                rotate=0;
+            }
+            turnId.style.transform = `rotate(${rotate+=count}deg)`;
+        },1);
+        setTimeout(()=>{
+            setTimeout(()=>{
+                clearInterval(timer);
+                turnId.style.transform = "rotate(-60deg)";
+                console.info('进来了');
+                return;
+            },3000);
+        },3000);
+
+
+
+
+
+        // setTimeout(()=>{
+        //     clearInterval(timer);
+        //     console.log(rotate-1)
+        // },3000)
+        /*let target = e.target;
         let turnId = document.getElementById('turnId');
         let cat = 51.4; //总共7个扇形区域，每个区域约51.4度
         let num = 0; //转圈结束后停留的度数
-        let offOn = true; //是否正在抽奖
-        if (offOn) {
+        console.info(offOn);
+        // if (offOn) {
             turnId.style.transform = "rotate(0deg)";
             offOn = !offOn;
             this.handleRatating(turnId,offOn,num);
-        }
+        // }
+        */
     }
 
-    handleRatating=(turnId,offOn,num)=>{
-        let timer = null;
-        let rdm = 0; //随机度数
-        clearInterval(timer);
-        timer = setInterval(function () {
-            if (Math.floor(rdm / 360) < 3) { rdm = Math.floor(Math.random() * 3600); }
-            else {
-                turnId.style.transform = "rotate(" + rdm + "deg)";
-                clearInterval(timer);
-                setTimeout(function () {
-                    offOn = !offOn;
-                    num = rdm % 360;
-                    console.info(num);
-                    // if (num <= cat * 1) { alert("4999元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "4999元"); }
-                    // else if (num <= cat * 2) { alert("50元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "50元"); }
-                    // else if (num <= cat * 3) { alert("10元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "10元"); }
-                    // else if (num <= cat * 4) { alert("5元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "5元"); }
-                    // else if (num <= cat * 5) { alert("免息服务"); console.log("rdm=" + rdm + "，num=" + num + "，" + "免息服务"); }
-                    // else if (num <= cat * 6) { alert("提交白金"); console.log("rdm=" + rdm + "，num=" + num + "，" + "提交白金"); }
-                    // else if (num <= cat * 7) { alert("未中奖"); console.log("rdm=" + rdm + "，num=" + num + "，" + "未中奖"); }
-                }, 4000);
-            }
-        }, 30);
-    }
+    // handleRatating=(turnId,offOn,num)=>{
+    //     let rdm = 0; //随机度数
+    //     if(timer){
+    //         clearInterval(timer);
+    //         offOn=true;
+    //     }
+    //     timer = setInterval(function () {
+    //         if (Math.floor(rdm / 360) < 3) { rdm = Math.floor(Math.random() * 3600); }
+    //         else {
+    //             turnId.style.transform = "rotate(" + rdm + "deg)";
+    //             clearInterval(timer);
+    //             timer=null;
+    //             // setTimeout(function () {
+    //             //     offOn = !offOn;
+    //             //     num = rdm % 360;
+    //             //     console.info(num);
+    //             //     // if (num <= cat * 1) { alert("4999元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "4999元"); }
+    //             //     // else if (num <= cat * 2) { alert("50元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "50元"); }
+    //             //     // else if (num <= cat * 3) { alert("10元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "10元"); }
+    //             //     // else if (num <= cat * 4) { alert("5元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "5元"); }
+    //             //     // else if (num <= cat * 5) { alert("免息服务"); console.log("rdm=" + rdm + "，num=" + num + "，" + "免息服务"); }
+    //             //     // else if (num <= cat * 6) { alert("提交白金"); console.log("rdm=" + rdm + "，num=" + num + "，" + "提交白金"); }
+    //             //     // else if (num <= cat * 7) { alert("未中奖"); console.log("rdm=" + rdm + "，num=" + num + "，" + "未中奖"); }
+    //             // }, 4000);
+    //         }
+    //     }, 30);
+    // }
 
     render(){
         return (

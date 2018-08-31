@@ -17,6 +17,7 @@ class Top extends React.Component{
 
     render(){
         let {userInfo} = this.props;
+        if(userInfo.userMobile=='') return '';
         return (
             <header className="Active-header" id="Active-header">
                 <a href="javascript:;"><img src={close01} alt=""/></a>

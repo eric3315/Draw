@@ -44,7 +44,7 @@ render(
                             <Route path='/coupons' component={Coupons} />
                             <Route path='/numberFinished' component={NumberFinished} />
                             <Route path='/rotaryDraw' component={RotaryDraw} />
-                            <Redirect from="/" to='/login'/>
+                            <Redirect from="/" to='/rotaryDraw'/>
                         </Switch>
                     </main>
                 </div>
