@@ -9,6 +9,7 @@ import password from '../static/images/password.png';
 import logoBtn from '../static/images/logo-btn.png';
 import button01 from '../static/images/button01.png';
 import {Form, Checkbox, Modal} from 'antd';
+import {Toast} from'antd-mobile';
 
 
 const FormItem = Form.Item;
@@ -27,19 +28,11 @@ class Login extends React.Component{
 
     }
     loginFail =(flag, messageTip) =>{
-        let modal=null;
         if(flag){
-            modal = Modal.success({
-                title: '登录成功',
-                content: ''
-            });
+            Toast.info('登录成功', 3);
         } else{
-            modal = Modal.error({
-                title: '登录失败',
-                content: messageTip
-            });
+            Toast.info(`登录失败:${messageTip}`, 3);
         }
-        setTimeout(() => modal.destroy(), 1000);
     }
     modalClose=()=> {
         let Modal= document.getElementById('Modal');
@@ -80,10 +73,13 @@ class Login extends React.Component{
                             userMobile: result.userMobile,
                             luckDrawNum: result.luckDrawNum,
                         });
+                        //登录成功提示
+                        this.loginFail(true, '');
                         //跳转到抽奖页面
                         this.props.history.push('/rotaryDraw');
                         return;
                     } else {
+                        //登录失败提示
                         this.loginFail(false, result.messageTip);
                         return;
                     }
