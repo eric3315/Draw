@@ -73,13 +73,11 @@ class Login extends React.Component{
                             userMobile: result.userMobile,
                             luckDrawNum: result.luckDrawNum,
                         });
-                        //登录成功提示
                         this.loginFail(true, '');
                         //跳转到抽奖页面
                         this.props.history.push('/rotaryDraw');
                         return;
                     } else {
-                        //登录失败提示
                         this.loginFail(false, result.messageTip);
                         return;
                     }
@@ -112,26 +110,31 @@ class Login extends React.Component{
     }
 
     handleTimer=()=>{
-        let getCode = document.getElementById('getCode');
-        if (wait===0) {
-            this.setState({
-                clickFlag: true,
-            },()=>{
-                getCode.innerHTML ="获取验证码";
-                wait = 60;
-            })
-        }else{
-            this.setState({
-                clickFlag: false,
-            },()=>{
+        let wait = 60;
+        this.setState({
+            clickFlag: false,
+        },()=>{
+            let getCode = document.getElementById('getCode');
+            getCode.innerHTML = wait + "秒后重试";
+            let timer = setInterval(()=>{
+                if(wait === 60){
+                   wait--;
+                }
+                console.info(wait);
+                if(wait === 0){
+                    clearInterval(timer);
+                    this.setState({
+                        clickFlag: true,
+                    },()=>{
+                        console.info(this.state.clickFlag);
+                    })
+                    return;
+                }
                 let getCode = document.getElementById('getCode');
                 getCode.innerHTML = wait + "秒后重试";
                 wait--;
-                setTimeout(()=>{
-                    this.handleTimer();
-                },1000);
-            })
-        }
+            },1000);
+        })
     }
     inputFocus=(e)=>{
         this.setState({
@@ -140,6 +143,7 @@ class Login extends React.Component{
     }
 
     handleVerificationCode=(phone)=>{
+        alert('验证码请求');
         sendVlidateCode({
             urlChannel: 'c22',
             userMobile: phone,
@@ -187,7 +191,7 @@ class Login extends React.Component{
                                             {
                                                 this.state.clickFlag ? (
                                                     <a href='javascript:;' onClick={this.handleGetCode}>获取验证码</a>
-                                                ):(<a href='javascript:;' id="getCode" >获取验证码</a>)
+                                                ):(<a href='javascript:;' id="getCode" />)
                                             }
 
                                         </div>
