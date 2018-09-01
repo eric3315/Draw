@@ -1,5 +1,6 @@
 import React from 'react';
 import Top from '../component/Top';
+import LotteryNumber from '../component/LotteryNumber';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import button02 from '../static/images/button02.png';
@@ -53,6 +54,7 @@ class FirstPrize extends React.Component{
     handleDatePickerCancel=()=>{
         this.setState({ isOpen: false });
     }
+
     render(){
         const { getFieldDecorator } = this.props.form;
         return (
@@ -98,8 +100,9 @@ class FirstPrize extends React.Component{
                                 </div>
                                 {
                                     !this.state.effectiveDateFlag && <div style={{
-                                        fontSize: '0.25rem',
+                                        fontSize: '0.6rem',
                                         color: '#fff',
+                                        marginTop: '-0.5rem',
                                     }}>请选择生效日期</div>
                                 }
                                 <FormItem>
@@ -110,10 +113,7 @@ class FirstPrize extends React.Component{
                             </Form>
                         </div>
                     </section>
-                    <section className="active-frequency">
-                        <a href="javascript:;">查看我的奖品</a>
-                        <h2>剩余<span>10</span>次抽奖机会</h2>
-                    </section>
+                    <LotteryNumber />
                     <section className="active-detail">
                         <div className="active-detail-wrap">
                             <h2>活动详情</h2>

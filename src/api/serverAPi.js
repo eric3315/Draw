@@ -8,3 +8,11 @@ export function luckDraw(payload){
         data: payload,
     });
 }
+//查看我的奖品
+export function myPrize(payload){
+    return axios({
+        method: 'GET',
+        url: '/myPrize',
+        params: payload,
+    });
+}

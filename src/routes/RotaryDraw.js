@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Top from '../component/Top';
+import LotteryNumber from '../component/LotteryNumber';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import chassis from '../static/images/chassis.png';
@@ -14,7 +15,6 @@ import {luckDraw} from '../api/serverAPi';
 
 
 let rotateArr = [25.7,77.1,128.5,180,231.4,283,334];
-let rotateStr = ['电子导游','快速安检通道','旅行收纳包','10元联通旅行优惠券','旅行颈枕','机场贵宾厅','手机'];
 class RotaryDraw extends React.Component{
     constructor(props, context){
         super(props, context);
@@ -28,8 +28,12 @@ class RotaryDraw extends React.Component{
     handleRotating= async (e)=>{
         e.preventDefault();
         let {userInfo} = this.props;
-        if(userInfo.userMobile==''){
-            Toast.info('请您先登录在进行抽奖', 3);
+        let result = await luckDraw({
+            userMobile: userInfo.userMobile,
+            urlChannel: 'c22',
+        });
+        if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
+            Toast.info('请您先登录再进行抽奖', 3);
             //跳转到登录页面
             setTimeout(()=>{
                 this.props.history.push('/login');
@@ -61,11 +65,33 @@ class RotaryDraw extends React.Component{
                 Toast.info('抽奖次数已用尽', 3);
             }
 
-
             setTimeout(()=>{
                 clearInterval(timer);
-                turnId.style.transform = "rotate(-25.7deg)";
-                console.info('进来了');
+                let rotateNum=0;
+                switch (result.prizeName){
+                    case '电子导游':
+                        rotateNum = rotateArr[0];
+                        break;
+                    case '快速安检通道':
+                        rotateNum = rotateArr[1];
+                        break;
+                    case '旅行收纳包':
+                        rotateNum = rotateArr[2];
+                        break;
+                    case '10元U行优惠券':
+                        rotateNum = rotateArr[3];
+                        break;
+                    case '旅行颈枕':
+                        rotateNum = rotateArr[4];
+                        break;
+                    case '机场贵宾厅':
+                        rotateNum = rotateArr[5];
+                        break;
+                    case '手机':
+                        rotateNum = rotateArr[6];
+                        break;
+                }
+                turnId.style.transform = `rotate(${rotateNum}deg)`;
                 return;
             },3000);
         }
@@ -84,10 +110,7 @@ class RotaryDraw extends React.Component{
                         <img src={turn} alt="" className="Active-turntable-pointer" id='turnId'/>
                         <img src={pointer} alt="" className="Active-turntable-start" onClick={e=>this.handleRotating(e)}/>
                     </section>
-                    <section className="active-frequency">
-                        <a href="javascript:;">查看我的奖品</a>
-                        <h2>剩余<span>10</span>次抽奖机会</h2>
-                    </section>
+                    <LotteryNumber />
                     <section className="active-detail">
                         <div className="active-detail-wrap">
                             <h2>活动详情</h2>

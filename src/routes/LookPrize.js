@@ -1,5 +1,6 @@
 import React from 'react';
 import Top from '../component/Top';
+import LotteryNumber from '../component/LotteryNumber';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import {Form} from 'antd';
@@ -89,10 +90,7 @@ class LookPrize extends React.Component{
                             </ul>
                         </div>
                     </section>
-                    <section className="active-frequency">
-                        <a href="javascript:;">查看我的奖品</a>
-                        <h2>剩余<span>10</span>次抽奖机会</h2>
-                    </section>
+                    <LotteryNumber/>
                     <section className="active-detail">
                         <div className="active-detail-wrap">
                             <h2>活动详情</h2>

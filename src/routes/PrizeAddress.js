@@ -1,5 +1,6 @@
 import React from 'react';
 import Top from '../component/Top';
+import LotteryNumber from '../component/LotteryNumber';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import button03 from '../static/images/button03.png';
@@ -39,7 +40,9 @@ class PrizeAddress extends React.Component{
                     <section className="Active-prize" style={{
                         paddingTop:'4rem',
                     }}>
-                        <div className="Active-prize-wrap1">
+                        <div className="Active-prize-wrap1" style={{
+                            height: '19.5rem',
+                        }}>
                             <p>请填写收货信息,我们将在活动结束后20个工作日内为您寄送奖品。</p>
                             <Form onSubmit={this.handleSubmit}>
                                 <FormItem>
@@ -77,10 +80,7 @@ class PrizeAddress extends React.Component{
                             </Form>
                         </div>
                     </section>
-                    <section className="active-frequency">
-                        <a href="javascript:;">查看我的奖品</a>
-                        <h2>剩余<span>10</span>次抽奖机会</h2>
-                    </section>
+                    <LotteryNumber/>
                     <section className="active-detail">
                         <div className="active-detail-wrap">
                             <h2>活动详情</h2>

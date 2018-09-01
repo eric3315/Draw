@@ -101,14 +101,16 @@ class Login extends React.Component{
     }
     handleGetCode=()=>{
         let phone = this.props.form.getFieldValue('phone');
-        if(typeof phone==='undefined' && !/^1[3|4|5|8][0-9]\d{4,8}$/.test(phone)){
-            this.setState({
-                phoneFlag: false,
-            })
-            return false;
+        if(typeof phone!=='undefined'){
+          if(/^1[3|4|5|8][0-9]\d{4,8}$/.test(phone)){
+              this.handleVerificationCode(phone);
+              this.handleTimer();
+          } else {
+              return;
+          }
         } else {
-            this.handleVerificationCode(phone);
-            this.handleTimer();
+            this.setState({phoneFlag: false})
+            return;
         }
     }
 
@@ -146,7 +148,6 @@ class Login extends React.Component{
     }
 
     handleVerificationCode=(phone)=>{
-        alert('验证码请求');
         sendVlidateCode({
             urlChannel: 'c22',
             userMobile: phone,
