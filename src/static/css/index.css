@@ -26,7 +26,7 @@ textarea {
     width: 100%;
     height: 100%;
     padding-top: 15.5rem;
-    background:url("../images/logobac.jpg") top center no-repeat;
+    background:url("../images/logobac.png") top center no-repeat;
     background-size: cover;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -89,13 +89,13 @@ textarea {
 .logo-input-wrap-phone input[type='text']{
     display: block;
     width: 100%;
-    height: 1.5rem;
+    height: 1.8rem;
     background-color: #c9605e;
     padding:0 0.3rem 0 1.5rem;
     border:0;
     outline: none;
-    font-size: 0.6rem;
-    line-height: 1.5rem;
+    font-size: 0.7rem;
+    line-height: 1.8rem;
     color: #fff;
     -webkit-border-radius: 0.35rem;
     -moz-border-radius: 0.35rem;
@@ -107,7 +107,7 @@ textarea {
 .logo-input-wrap-phone  img{
     display: block;
     position: absolute;
-    top:0.4rem;
+    top:0.5rem;
     left: 0.6rem;
     width: 0.675rem;
     height: 0.75rem;
@@ -124,13 +124,13 @@ textarea {
     display: block;
     width: 49%;
     float: left;
-    height: 1.5rem;
+    height: 1.8rem;
     background-color: #c9605e;
     padding:0 0.3rem 0 1.5rem;
     border:0;
     outline: none;
-    font-size: 0.6rem;
-    line-height: 1.5rem;
+    font-size: 0.7rem;
+    line-height: 1.8rem;
     color: #fff;
     -webkit-border-radius: 0.35rem;
     -moz-border-radius: 0.35rem;
@@ -142,7 +142,7 @@ textarea {
 .logo-input-wrap-code img{
     display: block;
     position: absolute;
-    top:0.4rem;
+    top:0.5rem;
     left: 0.6rem;
     width: 0.675rem;
     height: 0.75rem;
@@ -151,10 +151,10 @@ textarea {
     display: block;
     width: 49%;
     float: right;
-    height: 1.5rem;
-    line-height: 1.5rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
     text-align: center;
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     color: #9f0000;
     background-color: #fff;
     -webkit-border-radius: 0.35rem;
@@ -171,7 +171,7 @@ textarea {
     vertical-align: -0.15rem;
 }
 .logo-input-wrap-check span{
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     color: #fff;
     line-height: 0.9rem;
 }
@@ -639,7 +639,7 @@ textarea {
 
 .ant-form-explain{
     margin-top: -0.5rem;
-    font-size: 0.25rem;
+    font-size: 0.6rem;
     color: #fff;
 }
 .logo-input-wrap-phone .ant-form-explain{
@@ -686,27 +686,27 @@ textarea {
 }
 .Active-turntable .Active-turntable-rotary{
     position: absolute;
-    top:-5rem;
+    top: -7.3rem;
     left: 50%;
-    margin-left: -9.5rem;
-    width: 19rem;
+    margin-left: -12.2rem;
+    width: 23rem;
     height: auto;
     z-index: 3;
 }
 .Active-turntable .Active-turntable-pointer{
-    width: 14.2rem;
+    width: 14rem;
     position: absolute;
-    top:-2.4rem;
-    left:50%;
-    margin-left: -7.2rem;
+    top: -1.9rem;
+    left: 50%;
+    margin-left: -7.15rem;
     z-index: 4;
 }
 .Active-turntable .Active-turntable-start{
     width: 5rem;
     position: absolute;
-    top:0rem;
-    left:50%;
-    margin-left: -2.5rem;
+    top: 0.7rem;
+    left: 50%;
+    margin-left: -2.6rem;
     z-index: 5;
 }
 
