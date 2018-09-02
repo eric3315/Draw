@@ -1,14 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {loginIn, sendVlidateCode} from '../api/loginApi';
-import action from '../store/action';
 import logo from '../static/images/logo.png';
 import close01 from'../static/images/close01.png';
 import person from '../static/images/person.png';
 import password from '../static/images/password.png';
 import logoBtn from '../static/images/logo-btn.png';
 import button01 from '../static/images/button01.png';
-import {Form, Checkbox, Modal} from 'antd';
+import {Form, Checkbox} from 'antd';
 import {Toast} from'antd-mobile';
 
 
@@ -70,11 +68,9 @@ class Login extends React.Component{
                         urlChannel: 'c22',
                     });
                     if(result.success){
-                        //记录手机号和次数到store
-                        this.props.queryUserInfo({
-                            userMobile: result.userMobile,
-                            luckDrawNum: result.luckDrawNum,
-                        });
+                        //记录手机号和次数到sessionStorage
+                        sessionStorage.setItem('userMobile',result.userMobile);
+                        sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
                         this.loginFail(true, '');
                         clearInterval(loginTimer);
                         //跳转到抽奖页面
@@ -478,4 +474,4 @@ class Login extends React.Component{
     }
 }
 
-export default connect(state=>({...state.login}), action.login)(Form.create()(Login));
+export default (Form.create()(Login));

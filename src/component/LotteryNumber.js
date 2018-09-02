@@ -1,9 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {myPrize} from '../api/serverAPi';
-import action from "../store/action";
 import {Toast} from'antd-mobile';
-import {withRouter} from 'react-router-dom';
 
 class LotteryNumber extends React.Component{
     constructor(props, context){
@@ -17,11 +14,13 @@ class LotteryNumber extends React.Component{
     }
 
     handleMyPrize= async(e)=>{
-        console.info('进来了');
         e.preventDefault();
-        let {userInfo} = this.props;
+        let userMobile=sessionStorage.getItem('userMobile');
+        if(!userMobile){
+            userMobile='';
+        }
         let result = await myPrize({
-            userMobile: userInfo.userMobile,
+            userMobile: userMobile,
             urlChannel: 'c22',
         });
         if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
@@ -39,7 +38,8 @@ class LotteryNumber extends React.Component{
     }
 
     render(){
-        let {userInfo} = this.props;
+        let luckDrawNum=sessionStorage.getItem('luckDrawNum');
+        if(luckDrawNum==null) return '';
         return (
             <section className="active-frequency" style={{
                 position: 'relative',
@@ -48,9 +48,9 @@ class LotteryNumber extends React.Component{
                 <a href="javascript:;" onClick={e=>{this.handleMyPrize(e)}} style={{
                     marginTop: '1rem',
                 }}>查看我的奖品</a>
-                <h2>剩余<span>{userInfo.luckDrawNum?userInfo.luckDrawNum:0}</span>次抽奖机会</h2>
+                <h2>剩余<span>{luckDrawNum?luckDrawNum:0}</span>次抽奖机会</h2>
             </section>
         )
     }
 }
-export default withRouter(connect(state=>({...state.login}), action.login)((LotteryNumber)));
+export default LotteryNumber;

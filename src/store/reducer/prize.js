@@ -3,6 +3,8 @@ import * as Type from '../action-types';
 let INIT_STATE={
     prizeInfo: {
         winPrizeRecordId: '',
+        userXingMing: '',
+        userIDNumber: '',
     },
 };
 export default function prize(state = INIT_STATE,action){

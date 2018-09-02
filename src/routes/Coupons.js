@@ -25,7 +25,10 @@ class Coupons extends React.Component{
             }
         });
     }
-
+    handleBtn=(e)=>{
+        e.preventDefault();
+        this.props.history.push('/rotaryDraw');
+    }
     render(){
         const { getFieldDecorator } = this.props.form;
         return (
@@ -42,7 +45,7 @@ class Coupons extends React.Component{
                     }}>
                         <div className="Active-over-wrap">
                             <p>您获得的出行优惠券已放入手机号，登陆'U行' 即可使用。</p>
-                            <button type="submit">
+                            <button type="button" onClick={e=>this.handleBtn(e)}>
                                 <img src={button04} alt="" />
                             </button>
                         </div>

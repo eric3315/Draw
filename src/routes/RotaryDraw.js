@@ -4,22 +4,21 @@ import Top from '../component/Top';
 import LotteryNumber from '../component/LotteryNumber';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
+import button04 from '../static/images/button04.png';
 import chassis from '../static/images/chassis.png';
 import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
-import action from "../store/action";
 import {Toast} from'antd-mobile';
 import {luckDraw} from '../api/serverAPi';
-
-
-
+import action from '../store/action';
+import {withRouter} from 'react-router-dom';
 
 let rotateArr = [25.7,77.1,128.5,180,231.4,283,334];
 class RotaryDraw extends React.Component{
     constructor(props, context){
         super(props, context);
         this.state={
-
+            drawFlag: true,
         }
     }
     componentDidMount(){
@@ -27,76 +26,123 @@ class RotaryDraw extends React.Component{
 
     handleRotating= async (e)=>{
         e.preventDefault();
-        let {userInfo} = this.props;
+        let userMobile=sessionStorage.getItem('userMobile');
+        if(!userMobile){
+            userMobile='';
+        }
         let result = await luckDraw({
-            userMobile: userInfo.userMobile,
+            userMobile: userMobile,
             urlChannel: 'c22',
         });
-        if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
-            Toast.info('请您先登录再进行抽奖', 3);
-            //跳转到登录页面
-            setTimeout(()=>{
-                this.props.history.push('/login');
-            },2000);
-            return;
-        } else {
-            let timer = null;
-            let rotate=0;
-            let turnId = document.getElementById('turnId');
-            turnId.style.transform = "rotate(0deg)";
-            let count =10;
-            if(timer){
-                clearInterval(timer);
-                return;
-            }
-            timer=setInterval(()=>{
-                if(rotate>360){
-                    rotate=0;
-                }
-                turnId.style.transform = `rotate(${rotate+=count}deg)`;
-            },1);
-            let result = await luckDraw({
-                userMobile: userInfo.userMobile,
-                urlChannel: 'c22',
-            });
-            if(result.success){
-                console.info(JSON.stringify(result));
-            } else {
-                Toast.info('抽奖次数已用尽', 3);
-            }
 
-            setTimeout(()=>{
-                clearInterval(timer);
-                let rotateNum=0;
-                switch (result.prizeName){
-                    case '电子导游':
-                        rotateNum = rotateArr[0];
-                        break;
-                    case '快速安检通道':
-                        rotateNum = rotateArr[1];
-                        break;
-                    case '旅行收纳包':
-                        rotateNum = rotateArr[2];
-                        break;
-                    case '10元U行优惠券':
-                        rotateNum = rotateArr[3];
-                        break;
-                    case '旅行颈枕':
-                        rotateNum = rotateArr[4];
-                        break;
-                    case '机场贵宾厅':
-                        rotateNum = rotateArr[5];
-                        break;
-                    case '手机':
-                        rotateNum = rotateArr[6];
-                        break;
-                }
-                turnId.style.transform = `rotate(${rotateNum}deg)`;
+        if(result.success){
+            if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
+                Toast.info('请您先登录再进行抽奖', 3);
+                //跳转到登录页面
+                setTimeout(()=>{
+                    this.props.history.push('/login');
+                },2000);
                 return;
-            },3000);
+            } else {
+                let timer = null;
+                let rotate=0;
+                let turnId = document.getElementById('turnId');
+                turnId.style.transform = "rotate(0deg)";
+                let count =10;
+                if(timer){
+                    clearInterval(timer);
+                    return;
+                }
+                timer=setInterval(()=>{
+                    if(rotate>360){
+                        rotate=0;
+                    }
+                    turnId.style.transform = `rotate(${rotate+=count}deg)`;
+                },1);
+
+                setTimeout(()=>{
+                    clearInterval(timer);
+                    let rotateNum=0;
+                    switch (result.prizeName){
+                        case '电子导游':
+                            rotateNum = rotateArr[0];
+                            break;
+                        case '快速安检通道':
+                            rotateNum = rotateArr[1];
+                            break;
+                        case '旅行收纳包':
+                            rotateNum = rotateArr[2];
+                            break;
+                        case '10元U行优惠券':
+                            rotateNum = rotateArr[3];
+                            break;
+                        case '旅行颈枕':
+                            rotateNum = rotateArr[4];
+                            break;
+                        case '机场贵宾厅':
+                            rotateNum = rotateArr[5];
+                            break;
+                        case '手机':
+                            rotateNum = rotateArr[6];
+                            break;
+                    }
+                    turnId.style.transform = `rotate(${rotateNum}deg)`;
+                    //获取最新的抽奖次数存储到sessionStorage
+                    sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
+                    this.setState({drawFlag: false});
+                    if(result.isFirstLuckDraw){
+                        //第一次抽奖
+                        if(typeof result.userXingMing!=='undefined' && typeof result.userIDNumber!=='undefined'){
+                            //记录store
+                            this.props.savePrize({
+                                winPrizeRecordId: result.prizeRecordId,
+                                userXingMing: result.userXingMing,
+                                userIDNumber: result.userIDNumber,
+                            })
+                        } else {
+                            //记录store
+                            this.props.savePrize({
+                                winPrizeRecordId: result.prizeRecordId,
+                                userXingMing: '',
+                                userIDNumber: '',
+                            })
+                        }
+                        //跳转到首次中奖页面
+                        this.props.history.push('/firstPrizeOne');
+                    } else {
+                        //10元U行优惠券跳转页面到 /coupons
+                        if(result.prizeName === '10元U行优惠券'){
+                            this.handleBut2Open();
+                        } else {
+                            this.handleBut1Open();
+                        }
+                    }
+
+                    return;
+                },4000);
+            }
+        } else {
+            Toast.info(result.messageTip, 3);
+            return;
         }
     }
 
+    handleBut1Open=()=>{
+        let modelBut1= document.getElementById('modelBut1');
+        modelBut1.style.display='block';
+    }
+    handleBut2Open=()=>{
+        let modelBut2= document.getElementById('modelBut2');
+        modelBut2.style.display='block';
+    }
+    handleBut1=(e)=>{
+        let modelBut1= document.getElementById('modelBut1');
+        modelBut1.style.display='none';
+    }
+    handleBut2=(e)=>{
+        let modelBut2= document.getElementById('modelBut2');
+        modelBut2.style.display='none';
+    }
     render(){
         return (
             <div>
@@ -140,9 +186,25 @@ class RotaryDraw extends React.Component{
                             </p>
                         </div>
                     </section>
+                    <section className="modal" id='modelBut1' style={{
+                        display: 'none',
+                    }}>
+                        <div className="Active-over-wrap">
+                            <p>我们将在活动结束后20个工作日内向您的手机发送电子码,请注意查收。</p>
+                            <button type="button" onClick={e=>{this.handleBut1(e)}}><img src={button04} alt="" /></button>
+                        </div>
+                    </section>
+                    <section className="modal" id='modelBut2' style={{
+                        display: 'none',
+                    }}>
+                        <div className="Active-over-wrap">
+                            <p>您获得的出行优惠券已放入手机号，登陆'U行' 即可使用。</p>
+                            <button type="button" onClick={e=>{this.handleBut2(e)}}><img src={button04} alt="" /></button>
+                        </div>
+                    </section>
                 </main>
             </div>
         )
     }
 }
-export default connect(state=>({...state.login}), action.login)((RotaryDraw));
+export default withRouter(connect(state=>({...state.prize}), action.prize)(RotaryDraw));

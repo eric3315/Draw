@@ -515,13 +515,31 @@ textarea {
 }
 
 .Active-over-wrap{
-    height: 13.8rem;
+    position: absolute;
+    top:50%;
+    margin-top: -5.9rem;
+    left: -0.1rem;
+    z-index: 9992;
+    width: 100%;
+    height: 12.8rem;
     background:url("../images/bac03.png") top center no-repeat;
-    background-size: cover;
-    padding:2rem;
+    background-size:auto 12.8rem;
+    padding:2rem 3rem;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+.Active-over-wrap1{
+    padding:1rem 2rem !important;
+}
+.modal{
+    padding:0 0.5rem;
+    position: fixed;
+    background-color: rgba(0,0,0,.5);
+    top:0;
+    bottom:0;
+    width: 100%;
+    z-index: 9991;
 }
 .Active-over-wrap p{
     font-size: 1rem;
