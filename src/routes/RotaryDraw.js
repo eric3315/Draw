@@ -5,6 +5,7 @@ import LotteryNumber from '../component/LotteryNumber';
 import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import button04 from '../static/images/button04.png';
+import button02 from '../static/images/button02.png';
 import chassis from '../static/images/chassis.png';
 import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
@@ -12,13 +13,21 @@ import {Toast} from'antd-mobile';
 import {luckDraw} from '../api/serverAPi';
 import action from '../store/action';
 import {withRouter} from 'react-router-dom';
+import DatePicker from 'react-mobile-datepicker';
+import {format} from '../utils/utils';
+import {Form } from 'antd';
 
+const FormItem = Form.Item;
 let rotateArr = [25.7,77.1,128.5,180,231.4,283,334];
+
 class RotaryDraw extends React.Component{
     constructor(props, context){
         super(props, context);
         this.state={
             drawFlag: true,
+            time: '',
+            isOpen: false,
+            effectiveDateFlag: true,
         }
     }
     componentDidMount(){
@@ -127,23 +136,72 @@ class RotaryDraw extends React.Component{
         }
     }
 
+    handleFirstPrizeSubmit= (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (typeof values.userName!=='undefined' &&
+                typeof values.identityCard!=='undefined' &&
+                /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(values.identityCard) &&
+                this.state.time!=''
+            ) {
+                console.info(JSON.stringify(values), this.state.time);
+                // this.props.history.push('/prizeAddress');
+            } else {
+                this.setState({effectiveDateFlag: false});
+                return false;
+            }
+        });
+    }
+    handleDatePicker=(e)=>{
+        e.preventDefault();
+        this.setState({ isOpen: true });
+    }
+    handleDatePickerSelect=(time)=>{
+        let timer =format(time, 'yyyy-MM-dd');
+        this.setState({
+            time: timer,
+            isOpen: false,
+            effectiveDateFlag: true,
+        });
+    }
+    handleDatePickerCancel=()=>{
+        this.setState({ isOpen: false });
+    }
+
+    /*其他电子码弹窗 begin*/
     handleBut1Open=()=>{
         let modelBut1= document.getElementById('modelBut1');
         modelBut1.style.display='block';
-    }
-    handleBut2Open=()=>{
-        let modelBut2= document.getElementById('modelBut2');
-        modelBut2.style.display='block';
     }
     handleBut1=(e)=>{
         let modelBut1= document.getElementById('modelBut1');
         modelBut1.style.display='none';
     }
+    /*其他电子码弹窗 begin*/
+
+    /*U行优惠券弹窗 begin*/
+    handleBut2Open=()=>{
+        let modelBut2= document.getElementById('modelBut2');
+        modelBut2.style.display='block';
+    }
     handleBut2=(e)=>{
         let modelBut2= document.getElementById('modelBut2');
         modelBut2.style.display='none';
     }
+    /*U行优惠券弹窗 end*/
+
+    /*抽奖次数已用尽弹窗 begin*/
+    handleBut3Open=()=>{
+        let modelBut3= document.getElementById('modelBut3');
+        modelBut3.style.display='block';
+    }
+    handleBut3=(e)=>{
+        let modelBut3= document.getElementById('modelBut3');
+        modelBut3.style.display='none';
+    }
+    /*抽奖次数已用尽弹窗 end*/
     render(){
+        const { getFieldDecorator } = this.props.form;
         return (
             <div>
                 <Top/>
@@ -202,9 +260,142 @@ class RotaryDraw extends React.Component{
                             <button type="button" onClick={e=>{this.handleBut2(e)}}><img src={button04} alt="" /></button>
                         </div>
                     </section>
+                    <section className="modal" id='modelBut3' style={{
+                        display: 'none',
+                    }}>
+                        <div className="Active-over-wrap">
+                            <h2>抱歉</h2>
+                            <p style={{
+                                lineHeight: '2.5rem',
+                            }}>您的抽奖次数已用尽</p>
+                            <button type="button" onClick={e=>{this.handleBut3(e)}}><img src={button04} alt="" /></button>
+                        </div>
+                    </section>
+                    <section className="modal" id='modelBut4' style={{
+                        display: 'none',
+                    }}>
+                        <div className="Active-over-wrap">
+                            <p style={{
+                                marginBottom: '2.2rem',
+                            }}>恭喜! 您已获得机场贵宾厅权益，请及时领取。</p>
+                            <button type="button" onClick={e=>{this.handleBut4(e)}}><img src={button04} alt="" /></button>
+                        </div>
+                    </section>
+                    <section className="modal" id='modelBut5' style={{
+                        display: 'none',
+                    }}>
+                        <div className="Active-over-prize1">
+                            <ul>
+                                <li>
+                                    <span>1</span>
+                                    <p className="Active-over-prize-p1">手机</p>
+                                    <p className="Active-over-prize-p2">--2018.09.01--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+                                <li>
+                                    <span>2</span>
+                                    <p className="Active-over-prize-p1">旅行收纳包</p>
+                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+                                <li>
+                                    <span>3</span>
+                                    <p className="Active-over-prize-p1">手机</p>
+                                    <p className="Active-over-prize-p2">--2018.09.01--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+                                <li>
+                                    <span>4</span>
+                                    <p className="Active-over-prize-p1">100万保额交通意外险</p>
+                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+                                <li>
+                                    <span>5</span>
+                                    <p className="Active-over-prize-p1">100元国际机票抵用券</p>
+                                    <p className="Active-over-prize-p2">--2018.09.01--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+                                <li>
+                                    <span>6</span>
+                                    <p className="Active-over-prize-p1">旅行收纳包</p>
+                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+                                <li>
+                                    <span>7</span>
+                                    <p className="Active-over-prize-p1">手机</p>
+                                    <p className="Active-over-prize-p2">--2018.09.01--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+                                <li>
+                                    <span>8</span>
+                                    <p className="Active-over-prize-p1">旅行收纳包</p>
+                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+                                <li>
+                                    <span>9</span>
+                                    <p className="Active-over-prize-p1">旅行收纳包</p>
+                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
+                                    <a href="javascript:;">领取</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </section>
+                    <section className="modal" id='modelBut6' style={{
+                        display: 'block',
+                    }}>
+                        <div className="Active-prize-wrap12">
+                            <p>恭喜!您已获得机场贵宾厅权益和价值100万的交通意外险，请及时领取。</p>
+                            <Form onSubmit={this.handleFirstPrizeSubmit}>
+                                <FormItem>
+                                    {getFieldDecorator('userName', {
+                                        rules: [{ required: true, message: '请输入姓名' }],
+                                    })(
+                                        <div>
+                                            <input type="text" placeholder="姓名" />
+                                        </div>
+                                    )}
+                                </FormItem>
+                                <FormItem>
+                                    {getFieldDecorator('identityCard', {
+                                        rules: [{ required: true, message: '请输入身份证' , pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/}],
+                                    })(
+                                        <div>
+                                            <input type="text" placeholder="身份证" />
+                                        </div>
+                                    )}
+                                </FormItem>
+                                <div>
+                                    <input type="text" placeholder="生效日期" value={this.state.time} readOnly onClick={e=>{this.handleDatePicker(e)}}/>
+                                    <DatePicker
+                                        isOpen={this.state.isOpen}
+                                        onSelect={this.handleDatePickerSelect}
+                                        onCancel={this.handleDatePickerCancel}
+                                    />
+                                </div>
+                                {
+                                    !this.state.effectiveDateFlag && <div style={{
+                                        fontSize: '0.6rem',
+                                        color: '#fff',
+                                        marginTop: '-0.5rem',
+                                    }}>请选择生效日期</div>
+                                }
+                                <FormItem>
+                                    <button type="submit">
+                                        <img src={button02} alt="" />
+                                    </button>
+                                </FormItem>
+                            </Form>
+                        </div>
+                    </section>
+
+
                 </main>
             </div>
         )
     }
 }
-export default withRouter(connect(state=>({...state.prize}), action.prize)(RotaryDraw));
+export default withRouter(connect(state=>({...state.prize}), action.prize)(Form.create()(RotaryDraw)));

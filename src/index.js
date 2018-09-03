@@ -39,10 +39,7 @@ render(
                             <Route path='/firstPrize' component={FirstPrize} />
                             <Route path='/firstPrizeOne' component={FirstPrizeOne} />
                             <Route path='/prizeAddress' component={PrizeAddress} />
-                            <Route path='/virtualPrize' component={VirtualPrize} />
                             <Route path='/lookPrize' component={LookPrize} />
-                            <Route path='/coupons' component={Coupons} />
-                            <Route path='/numberFinished' component={NumberFinished} />
                             <Route path='/rotaryDraw' component={RotaryDraw} />
                             <Redirect from="/" to='/rotaryDraw'/>
                         </Switch>
