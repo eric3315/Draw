@@ -18,13 +18,6 @@ import './static/css/index.css';
 
 /*IMPORT COMPONENT*/
 import Login from './routes/Login';/*登录*/
-import FirstPrize from './routes/FirstPrize';/*首次获奖*/
-import FirstPrizeOne from './routes/FirstPrizeOne';/*首次获奖*/
-import PrizeAddress from './routes/PrizeAddress';/*实物奖品填写地址*/
-import LookPrize from './routes/LookPrize';/*查看奖品*/
-import VirtualPrize from  './routes/VirtualPrize';/*虚拟奖品*/
-import Coupons from  './routes/Coupons';/*优惠券*/
-import NumberFinished from  './routes/NumberFinished';/*次数用尽*/
 import RotaryDraw from './routes/RotaryDraw';/*转盘抽奖*/
 
 moment.locale('en');
@@ -36,8 +29,6 @@ render(
                     <main className='container'>
                         <Switch>
                             <Route path='/login' component={Login} />
-                            <Route path='/prizeAddress' component={PrizeAddress} />
-                            <Route path='/lookPrize' component={LookPrize} />
                             <Route path='/rotaryDraw' component={RotaryDraw} />
                             <Redirect from="/" to='/rotaryDraw'/>
                         </Switch>
