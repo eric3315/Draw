@@ -126,7 +126,7 @@ class RotaryDraw extends React.Component{
                             if(result.prizeName === '10元U行优惠券'){
                                 this.handleBut2Open();
                                 return;
-                            } else if(result.prizeName === '手机' || result.prizeName === '颈枕' || result.prizeName === '旅行收纳包'){
+                            } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
                                 this.handleBut4Open(result.prizeName);
                                 return;
                             } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
@@ -228,7 +228,9 @@ class RotaryDraw extends React.Component{
 
     handleBut4Open=(prizeName)=>{
         let modelBut4= document.getElementById('modelBut4');
-        modelBut4.children.children[0].innerHTML=`恭喜! 您已获得${prizeName}，请及时领取。`;
+        console.info('进来了');
+        let div = modelBut4.childNodes[0];
+        div.children[0].innerHTML=`恭喜! 您已获得${prizeName}，请及时领取。`;
         modelBut4.style.display='block';
     }
     handleBut4=(e)=>{
