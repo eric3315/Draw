@@ -37,103 +37,113 @@ class RotaryDraw extends React.Component{
     handleRotating= async (e)=>{
         e.preventDefault();
         let userMobile=sessionStorage.getItem('userMobile');
+        let luckDrawNum=sessionStorage.getItem('luckDrawNum');
         if(!userMobile){
             userMobile='';
         }
-        let result = await luckDraw({
-            userMobile: userMobile,
-            urlChannel: 'c22',
-        });
-
-        if(result.success){
-            if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
-                Toast.info('请您先登录再进行抽奖', 3);
-                //跳转到登录页面
-                setTimeout(()=>{
-                    this.props.history.push('/login');
-                },2000);
-                return;
-            } else {
-                let timer = null;
-                let rotate=0;
-                let turnId = document.getElementById('turnId');
-                turnId.style.transform = "rotate(0deg)";
-                let count =10;
-                if(timer){
-                    clearInterval(timer);
+        if(luckDrawNum){
+            let result = await luckDraw({
+                userMobile: userMobile,
+                urlChannel: 'c22',
+            });
+            if(result.success){
+                if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
+                    Toast.info('请您先登录再进行抽奖', 3);
+                    //跳转到登录页面
+                    setTimeout(()=>{
+                        this.props.history.push('/login');
+                    },2000);
                     return;
+                } else {
+                    let timer = null;
+                    let rotate=0;
+                    let turnId = document.getElementById('turnId');
+                    turnId.style.transform = "rotate(0deg)";
+                    let count =10;
+                    if(timer){
+                        clearInterval(timer);
+                        return;
+                    }
+                    timer=setInterval(()=>{
+                        if(rotate>360){
+                            rotate=0;
+                        }
+                        turnId.style.transform = `rotate(${rotate+=count}deg)`;
+                    },1);
+
+                    setTimeout(()=>{
+                        clearInterval(timer);
+                        let rotateNum=0;
+                        console.info(result.prizeName);
+                        switch (result.prizeName){
+                            case '电子导游':
+                                rotateNum = rotateArr[0];
+                                break;
+                            case '快速安检通道':
+                                rotateNum = rotateArr[1];
+                                break;
+                            case '旅行收纳包':
+                                rotateNum = rotateArr[2];
+                                break;
+                            case '10元U行优惠券':
+                                rotateNum = rotateArr[3];
+                                break;
+                            case '旅行颈枕':
+                                rotateNum = rotateArr[4];
+                                break;
+                            case '机场贵宾厅':
+                                rotateNum = rotateArr[5];
+                                break;
+                            case '手机':
+                                rotateNum = rotateArr[6];
+                                break;
+                        }
+                        turnId.style.transform = `rotate(${rotateNum}deg)`;
+                        //获取最新的抽奖次数存储到sessionStorage
+                        sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
+                        this.setState({drawFlag: false});
+                        if(result.isFirstLuckDraw){
+                            //第一次抽奖
+                            if(typeof result.userXingMing!=='undefined' && typeof result.userIDNumber!=='undefined'){
+                                //记录store
+                                this.props.savePrize({
+                                    winPrizeRecordId: result.prizeRecordId,
+                                    userXingMing: result.userXingMing,
+                                    userIDNumber: result.userIDNumber,
+                                })
+                            } else {
+                                //记录store
+                                this.props.savePrize({
+                                    winPrizeRecordId: result.prizeRecordId,
+                                    userXingMing: '',
+                                    userIDNumber: '',
+                                })
+                            }
+                            //跳转到首次中奖页面
+                            this.props.history.push('/firstPrizeOne');
+                        } else {
+                            //10元U行优惠券跳转页面到 /coupons
+                            if(result.prizeName === '10元U行优惠券'){
+                                this.handleBut2Open();
+                                return;
+                            } else if(result.prizeName === '手机' || result.prizeName === '颈枕' || result.prizeName === '旅行收纳包'){
+                                this.handleBut4Open(result.prizeName);
+                                return;
+                            } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
+                                this.handleBut1Open();
+                                return;
+                            }
+                        }
+                        return;
+                    },4000);
                 }
-                timer=setInterval(()=>{
-                    if(rotate>360){
-                        rotate=0;
-                    }
-                    turnId.style.transform = `rotate(${rotate+=count}deg)`;
-                },1);
-
-                setTimeout(()=>{
-                    clearInterval(timer);
-                    let rotateNum=0;
-                    switch (result.prizeName){
-                        case '电子导游':
-                            rotateNum = rotateArr[0];
-                            break;
-                        case '快速安检通道':
-                            rotateNum = rotateArr[1];
-                            break;
-                        case '旅行收纳包':
-                            rotateNum = rotateArr[2];
-                            break;
-                        case '10元U行优惠券':
-                            rotateNum = rotateArr[3];
-                            break;
-                        case '旅行颈枕':
-                            rotateNum = rotateArr[4];
-                            break;
-                        case '机场贵宾厅':
-                            rotateNum = rotateArr[5];
-                            break;
-                        case '手机':
-                            rotateNum = rotateArr[6];
-                            break;
-                    }
-                    turnId.style.transform = `rotate(${rotateNum}deg)`;
-                    //获取最新的抽奖次数存储到sessionStorage
-                    sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
-                    this.setState({drawFlag: false});
-                    if(result.isFirstLuckDraw){
-                        //第一次抽奖
-                        if(typeof result.userXingMing!=='undefined' && typeof result.userIDNumber!=='undefined'){
-                            //记录store
-                            this.props.savePrize({
-                                winPrizeRecordId: result.prizeRecordId,
-                                userXingMing: result.userXingMing,
-                                userIDNumber: result.userIDNumber,
-                            })
-                        } else {
-                            //记录store
-                            this.props.savePrize({
-                                winPrizeRecordId: result.prizeRecordId,
-                                userXingMing: '',
-                                userIDNumber: '',
-                            })
-                        }
-                        //跳转到首次中奖页面
-                        this.props.history.push('/firstPrizeOne');
-                    } else {
-                        //10元U行优惠券跳转页面到 /coupons
-                        if(result.prizeName === '10元U行优惠券'){
-                            this.handleBut2Open();
-                        } else {
-                            this.handleBut1Open();
-                        }
-                    }
-
-                    return;
-                },4000);
+            } else {
+                Toast.info(result.messageTip, 3);
+                return;
             }
         } else {
-            Toast.info(result.messageTip, 3);
-            return;
+            //抽奖次数已用尽
+            this.handleBut3Open();
         }
     }
 
@@ -215,6 +225,29 @@ class RotaryDraw extends React.Component{
         modelBut3.style.display='none';
     }
     /*抽奖次数已用尽弹窗 end*/
+
+    handleBut4Open=(prizeName)=>{
+        let modelBut4= document.getElementById('modelBut4');
+        modelBut4.children.children[0].innerHTML=`恭喜! 您已获得${prizeName}，请及时领取。`;
+        modelBut4.style.display='block';
+    }
+    handleBut4=(e)=>{
+        let modelBut4= document.getElementById('modelBut4');
+        modelBut4.style.display='none';
+    }
+
+
+
+
+    handleBut7Open=()=>{
+        let modelBut7= document.getElementById('modelBut7');
+        modelBut7.style.display='block';
+    }
+    handleBut7=(e)=>{
+        let modelBut7= document.getElementById('modelBut7');
+        modelBut7.style.display='none';
+    }
+
     render(){
         const { getFieldDecorator } = this.props.form;
         return (
@@ -297,7 +330,7 @@ class RotaryDraw extends React.Component{
                         </div>
                     </section>
                     <section className="modal" id='modelBut5' style={{
-                        display: 'block',
+                        display: 'none',
                     }}>
                         <div className="Active-over-prize1">
                             <ul>
