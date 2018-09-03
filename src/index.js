@@ -36,8 +36,6 @@ render(
                     <main className='container'>
                         <Switch>
                             <Route path='/login' component={Login} />
-                            <Route path='/firstPrize' component={FirstPrize} />
-                            <Route path='/firstPrizeOne' component={FirstPrizeOne} />
                             <Route path='/prizeAddress' component={PrizeAddress} />
                             <Route path='/lookPrize' component={LookPrize} />
                             <Route path='/rotaryDraw' component={RotaryDraw} />

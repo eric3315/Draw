@@ -6,6 +6,7 @@ import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import button04 from '../static/images/button04.png';
 import button02 from '../static/images/button02.png';
+import button03 from '../static/images/button03.png';
 import chassis from '../static/images/chassis.png';
 import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
@@ -145,7 +146,6 @@ class RotaryDraw extends React.Component{
                 this.state.time!=''
             ) {
                 console.info(JSON.stringify(values), this.state.time);
-                // this.props.history.push('/prizeAddress');
             } else {
                 this.setState({effectiveDateFlag: false});
                 return false;
@@ -166,6 +166,21 @@ class RotaryDraw extends React.Component{
     }
     handleDatePickerCancel=()=>{
         this.setState({ isOpen: false });
+    }
+
+    handleAwardSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if(typeof values.userName!=='undefined' &&
+                typeof values.address!=='undefined' &&
+                typeof values.telPhone!=='undefined'
+            ){
+                //正常提交领取奖品
+                console.info('正常提交领取奖品');
+            } else {
+                return false;
+            }
+        });
     }
 
     /*其他电子码弹窗 begin*/
@@ -282,7 +297,7 @@ class RotaryDraw extends React.Component{
                         </div>
                     </section>
                     <section className="modal" id='modelBut5' style={{
-                        display: 'none',
+                        display: 'block',
                     }}>
                         <div className="Active-over-prize1">
                             <ul>
@@ -345,7 +360,7 @@ class RotaryDraw extends React.Component{
                         </div>
                     </section>
                     <section className="modal" id='modelBut6' style={{
-                        display: 'block',
+                        display: 'none',
                     }}>
                         <div className="Active-prize-wrap12">
                             <p>恭喜!您已获得机场贵宾厅权益和价值100万的交通意外险，请及时领取。</p>
@@ -391,8 +406,49 @@ class RotaryDraw extends React.Component{
                             </Form>
                         </div>
                     </section>
-
-
+                    <section className="modal" id='modelBut7' style={{
+                        display: 'none',
+                    }}>
+                        <div className="Active-prize-wrap13" style={{
+                            height: '19.5rem',
+                        }}>
+                            <p>请填写收货信息,我们将在活动结束后20个工作日内为您寄送奖品。</p>
+                            <Form onSubmit={this.handleAwardSubmit}>
+                                <FormItem>
+                                    {getFieldDecorator('userName', {
+                                        rules: [{ required: true, message: '请输入姓名' }],
+                                    })(
+                                        <div>
+                                            <input type="text" placeholder="姓名" />
+                                        </div>
+                                    )}
+                                </FormItem>
+                                <FormItem>
+                                    {getFieldDecorator('address', {
+                                        rules: [{ required: true, message: '请输入地址' }],
+                                    })(
+                                        <div>
+                                            <input type="text" placeholder="地址" />
+                                        </div>
+                                    )}
+                                </FormItem>
+                                <FormItem>
+                                    {getFieldDecorator('telPhone', {
+                                        rules: [{ required: true, message: '请输入联系电话' }],
+                                    })(
+                                        <div>
+                                            <input type="text" placeholder="联系电话" />
+                                        </div>
+                                    )}
+                                </FormItem>
+                                <FormItem>
+                                    <button type="submit">
+                                        <img src={button03} alt="" />
+                                    </button>
+                                </FormItem>
+                            </Form>
+                        </div>
+                    </section>
                 </main>
             </div>
         )
