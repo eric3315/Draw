@@ -121,14 +121,9 @@ class Login extends React.Component{
                 if(wait === 60){
                    wait--;
                 }
-                console.info(wait);
                 if(wait === 0){
                     clearInterval(loginTimer);
-                    this.setState({
-                        clickFlag: true,
-                    },()=>{
-                        console.info(this.state.clickFlag);
-                    })
+                    this.setState({clickFlag: true})
                     return;
                 }
                 let getCode = document.getElementById('getCode');

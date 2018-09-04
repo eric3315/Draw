@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import Top from '../component/Top';
 import LotteryNumber from '../component/LotteryNumber';
 import logo from '../static/images/logo.png';
@@ -11,9 +10,7 @@ import chassis from '../static/images/chassis.png';
 import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
 import {Toast} from'antd-mobile';
-import {luckDraw} from '../api/serverAPi';
-import action from '../store/action';
-import {withRouter} from 'react-router-dom';
+import {luckDraw, getMyPrize, myPrize} from '../api/serverAPi';
 import DatePicker from 'react-mobile-datepicker';
 import {format} from '../utils/utils';
 import {Form } from 'antd';
@@ -29,6 +26,14 @@ class RotaryDraw extends React.Component{
             time: '',
             isOpen: false,
             effectiveDateFlag: true,
+            userInfo:{
+                winPrizeRecordId: '',
+                userXingMing: '',
+                userIDNumber: '',
+                prizeName: '',
+                isFirstLuckDraw: true,
+            },
+            prizeList:[],
         }
     }
     componentDidMount(){
@@ -41,7 +46,7 @@ class RotaryDraw extends React.Component{
         if(!userMobile){
             userMobile='';
         }
-        if(luckDrawNum){
+        if(luckDrawNum == null || luckDrawNum > 0){
             let result = await luckDraw({
                 userMobile: userMobile,
                 urlChannel: 'c22',
@@ -98,29 +103,35 @@ class RotaryDraw extends React.Component{
                                 rotateNum = rotateArr[6];
                                 break;
                         }
-                        turnId.style.transform = `rotate(${rotateNum}deg)`;
+                        turnId.style.transform = `rotate(${-rotateNum}deg)`;
                         //获取最新的抽奖次数存储到sessionStorage
                         sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
                         this.setState({drawFlag: false});
                         if(result.isFirstLuckDraw){
+                            let userInfo=null;
                             //第一次抽奖
                             if(typeof result.userXingMing!=='undefined' && typeof result.userIDNumber!=='undefined'){
-                                //记录store
-                                this.props.savePrize({
+                                userInfo = {
                                     winPrizeRecordId: result.prizeRecordId,
                                     userXingMing: result.userXingMing,
                                     userIDNumber: result.userIDNumber,
-                                })
+                                    prizeName: result.prizeName,
+                                    isFirstLuckDraw: result.isFirstLuckDraw,
+                                }
                             } else {
-                                //记录store
-                                this.props.savePrize({
+                                userInfo = {
                                     winPrizeRecordId: result.prizeRecordId,
                                     userXingMing: '',
                                     userIDNumber: '',
-                                })
+                                    prizeName: result.prizeName,
+                                }
                             }
-                            //跳转到首次中奖页面
-                            this.props.history.push('/firstPrizeOne');
+                            this.setState({
+                                userInfo,
+                            },()=>{
+                                console.info(`保存用户信息数据到userInfo:${JSON.stringify(userInfo)}`);
+                            })
+                            this.handleBut6Open(result.prizeName);
                         } else {
                             //10元U行优惠券跳转页面到 /coupons
                             if(result.prizeName === '10元U行优惠券'){
@@ -141,7 +152,8 @@ class RotaryDraw extends React.Component{
                 Toast.info(result.messageTip, 3);
                 return;
             }
-        } else {
+        } else if(luckDrawNum == 0){
+            console.info(luckDrawNum);
             //抽奖次数已用尽
             this.handleBut3Open();
         }
@@ -149,29 +161,64 @@ class RotaryDraw extends React.Component{
 
     handleFirstPrizeSubmit= (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (typeof values.userName!=='undefined' &&
                 typeof values.identityCard!=='undefined' &&
                 /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(values.identityCard) &&
                 this.state.time!=''
             ) {
                 console.info(JSON.stringify(values), this.state.time);
+                const {winPrizeRecordId= '', userXingMing='', userIDNumber='', prizeName='', isFirstLuckDraw} = this.state.userInfo;
+                let userMobile=sessionStorage.getItem('userMobile');
+                let result = await getMyPrize({
+                    userMobile,
+                    urlChannel: 'c22',
+                    isFirstLuckDraw,
+                    prizeName,
+                    winPrizeRecordId,
+                    insuranceXiMing: userXingMing,
+                    insuranceIDNumber: userIDNumber,
+                    insuranceEffectTime: this.state.time,
+                });
+                if(result.success){
+                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
+                    //10元U行优惠券跳转页面到 /coupons
+                    if(result.prizeName === '10元U行优惠券'){
+                        this.handleBut2Open();
+                        return;
+                    } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
+                        //实物跳转到填写地址是窗口
+                        setTimeout(()=>{
+                            this.handleBut6();
+                            this.handleBut7Open();
+                        },5000);
+                    } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
+                        this.handleBut1Open();
+                        return;
+                    }
+                } else {
+
+                }
             } else {
                 this.setState({effectiveDateFlag: false});
                 return false;
             }
         });
     }
+
     handleDatePicker=(e)=>{
         e.preventDefault();
         this.setState({ isOpen: true });
     }
     handleDatePickerSelect=(time)=>{
         let timer =format(time, 'yyyy-MM-dd');
+        console.info(timer);
         this.setState({
             time: timer,
             isOpen: false,
             effectiveDateFlag: true,
+        },()=>{
+            console.info(this.state.effectiveDateFlag);
         });
     }
     handleDatePickerCancel=()=>{
@@ -193,6 +240,10 @@ class RotaryDraw extends React.Component{
         });
     }
 
+    handleResertTurn=()=>{
+        let turnId = document.getElementById('turnId');
+        turnId.style.transform = "rotate(0deg)";
+    }
     /*其他电子码弹窗 begin*/
     handleBut1Open=()=>{
         let modelBut1= document.getElementById('modelBut1');
@@ -201,6 +252,7 @@ class RotaryDraw extends React.Component{
     handleBut1=(e)=>{
         let modelBut1= document.getElementById('modelBut1');
         modelBut1.style.display='none';
+        this.handleResertTurn();
     }
     /*其他电子码弹窗 begin*/
 
@@ -212,6 +264,7 @@ class RotaryDraw extends React.Component{
     handleBut2=(e)=>{
         let modelBut2= document.getElementById('modelBut2');
         modelBut2.style.display='none';
+        this.handleResertTurn();
     }
     /*U行优惠券弹窗 end*/
 
@@ -223,12 +276,12 @@ class RotaryDraw extends React.Component{
     handleBut3=(e)=>{
         let modelBut3= document.getElementById('modelBut3');
         modelBut3.style.display='none';
+        this.handleResertTurn();
     }
     /*抽奖次数已用尽弹窗 end*/
 
     handleBut4Open=(prizeName)=>{
         let modelBut4= document.getElementById('modelBut4');
-        console.info('进来了');
         let div = modelBut4.childNodes[0];
         div.children[0].innerHTML=`恭喜! 您已获得${prizeName}，请及时领取。`;
         modelBut4.style.display='block';
@@ -236,11 +289,31 @@ class RotaryDraw extends React.Component{
     handleBut4=(e)=>{
         let modelBut4= document.getElementById('modelBut4');
         modelBut4.style.display='none';
+        this.handleResertTurn();
+    }
+
+    handleBut5Open=()=>{
+        let modelBut5= document.getElementById('modelBut5');
+        modelBut5.style.display='block';
+    }
+    handleBut5=(e)=>{
+        let modelBut5= document.getElementById('modelBut5');
+        modelBut5.style.display='none';
+        this.handleResertTurn();
     }
 
 
-
-
+    handleBut6Open=(prizeName)=>{
+        let modelBut6= document.getElementById('modelBut6');
+        let div = modelBut6.childNodes[0];
+        div.children[0].innerHTML=`恭喜!您已获得${prizeName}和价值100万的交通意外险，请及时领取`;
+        modelBut6.style.display='block';
+    }
+    handleBut6=(e)=>{
+        let modelBut6= document.getElementById('modelBut6');
+        modelBut6.style.display='none';
+        this.handleResertTurn();
+    }
     handleBut7Open=()=>{
         let modelBut7= document.getElementById('modelBut7');
         modelBut7.style.display='block';
@@ -248,10 +321,58 @@ class RotaryDraw extends React.Component{
     handleBut7=(e)=>{
         let modelBut7= document.getElementById('modelBut7');
         modelBut7.style.display='none';
+        this.handleResertTurn();
+    }
+
+    handleMyPrize= async(e)=>{
+        e.preventDefault();
+        let userMobile=sessionStorage.getItem('userMobile');
+        if(!userMobile){
+            userMobile='';
+        }
+        let result = await myPrize({
+            userMobile: userMobile,
+            urlChannel: 'c22',
+        });
+        if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
+            //跳转登录页
+            Toast.info('请您登录后查看奖品', 3);
+            //跳转到登录页面
+            setTimeout(()=>{
+                this.props.history.push('/login');
+            },2000);
+            return;
+        } else {
+            //跳转到查看我的奖品页
+            console.info(JSON.stringify(result));
+            this.setState({
+                prizeList: result.prizeRecords,
+            },()=>{
+                this.handleBut5Open();
+            })
+        }
+    }
+
+    renderPrizeList(){
+        let vDOM=[];
+        this.state.prizeList.forEach((item, index) => {
+            let time=format(new Date(item.creatTime), 'yyyy.MM.dd');
+            vDOM.push(
+                <li key={Math.random()}>
+                    <span>{index+1}</span>
+                    <p className="Active-over-prize-p1">{item.prizeName}</p>
+                    <p className="Active-over-prize-p2">--{time}--</p>
+                    <a href="javascript:;">领取</a>
+                </li>
+            );
+        })
+        return vDOM;
     }
 
     render(){
         const { getFieldDecorator } = this.props.form;
+        const { userXingMing='', userIDNumber=''} = this.state.userInfo;
+        let luckDrawNum=sessionStorage.getItem('luckDrawNum');
         return (
             <div>
                 <Top/>
@@ -264,7 +385,20 @@ class RotaryDraw extends React.Component{
                         <img src={turn} alt="" className="Active-turntable-pointer" id='turnId'/>
                         <img src={pointer} alt="" className="Active-turntable-start" onClick={e=>this.handleRotating(e)}/>
                     </section>
-                    <LotteryNumber />
+                    {
+                        luckDrawNum!=null ? (
+                            <section className="active-frequency" style={{
+                                position: 'relative',
+                                'zIndex': 999,
+                            }}>
+                                <a href="javascript:;" onClick={e=>{this.handleMyPrize(e)}} style={{
+                                    marginTop: '1rem',
+                                }}>查看我的奖品</a>
+                                <h2>剩余<span>{luckDrawNum?luckDrawNum:0}</span>次抽奖机会</h2>
+                            </section>
+                        ): ''
+                    }
+
                     <section className="active-detail">
                         <div className="active-detail-wrap">
                             <h2>活动详情</h2>
@@ -324,10 +458,8 @@ class RotaryDraw extends React.Component{
                     <section className="modal" id='modelBut4' style={{
                         display: 'none',
                     }}>
-                        <div className="Active-over-wrap">
-                            <p style={{
-                                marginBottom: '2.2rem',
-                            }}>恭喜! 您已获得机场贵宾厅权益，请及时领取。</p>
+                        <div className="Active-prize-wrap14">
+                            <p>恭喜! 您已获得机场贵宾厅权益，请及时领取。</p>
                             <button type="button" onClick={e=>{this.handleBut4(e)}}><img src={button04} alt="" /></button>
                         </div>
                     </section>
@@ -336,61 +468,7 @@ class RotaryDraw extends React.Component{
                     }}>
                         <div className="Active-over-prize1">
                             <ul>
-                                <li>
-                                    <span>1</span>
-                                    <p className="Active-over-prize-p1">手机</p>
-                                    <p className="Active-over-prize-p2">--2018.09.01--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-                                <li>
-                                    <span>2</span>
-                                    <p className="Active-over-prize-p1">旅行收纳包</p>
-                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-                                <li>
-                                    <span>3</span>
-                                    <p className="Active-over-prize-p1">手机</p>
-                                    <p className="Active-over-prize-p2">--2018.09.01--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-                                <li>
-                                    <span>4</span>
-                                    <p className="Active-over-prize-p1">100万保额交通意外险</p>
-                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-                                <li>
-                                    <span>5</span>
-                                    <p className="Active-over-prize-p1">100元国际机票抵用券</p>
-                                    <p className="Active-over-prize-p2">--2018.09.01--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-                                <li>
-                                    <span>6</span>
-                                    <p className="Active-over-prize-p1">旅行收纳包</p>
-                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-                                <li>
-                                    <span>7</span>
-                                    <p className="Active-over-prize-p1">手机</p>
-                                    <p className="Active-over-prize-p2">--2018.09.01--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-                                <li>
-                                    <span>8</span>
-                                    <p className="Active-over-prize-p1">旅行收纳包</p>
-                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-                                <li>
-                                    <span>9</span>
-                                    <p className="Active-over-prize-p1">旅行收纳包</p>
-                                    <p className="Active-over-prize-p2">--2018.09.02--</p>
-                                    <a href="javascript:;">领取</a>
-                                </li>
-
+                                {this.renderPrizeList()}
                             </ul>
                         </div>
                     </section>
@@ -402,6 +480,7 @@ class RotaryDraw extends React.Component{
                             <Form onSubmit={this.handleFirstPrizeSubmit}>
                                 <FormItem>
                                     {getFieldDecorator('userName', {
+                                        initialValue: userXingMing,
                                         rules: [{ required: true, message: '请输入姓名' }],
                                     })(
                                         <div>
@@ -411,6 +490,7 @@ class RotaryDraw extends React.Component{
                                 </FormItem>
                                 <FormItem>
                                     {getFieldDecorator('identityCard', {
+                                        initialValue: userIDNumber,
                                         rules: [{ required: true, message: '请输入身份证' , pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/}],
                                     })(
                                         <div>
@@ -489,4 +569,4 @@ class RotaryDraw extends React.Component{
         )
     }
 }
-export default withRouter(connect(state=>({...state.prize}), action.prize)(Form.create()(RotaryDraw)));
+export default (Form.create()(RotaryDraw));

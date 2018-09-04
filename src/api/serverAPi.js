@@ -16,3 +16,12 @@ export function myPrize(payload){
         params: payload,
     });
 }
+
+//领取奖品
+export function getMyPrize(payload){
+    return axios({
+        method: 'POST',
+        url: '/getMyPrize',
+        data: payload,
+    });
+}
