@@ -29,7 +29,7 @@ class Login extends React.Component{
     }
     loginFail =(flag, messageTip) =>{
         if(flag){
-            Toast.info('登录成功', 3);
+            Toast.info('登录成功', 1);
         } else{
             Toast.info(`登录失败:${messageTip}`, 3);
         }
@@ -142,6 +142,10 @@ class Login extends React.Component{
         sendVlidateCode({
             urlChannel: 'c22',
             userMobile: phone,
+        }).then(res=>{
+            if(!res.success){
+                Toast.info(res.messageTip, 3);
+            }
         })
     }
 

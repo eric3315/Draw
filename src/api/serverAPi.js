@@ -25,3 +25,12 @@ export function getMyPrize(payload){
         data: payload,
     });
 }
+
+//提交实物
+export function getRecAddr(payload){
+    return axios({
+        method: 'POST',
+        url: '/getRecAddr',
+        data: payload,
+    });
+}
