@@ -10,6 +10,10 @@ import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
 import {Toast, Modal} from'antd-mobile';
 import {luckDraw, getMyPrize, myPrize, getRecAddr} from '../api/serverAPi';
+import InsuranceForm from '../component/InsuranceForm';
+
+
+
 import DatePicker from 'react-mobile-datepicker';
 import {format} from '../utils/utils';
 import {Form, Input} from 'antd';
@@ -23,9 +27,10 @@ class RotaryDraw extends React.Component{
         super(props, context);
         this.state={
             drawFlag: true,
-            time: '',
-            isOpen: false,
-            effectiveDateFlag: true,
+            // time: '',
+            // isOpen: false,
+            // effectiveDateFlag: true,
+            insuranceFlag: false,
             userInfo:{
                 winPrizeRecordId: '',
                 userXingMing: '',
@@ -128,10 +133,12 @@ class RotaryDraw extends React.Component{
                             }
                             this.setState({
                                 userInfo,
+                                insuranceFlag: true,
                             },()=>{
                                 console.info(`保存用户信息数据到userInfo:${JSON.stringify(userInfo)}`);
                             })
-                            this.handleBut6Open(result.prizeName);
+
+                            // this.handleBut6Open(result.prizeName);
                         } else {
                             userInfo = {
                                 winPrizeRecordId: result.prizeRecordId,
@@ -169,72 +176,57 @@ class RotaryDraw extends React.Component{
         }
     }
 
-    handleFirstPrizeSubmit= (e) => {
-        e.preventDefault();
-        this.props.form.validateFields(async (err, values) => {
-            if (typeof values.cardName!=='undefined' &&
-                typeof values.identityCard!=='undefined' &&
-                /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(values.identityCard) &&
-                this.state.time!=''
-            ) {
-                const {winPrizeRecordId= '', userXingMing='', userIDNumber='', prizeName='', isFirstLuckDraw} = this.state.userInfo;
-                let userMobile=sessionStorage.getItem('userMobile');
-                let obj={};
-                if(userXingMing && userIDNumber){
-                    obj={
-                        userMobile,
-                        urlChannel: 'c22',
-                        isFirstLuckDraw,
-                        prizeName,
-                        winPrizeRecordId,
-                        insuranceXiMing: userXingMing,
-                        insuranceIDNumber: userIDNumber,
-                        insuranceEffectTime: this.state.time,
-                    }
-                } else {
-                    obj={
-                        userMobile,
-                        urlChannel: 'c22',
-                        isFirstLuckDraw,
-                        prizeName,
-                        winPrizeRecordId,
-                        insuranceXiMing: values.cardName,
-                        insuranceIDNumber: values.identityCard,
-                        insuranceEffectTime: this.state.time,
-                    }
-                }
-                let result = await getMyPrize(obj);
-                if(result.success){
-                    //10元U行优惠券跳转页面到 /coupons
-                    if(result.prizeName === '10元U行优惠券'){
-                        this.handleBut6();
-                        this.props.form.resetFields(['cardName','identityCard']);
-                        this.setState({time: '',});
-                        Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
-                        this.handleBut2Open();
-                        return;
-                    } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
-                        //实物跳转到填写地址是窗口
-                        this.handleBut6();
-                        this.props.form.resetFields(['cardName','identityCard']);
-                        this.setState({time: '',});
-                        Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
-                        this.handleBut7Open();
-                        return;
-                    } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
-                        this.handleBut6();
-                        this.props.form.resetFields(['cardName','identityCard']);
-                        this.setState({time: '',});
-                        Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
-                        this.handleBut1Open();
-                        return;
-                    }
-                }
-            } else {
-                this.setState({effectiveDateFlag: false});
-                return false;
+    handleFirstPrizeSubmit= async (cardName,identityCard,time) => {
+        const {winPrizeRecordId= '', userXingMing='', userIDNumber='', prizeName='', isFirstLuckDraw} = this.state.userInfo;
+        let userMobile=sessionStorage.getItem('userMobile');
+        let obj={};
+        if(userXingMing && userIDNumber){
+            obj={
+                userMobile,
+                urlChannel: 'c22',
+                isFirstLuckDraw,
+                prizeName,
+                winPrizeRecordId,
+                insuranceXiMing: userXingMing,
+                insuranceIDNumber: userIDNumber,
+                insuranceEffectTime: time,
             }
-        });
+        } else {
+            obj={
+                userMobile,
+                urlChannel: 'c22',
+                isFirstLuckDraw,
+                prizeName,
+                winPrizeRecordId,
+                insuranceXiMing: cardName,
+                insuranceIDNumber: identityCard,
+                insuranceEffectTime: time,
+            }
+        }
+        let result = await getMyPrize(obj);
+        if(result.success){
+            //10元U行优惠券跳转页面到 /coupons
+            if(result.prizeName === '10元U行优惠券'){
+                this.setState({insuranceFlag: false},()=>{
+                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
+                    this.handleBut2Open();
+                });
+                return;
+            } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
+                //实物跳转到填写地址是窗口
+                this.setState({insuranceFlag: false},()=>{
+                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
+                    this.handleBut7Open();
+                });
+                return;
+            } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
+                this.setState({insuranceFlag: false},()=>{
+                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
+                    this.handleBut1Open();
+                });
+                return;
+            }
+        }
     }
 
     handleDatePicker=(e)=>{
@@ -668,6 +660,23 @@ class RotaryDraw extends React.Component{
                             </ul>
                         </div>
                     </section>
+                    {
+                        this.state.insuranceFlag
+                            ?
+                            (<InsuranceForm
+                                userInfo={this.state.userInfo}
+                                handleResertTurn={this.handleResertTurn}
+                                handleFirstPrizeSubmit={this.handleFirstPrizeSubmit}
+                            />)
+                            : ''
+                    }
+
+
+
+
+
+
+
                     <section className="modal" id='modelBut6' style={{
                         display: 'none',
                     }}>
