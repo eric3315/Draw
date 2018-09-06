@@ -3,14 +3,14 @@ import axios from './index';
 export function sendVlidateCode(payload){
     return axios({
         method: 'POST',
-        url: '/sendVlidateCode',
+        url: '/api/sendVlidateCode',
         data: payload,
     });
 }
 export function loginIn(payload){
     return axios({
         method: 'POST',
-        url: '/login',
+        url: '/api/login',
         data: payload,
     });
 }
@@ -18,7 +18,7 @@ export function loginIn(payload){
 export function logout(payload){
     return axios({
         method: 'GET',
-        url: '/logout',
+        url: '/api/logout',
         params: payload,
     });
 }
