@@ -14,3 +14,11 @@ export function loginIn(payload){
         data: payload,
     });
 }
+
+export function logout(payload){
+    return axios({
+        method: 'GET',
+        url: '/logout',
+        params: payload,
+    });
+}

@@ -16,15 +16,14 @@ class InsuranceForm extends React.Component{
             isOpen: false,
             effectiveDateFlag: true,
         }
-        const { userXingMing='', userIDNumber=''} = props.userInfo;
-        props.form.setFieldsValue({
-            cardName: userXingMing,
-            identityCard: userIDNumber,
-        });
     }
 
     componentDidMount(){
-        console.info('进来了');
+        const { userXingMing='', userIDNumber=''} = this.props.userInfo;
+        this.props.form.setFieldsValue({
+            cardName: userXingMing,
+            identityCard: userIDNumber,
+        });
     }
 
     handleDatePicker=(e)=>{
@@ -108,4 +107,4 @@ class InsuranceForm extends React.Component{
         )
     }
 }
-export default InsuranceForm;
+export default (Form.create()(InsuranceForm));

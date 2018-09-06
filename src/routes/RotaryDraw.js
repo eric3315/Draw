@@ -4,21 +4,17 @@ import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import button04 from '../static/images/button04.png';
 import button02 from '../static/images/button02.png';
-import button03 from '../static/images/button03.png';
 import chassis from '../static/images/chassis.png';
 import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
 import {Toast, Modal} from'antd-mobile';
-import {luckDraw, getMyPrize, myPrize, getRecAddr} from '../api/serverAPi';
+import {luckDraw, getMyPrize, myPrize, getRecAddr, getRecInsurance} from '../api/serverAPi';
 import InsuranceForm from '../component/InsuranceForm';
-
-
-
-import DatePicker from 'react-mobile-datepicker';
+import InformationForm from '../component/InformationForm';
+import OtherForm from '../component/OtherForm';
+import OtherInformationForm from '../component/OtherInformationForm';
 import {format} from '../utils/utils';
-import {Form, Input} from 'antd';
 
-const FormItem = Form.Item;
 const alert = Modal.alert;
 let rotateArr = [25.7,77.1,128.5,180,231.4,283,334];
 
@@ -27,10 +23,10 @@ class RotaryDraw extends React.Component{
         super(props, context);
         this.state={
             drawFlag: true,
-            // time: '',
-            // isOpen: false,
-            // effectiveDateFlag: true,
             insuranceFlag: false,
+            informationFlag: false,
+            otherInsuranceFlag: false,
+            otherInformationFlag: false,
             userInfo:{
                 winPrizeRecordId: '',
                 userXingMing: '',
@@ -134,11 +130,7 @@ class RotaryDraw extends React.Component{
                             this.setState({
                                 userInfo,
                                 insuranceFlag: true,
-                            },()=>{
-                                console.info(`保存用户信息数据到userInfo:${JSON.stringify(userInfo)}`);
                             })
-
-                            // this.handleBut6Open(result.prizeName);
                         } else {
                             userInfo = {
                                 winPrizeRecordId: result.prizeRecordId,
@@ -147,20 +139,8 @@ class RotaryDraw extends React.Component{
                             }
                             this.setState({
                                 userInfo,
-                            },()=>{
-                                console.info(`保存用户信息数据到userInfo:${JSON.stringify(userInfo)}`);
                             })
                             this.handleBut4Open(result.prizeName);
-                            // if(result.prizeName === '10元U行优惠券'){
-                            //     this.handleBut2Open();
-                            //     return;
-                            // } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
-                            //
-                            //     return;
-                            // } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
-                            //     this.handleBut1Open();
-                            //     return;
-                            // }
                         }
                         return;
                     },4000);
@@ -208,20 +188,20 @@ class RotaryDraw extends React.Component{
             //10元U行优惠券跳转页面到 /coupons
             if(result.prizeName === '10元U行优惠券'){
                 this.setState({insuranceFlag: false},()=>{
-                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
+                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
                     this.handleBut2Open();
                 });
                 return;
             } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
                 //实物跳转到填写地址是窗口
                 this.setState({insuranceFlag: false},()=>{
-                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
-                    this.handleBut7Open();
+                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
+                    this.setState({informationFlag: true});
                 });
                 return;
             } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
                 this.setState({insuranceFlag: false},()=>{
-                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 3);
+                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
                     this.handleBut1Open();
                 });
                 return;
@@ -229,79 +209,29 @@ class RotaryDraw extends React.Component{
         }
     }
 
-    handleDatePicker=(e)=>{
-        e.preventDefault();
-        this.setState({ isOpen: true });
-    }
-    handleDatePickerSelect=(time)=>{
-        let timer =format(time, 'yyyy-MM-dd');
-        console.info(timer);
-        this.setState({
-            time: timer,
-            isOpen: false,
-            effectiveDateFlag: true,
-        },()=>{
-            console.info(this.state.effectiveDateFlag);
-        });
-    }
-    handleDatePickerCancel=()=>{
-        this.setState({ isOpen: false });
-    }
-
-    handleAwardSubmit = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            //正常提交领取奖品
-            const {winPrizeRecordId= '', prizeName='',} = this.state.userInfo;
-            let userMobile=sessionStorage.getItem('userMobile');
-            let obj={
-                userMobile,
-                urlChannel: 'c22',
-                prizeName,
-                winPrizeRecordId,
-                addrXiming: values.userName,
-                addr: values.address,
-                addrContactMobile: values.telPhone,
-            }
-            alert('', '亲，提交后就不能修改了哦', [
-                { text: '返回', onPress: () => console.log('cancel') },
-                { text: '确认', onPress: async () => {
-                        let result = await getRecAddr(obj);
-                        if(result.success){
-                            this.handleBut7();
-                            this.props.form.resetFields(['userName','address','telPhone']);
-                        }
-                    }},
-            ])
-        });
-    }
-
-    handleAwardSubmit1 = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            //正常提交领取奖品
-            const {winPrizeRecordId= '', prizeName='',} = this.state.userInfo;
-            let userMobile=sessionStorage.getItem('userMobile');
-            let obj={
-                userMobile,
-                urlChannel: 'c22',
-                prizeName,
-                winPrizeRecordId,
-                addrXiming: values.userName,
-                addr: values.address,
-                addrContactMobile: values.telPhone,
-            }
-            alert('', '亲，提交后就不能修改了哦', [
-                { text: '返回', onPress: () => console.log('cancel') },
-                { text: '确认', onPress: async () => {
-                        let result = await getRecAddr(obj);
-                        if(result.success){
-                            this.handleBut77();
-                            this.handleBut5Open();
-                        }
-                    }},
-            ])
-        });
+    handleAwardSubmit = async (userName,address,telPhone) => {
+        //正常提交领取奖品
+        const {winPrizeRecordId= '', prizeName='',} = this.state.userInfo;
+        let userMobile=sessionStorage.getItem('userMobile');
+        let obj={
+            userMobile,
+            urlChannel: 'c22',
+            prizeName,
+            winPrizeRecordId,
+            addrXiming: userName,
+            addr: address,
+            addrContactMobile: telPhone,
+        }
+        alert('', '亲，提交后就不能修改了哦', [
+            { text: '返回', onPress: () => console.log('cancel') },
+            { text: '确认', onPress: async () => {
+                    let result = await getRecAddr(obj);
+                    if(result.success){
+                        this.handleResertTurn();
+                        this.setState({informationFlag: false});
+                    }
+                }},
+        ])
     }
 
     handleResertTurn=()=>{
@@ -376,6 +306,13 @@ class RotaryDraw extends React.Component{
         div.children[0].innerHTML=`恭喜! 您已获得${prizeName}，请及时领取。`;
         modelBut4.style.display='block';
     }
+
+    handleModel4Close=()=>{
+        let modelBut4= document.getElementById('modelBut4');
+        modelBut4.style.display='none';
+        this.handleResertTurn();
+    }
+
     handleBut4= async (e)=>{
         const {winPrizeRecordId= '', prizeName='', isFirstLuckDraw} = this.state.userInfo;
         let userMobile=sessionStorage.getItem('userMobile');
@@ -400,7 +337,7 @@ class RotaryDraw extends React.Component{
                 let modelBut4= document.getElementById('modelBut4');
                 modelBut4.style.display='none';
                 this.handleResertTurn();
-                this.handleBut7Open();
+                this.setState({informationFlag: true});
                 return;
             } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
                 let modelBut4= document.getElementById('modelBut4');
@@ -413,10 +350,6 @@ class RotaryDraw extends React.Component{
     }
 
     handleBut5Open= async()=>{
-        console.info('进来了');
-        console.info(this.props.form.getFieldValue('userName'));
-        this.props.form.resetFields(['userName','address','telPhone']);
-        console.info(this.props.form.getFieldValue('userName'));
         let userMobile=sessionStorage.getItem('userMobile');
         if(!userMobile){
             userMobile='';
@@ -434,12 +367,17 @@ class RotaryDraw extends React.Component{
             },2000);
             return;
         } else {
-            this.setState({
-                prizeList: result.prizeRecords,
-            },()=>{
-                let modelBut5= document.getElementById('modelBut5');
-                modelBut5.style.display='block';
-            })
+            if(typeof result.prizeRecords!=='object'){
+                Toast.info(result.messageTip, 3);
+            } else {
+                this.setState({
+                    prizeList: result.prizeRecords,
+                },()=>{
+                    let modelBut5= document.getElementById('modelBut5');
+                    modelBut5.style.display='block';
+                })
+            }
+
         }
     }
     handleBut5=(e)=>{
@@ -448,45 +386,6 @@ class RotaryDraw extends React.Component{
         this.handleResertTurn();
     }
 
-
-    handleBut6Open=(prizeName)=>{
-        this.props.form.resetFields(['cardName','identityCard']);
-        this.setState({time: '',});
-        let modelBut6= document.getElementById('modelBut6');
-        let div = modelBut6.childNodes[0];
-        div.children[0].innerHTML=`恭喜!您已获得${prizeName}和价值100万的交通意外险，请及时领取`;
-        const { userXingMing='', userIDNumber=''} = this.state.userInfo;
-        this.props.form.setFieldsValue({
-            cardName: userXingMing,
-            identityCard: userIDNumber,
-        });
-        modelBut6.style.display='block';
-    }
-    handleBut6=(e)=>{
-        let modelBut6= document.getElementById('modelBut6');
-        modelBut6.style.display='none';
-        this.handleResertTurn();
-    }
-    handleBut7Open=()=>{
-        this.props.form.resetFields(['userName','address','telPhone']);
-        let modelBut7= document.getElementById('modelBut7');
-        modelBut7.style.display='block';
-    }
-    handleBut7=(e)=>{
-        let modelBut7= document.getElementById('modelBut7');
-        modelBut7.style.display='none';
-        this.handleResertTurn();
-    }
-
-    handleBut77Open=()=>{
-        let modelBut77= document.getElementById('modelBut77');
-        modelBut77.style.display='block';
-    }
-    handleBut77=(e)=>{
-        let modelBut77= document.getElementById('modelBut77');
-        modelBut77.style.display='none';
-        this.handleResertTurn();
-    }
     renderPrizeList(){
         let vDOM=[];
         this.state.prizeList.forEach((item, index) => {
@@ -496,7 +395,14 @@ class RotaryDraw extends React.Component{
                     <span>{index+1}</span>
                     <p className="Active-over-prize-p1">{item.prizeName}</p>
                     <p className="Active-over-prize-p2">--{time}--</p>
-                    <a href="javascript:;" onClick={e=>{this.handleReceivePrize(e,item.winPrizeRecordId,item.prizeName)}}>领取</a>
+                    {
+                        item.isReceivedPrize === 1
+                        ?
+                        (
+                          <a href="javascript:;">已领取</a>
+                        )
+                        : <a href="javascript:;" onClick={e=>{this.handleReceivePrize(e,item.winPrizeRecordId,item.prizeName)}}>领取</a>
+                    }
                 </li>
             );
         })
@@ -531,19 +437,71 @@ class RotaryDraw extends React.Component{
                     return;
                 } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
                     //实物跳转到填写地址是窗口
-                    this.handleBut77Open();
+                    this.handleBut5();
+                    this.setState({otherInformationFlag: true});
                     return;
                 } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
                     this.handleBut5();
                     this.handleBut11Open();
                     return;
+                } else if(result.prizeName === '交通意外险'){
+                    this.setState({otherInsuranceFlag: true});
                 }
             }
         })
     }
 
+    handleOtherInsuranceSubmit= async (insuranceXiMing, insuranceIDNumber, insuranceEffectTime)=>{
+        const {winPrizeRecordId= '',  prizeName=''} = this.state.userInfo;
+        let userMobile=sessionStorage.getItem('userMobile');
+        let obj={
+            userMobile,
+            urlChannel: 'c22',
+            winPrizeRecordId,
+            prizeName,
+            insuranceXiMing,
+            insuranceIDNumber,
+            insuranceEffectTime,
+        }
+        let result = await getRecInsurance(obj);
+        if(result.success){
+            Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
+        } else {
+            Toast.info(result.messageTip, 2);
+        }
+        this.setState({otherInsuranceFlag: false},()=>{
+            this.handleBut5Open();
+        });
+    }
+
+    handleOtherAwardSubmit = async (userName,address,telPhone) => {
+        //正常提交领取奖品
+        const {winPrizeRecordId= '', prizeName='',} = this.state.userInfo;
+        let userMobile=sessionStorage.getItem('userMobile');
+        let obj={
+            userMobile,
+            urlChannel: 'c22',
+            prizeName,
+            winPrizeRecordId,
+            addrXiming: userName,
+            addr: address,
+            addrContactMobile: telPhone,
+        }
+        alert('', '亲，提交后就不能修改了哦', [
+            { text: '返回', onPress: () => console.log('cancel') },
+            { text: '确认', onPress: async () => {
+                    let result = await getRecAddr(obj);
+                    if(result.success){
+                        this.setState({otherInformationFlag: false},()=>{
+                            console.info('进来了');
+                            this.handleBut5Open();
+                        });
+                    }
+                }},
+        ])
+    }
+
     render(){
-        const { getFieldDecorator } = this.props.form;
         let luckDrawNum=sessionStorage.getItem('luckDrawNum');
         return (
             <div>
@@ -643,15 +601,15 @@ class RotaryDraw extends React.Component{
                             <button type="button" onClick={e=>{this.handleBut3(e)}}><img src={button04} alt="" /></button>
                         </div>
                     </section>
-                    <section className="modal" id='modelBut4' style={{
+                    <section className="modal" id='modelBut4' onClick={e=>{this.handleModel4Close()}} style={{
                         display: 'none',
                     }}>
                         <div className="Active-prize-wrap14">
-                            <p>恭喜! 您已获得机场贵宾厅权益，请及时领取。</p>
+                            <p>恭喜! 您已获得***，请及时领取。</p>
                             <button type="button" onClick={e=>{this.handleBut4(e)}}><img src={button02} alt="" /></button>
                         </div>
                     </section>
-                    <section className="modal" id='modelBut5' style={{
+                    <section className="modal" id='modelBut5' onClick={e=>{this.handleBut5()}} style={{
                         display: 'none',
                     }}>
                         <div className="Active-over-prize1">
@@ -665,144 +623,37 @@ class RotaryDraw extends React.Component{
                             ?
                             (<InsuranceForm
                                 userInfo={this.state.userInfo}
-                                handleResertTurn={this.handleResertTurn}
                                 handleFirstPrizeSubmit={this.handleFirstPrizeSubmit}
                             />)
                             : ''
                     }
-
-
-
-
-
-
-
-                    <section className="modal" id='modelBut6' style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-prize-wrap12">
-                            <p>恭喜!您已获得机场贵宾厅权益和价值100万的交通意外险，请及时领取。</p>
-                            <Form onSubmit={this.handleFirstPrizeSubmit}>
-                                <FormItem>
-                                    {getFieldDecorator('cardName', {
-                                        rules: [{ required: true, message: '请输入姓名' }],
-                                    })(
-                                        <Input placeholder="姓名"/>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator('identityCard', {
-                                        rules: [{ required: true, message: '请输入身份证' , pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/}],
-                                    })(
-                                       <Input placeholder="身份证"/>
-                                    )}
-                                </FormItem>
-                                <div>
-                                    <input type="text" placeholder="生效日期" value={this.state.time} readOnly onClick={e=>{this.handleDatePicker(e)}}/>
-                                    <DatePicker
-                                        isOpen={this.state.isOpen}
-                                        onSelect={this.handleDatePickerSelect}
-                                        onCancel={this.handleDatePickerCancel}
-                                    />
-                                </div>
-                                {
-                                    !this.state.effectiveDateFlag && <div style={{
-                                        fontSize: '0.6rem',
-                                        color: '#fff',
-                                        marginTop: '-0.5rem',
-                                    }}>请选择生效日期</div>
-                                }
-                                <FormItem>
-                                    <button type="submit">
-                                        <img src={button02} alt="" />
-                                    </button>
-                                </FormItem>
-                            </Form>
-                        </div>
-                    </section>
-                    <section className="modal" id='modelBut7' style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-prize-wrap13" style={{
-                            height: '19.5rem',
-                        }}>
-                            <p>请填写收货信息,我们将在活动结束后20个工作日内为您寄送奖品。</p>
-                            <Form onSubmit={this.handleAwardSubmit}>
-                                <FormItem>
-                                    {getFieldDecorator('userName', {
-                                    })(
-                                        <div>
-                                            <input type="text" placeholder="姓名" />
-                                        </div>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator('address', {
-                                    })(
-                                        <div>
-                                            <input type="text" placeholder="地址" />
-                                        </div>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator('telPhone', {
-                                    })(
-                                        <div>
-                                            <input type="text" placeholder="联系电话" />
-                                        </div>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    <button type="submit">
-                                        <img src={button03} alt="" />
-                                    </button>
-                                </FormItem>
-                            </Form>
-                        </div>
-                    </section>
-                    <section className="modal" id='modelBut77' style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-prize-wrap13" style={{
-                            height: '19.5rem',
-                        }}>
-                            <p>请填写收货信息,我们将在活动结束后20个工作日内为您寄送奖品。</p>
-                            <Form onSubmit={this.handleAwardSubmit1}>
-                                <FormItem>
-                                    {getFieldDecorator('userName', {
-                                    })(
-                                        <div>
-                                            <input type="text" placeholder="姓名" />
-                                        </div>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator('address', {
-                                    })(
-                                        <div>
-                                            <input type="text" placeholder="地址" />
-                                        </div>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator('telPhone', {
-                                    })(
-                                        <div>
-                                            <input type="text" placeholder="联系电话" />
-                                        </div>
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    <button type="submit">
-                                        <img src={button03} alt="" />
-                                    </button>
-                                </FormItem>
-                            </Form>
-                        </div>
-                    </section>
+                    {
+                        this.state.informationFlag
+                           ?
+                            (<InformationForm
+                                handleAwardSubmit={this.handleAwardSubmit}
+                            />)
+                            :''
+                    }
+                    {
+                        this.state.otherInsuranceFlag
+                            ?
+                            (<OtherForm
+                                handleOtherInsuranceSubmit={this.handleOtherInsuranceSubmit}
+                            />)
+                            :''
+                    }
+                    {
+                        this.state.otherInformationFlag
+                            ?
+                            (<OtherInformationForm
+                                handleOtherAwardSubmit={this.handleOtherAwardSubmit}
+                            />)
+                            :''
+                    }
                 </main>
             </div>
         )
     }
 }
-export default (Form.create()(RotaryDraw));
+export default RotaryDraw;

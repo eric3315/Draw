@@ -34,3 +34,12 @@ export function getRecAddr(payload){
         data: payload,
     });
 }
+
+//提交保险信息
+export function getRecInsurance(payload){
+    return axios({
+        method: 'POST',
+        url: '/getRecInsurance',
+        data: payload,
+    });
+}
