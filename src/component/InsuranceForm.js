@@ -20,10 +20,12 @@ class InsuranceForm extends React.Component{
 
     componentDidMount(){
         const { userXingMing='', userIDNumber=''} = this.props.userInfo;
-        this.props.form.setFieldsValue({
-            cardName: userXingMing,
-            identityCard: userIDNumber,
-        });
+        if(userIDNumber){
+            this.props.form.setFieldsValue({
+                cardName: userXingMing,
+                identityCard: `${userIDNumber.substr(0,14)}****`,
+            });
+        }
     }
 
     handleDatePicker=(e)=>{
@@ -50,26 +52,28 @@ class InsuranceForm extends React.Component{
                 this.state.time!=''
             ) {
                 this.props.handleFirstPrizeSubmit(values.cardName,values.identityCard,this.state.time);
-                this.props.form.resetFields(['cardName','identityCard']);
-                this.setState({time: '',});
             } else {
                 this.setState({effectiveDateFlag: false});
                 return false;
             }
         });
     }
-
+    handleHideModal=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.props.handleHideInsurance();
+        }
+    }
     render(){
         const { getFieldDecorator } = this.props.form;
         const {userInfo:{prizeName}} = this.props;
         return (
-            <section className="modal">
+            <section className="modal" onClick={e=>{this.handleHideModal(e)}}>
                 <div className="Active-prize-wrap12">
                     <p>恭喜!您已获得{prizeName}和价值100万的交通意外险，请及时领取。</p>
                     <Form onSubmit={this.handleSubmit}>
                         <FormItem>
                             {getFieldDecorator('cardName', {
-                                rules: [{ required: true, message: '请输入姓名' }],
+                                rules: [{ required: true, message: '请输入姓名' , pattern:/^[\u4E00-\u9FA5]{2,4}$/ }],
                             })(
                                 <Input placeholder="姓名"/>
                             )}
@@ -82,11 +86,13 @@ class InsuranceForm extends React.Component{
                             )}
                         </FormItem>
                         <div>
-                            <input type="text" placeholder="生效日期" value={this.state.time} readOnly onClick={e=>{this.handleDatePicker(e)}}/>
+                            <input type="text" placeholder="生效日期(有效期7天)" value={this.state.time} readOnly onClick={e=>{this.handleDatePicker(e)}}/>
                             <DatePicker
                                 isOpen={this.state.isOpen}
                                 onSelect={this.handleDatePickerSelect}
                                 onCancel={this.handleDatePickerCancel}
+                                min={new Date()}
+                                max={new Date(2018,10,24)}
                             />
                         </div>
                         {
@@ -94,7 +100,7 @@ class InsuranceForm extends React.Component{
                                 fontSize: '0.6rem',
                                 color: '#fff',
                                 marginTop: '-0.5rem',
-                            }}>请选择生效日期</div>
+                            }}>请选择生效日期(有效期7天)</div>
                         }
                         <FormItem>
                             <button type="submit">

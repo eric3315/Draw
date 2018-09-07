@@ -22,6 +22,7 @@ class RotaryDraw extends React.Component{
     constructor(props, context){
         super(props, context);
         this.state={
+            isRotate: true,
             drawFlag: true,
             insuranceFlag: false,
             informationFlag: false,
@@ -40,120 +41,130 @@ class RotaryDraw extends React.Component{
     componentDidMount(){
     }
 
-    handleRotating= async (e)=>{
+    handleRotating= (e)=>{
         e.preventDefault();
-        let userMobile=sessionStorage.getItem('userMobile');
-        let luckDrawNum=sessionStorage.getItem('luckDrawNum');
-        if(!userMobile){
-            userMobile='';
-        }
-        if(luckDrawNum == null || luckDrawNum > 0){
-            let result = await luckDraw({
-                userMobile: userMobile,
-                urlChannel: 'c22',
-            });
-            if(result.success){
-                if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
-                    Toast.info('请您先登录再进行抽奖', 3);
-                    //跳转到登录页面
-                    setTimeout(()=>{
-                        this.props.history.push('/login');
-                    },2000);
-                    return;
-                } else {
-                    let timer = null;
-                    let rotate=0;
-                    let turnId = document.getElementById('turnId');
-                    turnId.style.transform = "rotate(0deg)";
-                    let count =10;
-                    if(timer){
-                        clearInterval(timer);
+        if(this.state.isRotate){
+            this.setState({
+                isRotate: false,
+            },async ()=>{
+                let userMobile=sessionStorage.getItem('userMobile');
+                let luckDrawNum=sessionStorage.getItem('luckDrawNum');
+                if(!userMobile){
+                    userMobile='';
+                }
+                if(luckDrawNum == null || luckDrawNum > 0){
+                    let result = await luckDraw({
+                        userMobile: userMobile,
+                        urlChannel: 'c22',
+                    });
+                    if(result.success){
+                        if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
+                            this.setState({isRotate: true});
+                            Toast.info('请您先登录再进行抽奖', 3);
+                            //跳转到登录页面
+                            setTimeout(()=>{
+                                this.props.history.push('/login');
+                            },2000);
+                            return;
+                        } else {
+                            let timer = null;
+                            let rotate=0;
+                            let turnId = document.getElementById('turnId');
+                            turnId.style.transform = "rotate(0deg)";
+                            let count =10;
+                            if(timer){
+                                clearInterval(timer);
+                                return;
+                            }
+                            timer=setInterval(()=>{
+                                if(rotate>360){
+                                    rotate=0;
+                                }
+                                turnId.style.transform = `rotate(${rotate+=count}deg)`;
+                            },1);
+
+                            setTimeout(()=>{
+                                clearInterval(timer);
+                                let rotateNum=0;
+                                console.info(result.prizeName);
+                                switch (result.prizeName){
+                                    case '电子导游':
+                                        rotateNum = rotateArr[0];
+                                        break;
+                                    case '快速安检通道':
+                                        rotateNum = rotateArr[1];
+                                        break;
+                                    case '旅行收纳包':
+                                        rotateNum = rotateArr[2];
+                                        break;
+                                    case '10元U行优惠券':
+                                        rotateNum = rotateArr[3];
+                                        break;
+                                    case '旅行颈枕':
+                                        rotateNum = rotateArr[4];
+                                        break;
+                                    case '机场贵宾厅':
+                                        rotateNum = rotateArr[5];
+                                        break;
+                                    case '手机':
+                                        rotateNum = rotateArr[6];
+                                        break;
+                                }
+                                turnId.style.transform = `rotate(${-rotateNum}deg)`;
+                                //获取最新的抽奖次数存储到sessionStorage
+                                sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
+                                this.setState({drawFlag: false});
+                                let userInfo=null;
+                                if(result.isFirstLuckDraw){
+                                    //第一次抽奖
+                                    if(typeof result.userXingMing!=='undefined' && typeof result.userIDNumber!=='undefined'){
+                                        userInfo = {
+                                            winPrizeRecordId: result.prizeRecordId,
+                                            userXingMing: result.userXingMing,
+                                            userIDNumber: result.userIDNumber,
+                                            prizeName: result.prizeName,
+                                            isFirstLuckDraw: result.isFirstLuckDraw,
+                                        }
+                                    } else {
+                                        userInfo = {
+                                            winPrizeRecordId: result.prizeRecordId,
+                                            userXingMing: '',
+                                            userIDNumber: '',
+                                            prizeName: result.prizeName,
+                                        }
+                                    }
+                                    this.setState({
+                                        userInfo,
+                                        insuranceFlag: true,
+                                    })
+                                } else {
+                                    userInfo = {
+                                        winPrizeRecordId: result.prizeRecordId,
+                                        prizeName: result.prizeName,
+                                        isFirstLuckDraw: result.isFirstLuckDraw,
+                                    }
+                                    this.setState({
+                                        userInfo,
+                                    })
+                                    this.handleBut4Open(result.prizeName);
+                                }
+                                this.setState({isRotate: true});
+                                return;
+                            },4000);
+                        }
+                    } else {
+                        this.setState({isRotate: true});
+                        Toast.info(result.messageTip, 3);
                         return;
                     }
-                    timer=setInterval(()=>{
-                        if(rotate>360){
-                            rotate=0;
-                        }
-                        turnId.style.transform = `rotate(${rotate+=count}deg)`;
-                    },1);
-
-                    setTimeout(()=>{
-                        clearInterval(timer);
-                        let rotateNum=0;
-                        console.info(result.prizeName);
-                        switch (result.prizeName){
-                            case '电子导游':
-                                rotateNum = rotateArr[0];
-                                break;
-                            case '快速安检通道':
-                                rotateNum = rotateArr[1];
-                                break;
-                            case '旅行收纳包':
-                                rotateNum = rotateArr[2];
-                                break;
-                            case '10元U行优惠券':
-                                rotateNum = rotateArr[3];
-                                break;
-                            case '旅行颈枕':
-                                rotateNum = rotateArr[4];
-                                break;
-                            case '机场贵宾厅':
-                                rotateNum = rotateArr[5];
-                                break;
-                            case '手机':
-                                rotateNum = rotateArr[6];
-                                break;
-                        }
-                        turnId.style.transform = `rotate(${-rotateNum}deg)`;
-                        //获取最新的抽奖次数存储到sessionStorage
-                        sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
-                        this.setState({drawFlag: false});
-                        let userInfo=null;
-                        if(result.isFirstLuckDraw){
-                            //第一次抽奖
-                            if(typeof result.userXingMing!=='undefined' && typeof result.userIDNumber!=='undefined'){
-                                userInfo = {
-                                    winPrizeRecordId: result.prizeRecordId,
-                                    userXingMing: result.userXingMing,
-                                    userIDNumber: result.userIDNumber,
-                                    prizeName: result.prizeName,
-                                    isFirstLuckDraw: result.isFirstLuckDraw,
-                                }
-                            } else {
-                                userInfo = {
-                                    winPrizeRecordId: result.prizeRecordId,
-                                    userXingMing: '',
-                                    userIDNumber: '',
-                                    prizeName: result.prizeName,
-                                }
-                            }
-                            this.setState({
-                                userInfo,
-                                insuranceFlag: true,
-                            })
-                        } else {
-                            userInfo = {
-                                winPrizeRecordId: result.prizeRecordId,
-                                prizeName: result.prizeName,
-                                isFirstLuckDraw: result.isFirstLuckDraw,
-                            }
-                            this.setState({
-                                userInfo,
-                            })
-                            this.handleBut4Open(result.prizeName);
-                        }
-                        return;
-                    },4000);
+                } else if(luckDrawNum == 0){
+                    console.info(luckDrawNum);
+                    //抽奖次数已用尽
+                    this.handleBut3Open();
                 }
-            } else {
-                Toast.info(result.messageTip, 3);
-                return;
-            }
-        } else if(luckDrawNum == 0){
-            console.info(luckDrawNum);
-            //抽奖次数已用尽
-            this.handleBut3Open();
+            })
         }
+
     }
 
     handleFirstPrizeSubmit= async (cardName,identityCard,time) => {
@@ -206,6 +217,9 @@ class RotaryDraw extends React.Component{
                 });
                 return;
             }
+        } else {
+            Toast.info(result.messageTip, 3);
+            return;
         }
     }
 
@@ -401,7 +415,7 @@ class RotaryDraw extends React.Component{
                         (
                           <a href="javascript:;">已领取</a>
                         )
-                        : <a href="javascript:;" onClick={e=>{this.handleReceivePrize(e,item.winPrizeRecordId,item.prizeName)}}>领取</a>
+                        : <a href="javascript:;" onClick={e=>{this.handleReceivePrize(e,item)}}>领取</a>
                     }
                 </li>
             );
@@ -409,12 +423,23 @@ class RotaryDraw extends React.Component{
         return vDOM;
     }
 
-    handleReceivePrize=(e,winPrizeRecordId,prizeName)=>{
+    handleReceivePrize=(e,item)=>{
         e.preventDefault();
-        let userInfo = {
-            winPrizeRecordId: winPrizeRecordId,
-            prizeName: prizeName,
-            isFirstLuckDraw: false,
+        let userInfo={};
+        if(typeof item.userXingMing !=='undefined' && typeof item.userIDNumber!=='undefined'){
+            userInfo = {
+                winPrizeRecordId: item.winPrizeRecordId,
+                prizeName: item.prizeName,
+                isFirstLuckDraw: false,
+                userXingMing: item.userXingMing,
+                userIDNumber: item.userIDNumber,
+            }
+        } else {
+            userInfo = {
+                winPrizeRecordId: item.winPrizeRecordId,
+                prizeName: item.prizeName,
+                isFirstLuckDraw: false,
+            }
         }
         this.setState({
             userInfo,
@@ -452,26 +477,40 @@ class RotaryDraw extends React.Component{
     }
 
     handleOtherInsuranceSubmit= async (insuranceXiMing, insuranceIDNumber, insuranceEffectTime)=>{
-        const {winPrizeRecordId= '',  prizeName=''} = this.state.userInfo;
+        const {winPrizeRecordId= '', userXingMing='', userIDNumber='', prizeName='', isFirstLuckDraw} = this.state.userInfo;
         let userMobile=sessionStorage.getItem('userMobile');
-        let obj={
-            userMobile,
-            urlChannel: 'c22',
-            winPrizeRecordId,
-            prizeName,
-            insuranceXiMing,
-            insuranceIDNumber,
-            insuranceEffectTime,
+        let obj={};
+        if(userXingMing && userIDNumber){
+            obj={
+                userMobile,
+                urlChannel: 'c22',
+                winPrizeRecordId,
+                prizeName,
+                insuranceXiMing: userXingMing,
+                insuranceIDNumber: userIDNumber,
+                insuranceEffectTime,
+            }
+        } else {
+            obj={
+                userMobile,
+                urlChannel: 'c22',
+                isFirstLuckDraw,
+                prizeName,
+                winPrizeRecordId,
+                insuranceXiMing,
+                insuranceIDNumber,
+                insuranceEffectTime,
+            }
         }
         let result = await getRecInsurance(obj);
         if(result.success){
             Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
+            this.setState({otherInsuranceFlag: false},()=>{
+                this.handleBut5Open();
+            });
         } else {
             Toast.info(result.messageTip, 2);
         }
-        this.setState({otherInsuranceFlag: false},()=>{
-            this.handleBut5Open();
-        });
     }
 
     handleOtherAwardSubmit = async (userName,address,telPhone) => {
@@ -501,6 +540,18 @@ class RotaryDraw extends React.Component{
         ])
     }
 
+    handleHideInsurance=()=>{
+        this.setState({insuranceFlag: false});
+    }
+    handleHideInformation=()=>{
+        this.setState({informationFlag: false});
+    }
+    handleHideOtherInsurance=()=>{
+        this.setState({otherInsuranceFlag: false});
+    }
+    handleHideOtherInformation=()=>{
+        this.setState({otherInformationFlag: false});
+    }
     render(){
         let luckDrawNum=sessionStorage.getItem('luckDrawNum');
         return (
@@ -624,6 +675,7 @@ class RotaryDraw extends React.Component{
                             (<InsuranceForm
                                 userInfo={this.state.userInfo}
                                 handleFirstPrizeSubmit={this.handleFirstPrizeSubmit}
+                                handleHideInsurance ={this.handleHideInsurance}
                             />)
                             : ''
                     }
@@ -632,6 +684,7 @@ class RotaryDraw extends React.Component{
                            ?
                             (<InformationForm
                                 handleAwardSubmit={this.handleAwardSubmit}
+                                handleHideInformation ={this.handleHideInformation}
                             />)
                             :''
                     }
@@ -639,7 +692,9 @@ class RotaryDraw extends React.Component{
                         this.state.otherInsuranceFlag
                             ?
                             (<OtherForm
+                                userInfo={this.state.userInfo}
                                 handleOtherInsuranceSubmit={this.handleOtherInsuranceSubmit}
+                                handleHideOtherInsurance ={this.handleHideOtherInsurance}
                             />)
                             :''
                     }
@@ -648,6 +703,7 @@ class RotaryDraw extends React.Component{
                             ?
                             (<OtherInformationForm
                                 handleOtherAwardSubmit={this.handleOtherAwardSubmit}
+                                handleHideOtherInformation ={this.handleHideOtherInformation}
                             />)
                             :''
                     }

@@ -4,7 +4,7 @@ import axios from './index';
 export function luckDraw(payload){
     return axios({
         method: 'POST',
-        url: '/api/luckDraw',
+        url: '/luckDraw',
         data: payload,
     });
 }
@@ -12,7 +12,7 @@ export function luckDraw(payload){
 export function myPrize(payload){
     return axios({
         method: 'GET',
-        url: '/api/myPrize',
+        url: '/myPrize',
         params: payload,
     });
 }
@@ -21,7 +21,7 @@ export function myPrize(payload){
 export function getMyPrize(payload){
     return axios({
         method: 'POST',
-        url: '/api/getMyPrize',
+        url: '/getMyPrize',
         data: payload,
     });
 }
@@ -30,7 +30,7 @@ export function getMyPrize(payload){
 export function getRecAddr(payload){
     return axios({
         method: 'POST',
-        url: '/api/getRecAddr',
+        url: '/getRecAddr',
         data: payload,
     });
 }
@@ -39,7 +39,7 @@ export function getRecAddr(payload){
 export function getRecInsurance(payload){
     return axios({
         method: 'POST',
-        url: '/api/getRecInsurance',
+        url: '/getRecInsurance',
         data: payload,
     });
 }

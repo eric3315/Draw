@@ -26,11 +26,15 @@ class OtherInformationForm extends React.Component{
             }
         });
     }
-
+    handleHideModal=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.props.handleHideOtherInformation();
+        }
+    }
     render(){
         const { getFieldDecorator } = this.props.form;
         return (
-            <section className="modal">
+            <section className="modal"  onClick={e=>{this.handleHideModal(e)}}>
                 <div className="Active-prize-wrap13" style={{
                     height: '19.5rem',
                 }}>

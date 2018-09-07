@@ -17,6 +17,13 @@ class OtherForm extends React.Component{
     }
 
     componentDidMount(){
+        const { userXingMing='', userIDNumber=''} = this.props.userInfo;
+        if(userIDNumber){
+            this.props.form.setFieldsValue({
+                cardName: userXingMing,
+                identityCard: `${userIDNumber.substr(0,14)}****`,
+            });
+        }
     }
 
     handleDatePicker=(e)=>{
@@ -44,19 +51,21 @@ class OtherForm extends React.Component{
                 this.state.time!=''
             ) {
                 this.props.handleOtherInsuranceSubmit(values.cardName,values.identityCard,this.state.time);
-                this.props.form.resetFields(['cardName','identityCard']);
-                this.setState({time: '',});
             }else {
                 this.setState({effectiveDateFlag: false});
                 return false;
             }
         });
     }
-
+    handleHideModal=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.props.handleHideOtherInsurance();
+        }
+    }
     render(){
         const { getFieldDecorator } = this.props.form;
         return (
-            <section className="modal">
+            <section className="modal" onClick={e=>{this.handleHideModal(e)}}>
                 <div className="Active-prize-wrap13" style={{
                     height: '19.5rem',
                 }}>
