@@ -158,7 +158,6 @@ class RotaryDraw extends React.Component{
                         return;
                     }
                 } else if(luckDrawNum == 0){
-                    console.info(luckDrawNum);
                     //抽奖次数已用尽
                     this.handleBut3Open();
                 }
@@ -243,6 +242,9 @@ class RotaryDraw extends React.Component{
                     if(result.success){
                         this.handleResertTurn();
                         this.setState({informationFlag: false});
+                    } else {
+                        Toast.info(result.messageTip, 2);
+                        return;
                     }
                 }},
         ])
@@ -472,6 +474,9 @@ class RotaryDraw extends React.Component{
                 } else if(result.prizeName === '交通意外险'){
                     this.setState({otherInsuranceFlag: true});
                 }
+            } else {
+                Toast.info(result.messageTip, 2);
+                return;
             }
         })
     }
@@ -535,6 +540,9 @@ class RotaryDraw extends React.Component{
                             console.info('进来了');
                             this.handleBut5Open();
                         });
+                    } else {
+                        Toast.info(result.messageTip, 2);
+                        return;
                     }
                 }},
         ])
