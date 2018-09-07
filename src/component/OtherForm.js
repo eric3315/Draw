@@ -45,15 +45,27 @@ class OtherForm extends React.Component{
     handleSubmit=(e)=>{
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
-            if (typeof values.cardName!=='undefined' &&
-                typeof values.identityCard!=='undefined' &&
-                /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(values.identityCard) &&
-                this.state.time!=''
-            ) {
-                this.props.handleOtherInsuranceSubmit(values.cardName,values.identityCard,this.state.time);
-            }else {
-                this.setState({effectiveDateFlag: false});
-                return false;
+            if(typeof values.identityCard!=='undefined' && values.identityCard.substr(values.identityCard.length-4) === '****'){
+                if (typeof values.cardName!=='undefined' &&
+                    typeof values.identityCard!=='undefined' &&
+                    this.state.time!=''
+                ) {
+                    this.props.handleOtherInsuranceSubmit(values.cardName,values.identityCard,this.state.time);
+                } else {
+                    this.setState({effectiveDateFlag: false});
+                    return false;
+                }
+            } else {
+                if (typeof values.cardName!=='undefined' &&
+                    typeof values.identityCard!=='undefined' &&
+                    /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(values.identityCard) &&
+                    this.state.time!=''
+                ) {
+                    this.props.handleOtherInsuranceSubmit(values.cardName,values.identityCard,this.state.time);
+                } else {
+                    this.setState({effectiveDateFlag: false});
+                    return false;
+                }
             }
         });
     }
@@ -80,7 +92,7 @@ class OtherForm extends React.Component{
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('identityCard', {
-                                rules: [{ required: true, message: '请输入身份证' , pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/}],
+                                rules: [{ required: true, message: '请输入身份证'}],
                             })(
                                 <Input placeholder="身份证"/>
                             )}
