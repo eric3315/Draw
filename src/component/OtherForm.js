@@ -103,8 +103,8 @@ class OtherForm extends React.Component{
                                 isOpen={this.state.isOpen}
                                 onSelect={this.handleDatePickerSelect}
                                 onCancel={this.handleDatePickerCancel}
-                                min={new Date(2018,8,15)}
-                                max={new Date(2018,10,23)}
+                                min={new Date()}
+                                max={new Date(2018,10,24)}
                             />
                         </div>
                         {
@@ -115,7 +115,7 @@ class OtherForm extends React.Component{
                             }}>请选择生效日期(有效期7天)</div>
                         }
                         <FormItem>
-                            <button type="submit">
+                            <button type="submit" style={{marginTop: '2rem'}}>
                                 <img src={button03} alt="" />
                             </button>
                         </FormItem>

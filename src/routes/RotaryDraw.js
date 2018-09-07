@@ -428,20 +428,10 @@ class RotaryDraw extends React.Component{
     handleReceivePrize=(e,item)=>{
         e.preventDefault();
         let userInfo={};
-        if(typeof item.userXingMing !=='undefined' && typeof item.userIDNumber!=='undefined'){
-            userInfo = {
-                winPrizeRecordId: item.winPrizeRecordId,
-                prizeName: item.prizeName,
-                isFirstLuckDraw: false,
-                userXingMing: item.userXingMing,
-                userIDNumber: item.userIDNumber,
-            }
-        } else {
-            userInfo = {
-                winPrizeRecordId: item.winPrizeRecordId,
-                prizeName: item.prizeName,
-                isFirstLuckDraw: false,
-            }
+        userInfo = {
+            winPrizeRecordId: item.winPrizeRecordId,
+            prizeName: item.prizeName,
+            isFirstLuckDraw: false,
         }
         this.setState({
             userInfo,
@@ -472,7 +462,16 @@ class RotaryDraw extends React.Component{
                     this.handleBut11Open();
                     return;
                 } else if(result.prizeName === '交通意外险'){
-                    this.setState({otherInsuranceFlag: true});
+                    userInfo={
+                        winPrizeRecordId: result.winPrizeRecordId,
+                        prizeName: result.prizeName,
+                        isFirstLuckDraw: result.isFirstLuckDraw,
+                        userXingMing: result.userXingMing,
+                        userIDNumber: result.userIDNumber,
+                    }
+                    this.setState({userInfo},()=>{
+                        this.setState({otherInsuranceFlag: true});
+                    })
                 }
             } else {
                 Toast.info(result.messageTip, 2);
