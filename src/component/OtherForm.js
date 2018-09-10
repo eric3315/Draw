@@ -52,21 +52,26 @@ class OtherForm extends React.Component{
                 ) {
                     this.props.handleOtherInsuranceSubmit(values.cardName,values.identityCard,this.state.time);
                 } else {
-                    this.setState({effectiveDateFlag: false});
+                    if(!this.state.time){
+                        this.setState({effectiveDateFlag: false});
+                    }
                     return false;
                 }
             } else {
                 if (typeof values.cardName!=='undefined' &&
                     typeof values.identityCard!=='undefined' &&
-                    /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(values.identityCard) &&
+                    /^.{18}$/.test(values.identityCard)&&
                     this.state.time!=''
                 ) {
                     this.props.handleOtherInsuranceSubmit(values.cardName,values.identityCard,this.state.time);
                 } else {
-                    this.setState({effectiveDateFlag: false});
+                    if(!this.state.time){
+                        this.setState({effectiveDateFlag: false});
+                    }
                     return false;
                 }
             }
+            return false;
         });
     }
     handleHideModal=(e)=>{
@@ -80,8 +85,12 @@ class OtherForm extends React.Component{
             <section className="modal" onClick={e=>{this.handleHideModal(e)}}>
                 <div className="Active-prize-wrap13" style={{
                     height: '19.5rem',
+                    paddingTop: '3rem',
                 }}>
-                    <p>请填写交通意外险投保信息</p>
+                    <p style={{
+                        fontSize: '1rem',
+                        textIndent: '1.5rem',
+                    }}>请填写交通意外险投保信息</p>
                     <Form onSubmit={this.handleSubmit}>
                         <FormItem>
                             {getFieldDecorator('cardName', {
@@ -92,7 +101,7 @@ class OtherForm extends React.Component{
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('identityCard', {
-                                rules: [{ required: true, message: '请输入身份证'}],
+                                rules: [{ required: true, message: '请输入身份证', pattern: /^.{18}$/}],
                             })(
                                 <Input placeholder="身份证"/>
                             )}
@@ -115,7 +124,7 @@ class OtherForm extends React.Component{
                             }}>请选择生效日期(有效期7天)</div>
                         }
                         <FormItem>
-                            <button type="submit" style={{marginTop: '2rem'}}>
+                            <button type="submit" style={{marginTop: '1rem'}}>
                                 <img src={button03} alt="" />
                             </button>
                         </FormItem>

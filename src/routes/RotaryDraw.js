@@ -29,6 +29,12 @@ class RotaryDraw extends React.Component{
             otherInsuranceFlag: false,
             otherInformationFlag: false,
             prizeListFlag: false,
+            modelBut1Flag: false,
+            modelBut2Flag: false,
+            modelBut11Flag: false,
+            modelBut22Flag: false,
+            modelBut3Flag: false,
+            modelBut4Flag: false,
             userInfo:{
                 winPrizeRecordId: '',
                 userXingMing: '',
@@ -151,7 +157,7 @@ class RotaryDraw extends React.Component{
                                 }
                                 this.setState({isRotate: true});
                                 return;
-                            },4000);
+                            },3000);
                         }
                     } else {
                         this.setState({isRotate: true});
@@ -160,7 +166,9 @@ class RotaryDraw extends React.Component{
                     }
                 } else if(luckDrawNum == 0){
                     //抽奖次数已用尽
+                    this.setState({isRotate: true});
                     this.handleBut3Open();
+                    return;
                 }
             })
         }
@@ -257,77 +265,147 @@ class RotaryDraw extends React.Component{
     }
     /*其他电子码弹窗 begin*/
     handleBut1Open=()=>{
-        let modelBut1= document.getElementById('modelBut1');
-        modelBut1.style.display='block';
+        this.setState({
+            modelBut1Flag: true,
+        })
     }
-    handleBut1=(e)=>{
-        let modelBut1= document.getElementById('modelBut1');
-        modelBut1.style.display='none';
-        this.handleResertTurn();
+    handleBut1=()=>{
+        this.setState({
+            modelBut1Flag: false,
+        },()=>{
+            this.handleResertTurn();
+        })
+    }
+    handleModelBut1Close=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.setState({
+                modelBut1Flag: false,
+            },()=>{
+                this.handleResertTurn();
+            })
+        }
     }
     /*其他电子码弹窗 begin*/
 
     /*U行优惠券弹窗 begin*/
     handleBut2Open=()=>{
-        let modelBut2= document.getElementById('modelBut2');
-        modelBut2.style.display='block';
+        this.setState({
+            modelBut2Flag: true,
+        })
     }
     handleBut2=(e)=>{
-        let modelBut2= document.getElementById('modelBut2');
-        modelBut2.style.display='none';
-        this.handleResertTurn();
+        this.setState({
+            modelBut2Flag: false,
+        },()=>{
+            this.handleResertTurn();
+        })
+    }
+    handleModelBut2Close=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.setState({
+                modelBut2Flag: false,
+            },()=>{
+                this.handleResertTurn();
+            })
+        }
     }
 
     /*其他电子码弹窗 begin*/
     handleBut11Open=()=>{
-        let modelBut11= document.getElementById('modelBut11');
-        modelBut11.style.display='block';
+        this.setState({
+            modelBut11Flag: true,
+        })
     }
     handleBut11=(e)=>{
-        let modelBut11= document.getElementById('modelBut11');
-        modelBut11.style.display='none';
-        this.handleResertTurn();
-        this.handleBut5Open();
+        this.setState({
+            modelBut11Flag: false,
+        },()=>{
+            this.handleResertTurn();
+            this.handleBut5Open();
+        })
+    }
+    handleModelBut11Close=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.setState({
+                modelBut11Flag: false,
+            },()=>{
+                this.handleResertTurn();
+                this.handleBut5Open();
+            })
+        }
     }
     /*其他电子码弹窗 begin*/
 
     /*U行优惠券弹窗 begin*/
     handleBut22Open=()=>{
-        let modelBut22= document.getElementById('modelBut22');
-        modelBut22.style.display='block';
+        this.setState({
+            modelBut22Flag: true,
+        })
     }
     handleBut22=(e)=>{
-        let modelBut22= document.getElementById('modelBut22');
-        modelBut22.style.display='none';
-        this.handleResertTurn();
-        this.handleBut5Open();
+        this.setState({
+            modelBut22Flag: false,
+        },()=>{
+            this.handleResertTurn();
+            this.handleBut5Open();
+        })
+    }
+
+    handleModelBut22Close=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.setState({
+                modelBut22Flag: false,
+            },()=>{
+                this.handleResertTurn();
+                this.handleBut5Open();
+            })
+        }
     }
 
     /*U行优惠券弹窗 end*/
 
     /*抽奖次数已用尽弹窗 begin*/
     handleBut3Open=()=>{
-        let modelBut3= document.getElementById('modelBut3');
-        modelBut3.style.display='block';
+        this.setState({
+            modelBut3Flag: true,
+        })
     }
     handleBut3=(e)=>{
-        let modelBut3= document.getElementById('modelBut3');
-        modelBut3.style.display='none';
-        this.handleResertTurn();
+        this.setState({
+            modelBut3Flag: false,
+        },()=>{
+            this.handleResertTurn();
+        })
+    }
+    handleModelBut3Close=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.setState({
+                modelBut3Flag: false,
+            },()=>{
+                this.handleResertTurn();
+            })
+        }
     }
     /*抽奖次数已用尽弹窗 end*/
 
     handleBut4Open=(prizeName)=>{
-        let modelBut4= document.getElementById('modelBut4');
-        let div = modelBut4.childNodes[0];
-        div.children[0].innerHTML=`恭喜! 您已获得${prizeName}，请及时领取。`;
-        modelBut4.style.display='block';
+        this.setState({
+            modelBut4Flag: true,
+        },()=>{
+            let modelBut4= document.getElementById('modelBut4');
+            let div = modelBut4.childNodes[0];
+            div.children[0].innerHTML=`恭喜! 您已获得${prizeName}，请及时领取。`;
+        })
     }
 
-    handleModel4Close=()=>{
-        let modelBut4= document.getElementById('modelBut4');
-        modelBut4.style.display='none';
-        this.handleResertTurn();
+    handleModel4Close=(e)=>{
+        if(e.target.tagName === 'SECTION'){
+            this.setState({
+                modelBut4Flag: false,
+            },()=>{
+                this.handleResertTurn();
+            })
+        }
     }
 
     handleBut4= async (e)=>{
@@ -344,23 +422,29 @@ class RotaryDraw extends React.Component{
         if(result.success){
             //10元U行优惠券跳转页面到 /coupons
             if(result.prizeName === '10元U行优惠券'){
-                let modelBut4= document.getElementById('modelBut4');
-                modelBut4.style.display='none';
-                this.handleResertTurn();
-                this.handleBut2Open();
+                this.setState({
+                    modelBut4Flag: false,
+                },()=>{
+                    this.handleResertTurn();
+                    this.handleBut2Open();
+                })
                 return;
             } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
                 //实物跳转到填写地址是窗口
-                let modelBut4= document.getElementById('modelBut4');
-                modelBut4.style.display='none';
-                this.handleResertTurn();
-                this.setState({informationFlag: true});
+                this.setState({
+                    modelBut4Flag: false,
+                    informationFlag: true
+                },()=>{
+                    this.handleResertTurn();
+                })
                 return;
             } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
-                let modelBut4= document.getElementById('modelBut4');
-                modelBut4.style.display='none';
-                this.handleResertTurn();
-                this.handleBut1Open();
+                this.setState({
+                    modelBut4Flag: false,
+                },()=>{
+                    this.handleResertTurn();
+                    this.handleBut1Open();
+                })
                 return;
             }
         }
@@ -619,57 +703,78 @@ class RotaryDraw extends React.Component{
                             </p>
                         </div>
                     </section>
-                    <section className="modal" id='modelBut1' style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-over-wrap">
-                            <p>我们将在活动结束后20个工作日内向您的手机发送电子码,请注意查收。</p>
-                            <button type="button" onClick={e=>{this.handleBut1(e)}}><img src={button04} alt="" /></button>
-                        </div>
-                    </section>
-                    <section className="modal" id='modelBut2' style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-over-wrap">
-                            <p>您获得的出行优惠券已放入手机号，登陆'U行' 即可使用。</p>
-                            <button type="button" onClick={e=>{this.handleBut2(e)}}><img src={button04} alt="" /></button>
-                        </div>
-                    </section>
-                    <section className="modal" id='modelBut11' style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-over-wrap">
-                            <p>我们将在活动结束后20个工作日内向您的手机发送电子码,请注意查收。</p>
-                            <button type="button" onClick={e=>{this.handleBut11(e)}}><img src={button04} alt="" /></button>
-                        </div>
-                    </section>
-                    <section className="modal" id='modelBut22' style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-over-wrap">
-                            <p>您获得的出行优惠券已放入手机号，登陆'U行' 即可使用。</p>
-                            <button type="button" onClick={e=>{this.handleBut22(e)}}><img src={button04} alt="" /></button>
-                        </div>
-                    </section>
-                    <section className="modal" id='modelBut3' style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-over-wrap">
-                            <h2>抱歉</h2>
-                            <p style={{
-                                lineHeight: '2.5rem',
-                            }}>您的抽奖次数已用尽</p>
-                            <button type="button" onClick={e=>{this.handleBut3(e)}}><img src={button04} alt="" /></button>
-                        </div>
-                    </section>
-                    <section className="modal" id='modelBut4' onClick={e=>{this.handleModel4Close()}} style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-prize-wrap14">
-                            <p>恭喜! 您已获得***，请及时领取。</p>
-                            <button type="button" onClick={e=>{this.handleBut4(e)}}><img src={button02} alt="" /></button>
-                        </div>
-                    </section>
+                    {
+                        this.state.modelBut1Flag
+                        ?
+                        (
+                            <section className="modal" id='modelBut1' onClick={e=>{this.handleModelBut1Close(e)}}>
+                                <div className="Active-over-wrap">
+                                    <p>我们将在活动结束后20个工作日内向您的手机发送电子码,请注意查收。</p>
+                                    <button type="button" onClick={e=>{this.handleBut1()}}><img src={button04} alt="" /></button>
+                                </div>
+                            </section>
+                        ):''
+                    }
+                    {
+                        this.state.modelBut2Flag
+                        ?
+                        (
+                            <section className="modal" id='modelBut2' onClick={e=>{this.handleModelBut2Close(e)}}>
+                                <div className="Active-over-wrap">
+                                    <p>您获得的出行优惠券已放入手机号，登陆'U行' 即可使用。</p>
+                                    <button type="button" onClick={e=>{this.handleBut2(e)}}><img src={button04} alt="" /></button>
+                                </div>
+                            </section>
+                        ):''
+                    }
+                    {
+                        this.state.modelBut11Flag
+                        ?
+                        (  <section className="modal" id='modelBut11' onClick={e=>{this.handleModelBut11Close(e)}}>
+                            <div className="Active-over-wrap">
+                                <p>我们将在活动结束后20个工作日内向您的手机发送电子码,请注意查收。</p>
+                                <button type="button" onClick={e=>{this.handleBut11(e)}}><img src={button04} alt="" /></button>
+                            </div>
+                        </section>
+                        ):''
+                    }
+                    {
+                        this.state.modelBut22Flag
+                            ?
+                            (  <section className="modal" id='modelBut22' onClick={e=>{this.handleModelBut22Close(e)}}>
+                                    <div className="Active-over-wrap">
+                                        <p>您获得的出行优惠券已放入手机号，登陆'U行' 即可使用。</p>
+                                        <button type="button" onClick={e=>{this.handleBut22(e)}}><img src={button04} alt="" /></button>
+                                    </div>
+                                </section>
+                            ):''
+                    }
+                    {
+                        this.state.modelBut3Flag
+                            ?
+                            (  <section className="modal" id='modelBut3' onClick={e=>{this.handleModelBut3Close(e)}}>
+                                    <div className="Active-over-wrap">
+                                        <h2>抱歉</h2>
+                                        <p style={{
+                                            lineHeight: '2.5rem',
+                                        }}>您的抽奖次数已用尽</p>
+                                        <button type="button" onClick={e=>{this.handleBut3(e)}}><img src={button04} alt="" /></button>
+                                    </div>
+                                </section>
+                            ):''
+                    }
+                    {
+                        this.state.modelBut4Flag
+                           ?
+                            (
+                                <section className="modal" id='modelBut4' onClick={e=>{this.handleModel4Close(e)}}>
+                                <div className="Active-prize-wrap14">
+                                    <p>恭喜! 您已获得***，请及时领取。</p>
+                                    <button type="button" onClick={e=>{this.handleBut4(e)}}><img src={button02} alt="" /></button>
+                                </div>
+                            </section>
+                            ):''
+                    }
                     {
                         this.state.prizeListFlag
                         ?

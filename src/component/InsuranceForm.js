@@ -53,18 +53,22 @@ class InsuranceForm extends React.Component{
                 ) {
                     this.props.handleFirstPrizeSubmit(values.cardName,values.identityCard,this.state.time);
                 } else {
-                    this.setState({effectiveDateFlag: false});
+                    if(!this.state.time){
+                        this.setState({effectiveDateFlag: false});
+                    }
                     return false;
                 }
             } else {
                 if (typeof values.cardName!=='undefined' &&
                     typeof values.identityCard!=='undefined' &&
-                    /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/.test(values.identityCard) &&
+                    /^.{18}$/.test(values.identityCard)&&
                     this.state.time!=''
                 ) {
                     this.props.handleFirstPrizeSubmit(values.cardName,values.identityCard,this.state.time);
                 } else {
-                    this.setState({effectiveDateFlag: false});
+                    if(!this.state.time){
+                        this.setState({effectiveDateFlag: false});
+                    }
                     return false;
                 }
             }
@@ -92,7 +96,7 @@ class InsuranceForm extends React.Component{
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('identityCard', {
-                                rules: [{ required: true, message: '请输入身份证' }],
+                                rules: [{ required: true, message: '请输入身份证', pattern: /^.{18}$/}],
                             })(
                                 <Input placeholder="身份证"/>
                             )}
