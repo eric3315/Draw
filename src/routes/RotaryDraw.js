@@ -28,6 +28,7 @@ class RotaryDraw extends React.Component{
             informationFlag: false,
             otherInsuranceFlag: false,
             otherInformationFlag: false,
+            prizeListFlag: false,
             userInfo:{
                 winPrizeRecordId: '',
                 userXingMing: '',
@@ -388,18 +389,17 @@ class RotaryDraw extends React.Component{
             } else {
                 this.setState({
                     prizeList: result.prizeRecords,
-                },()=>{
-                    let modelBut5= document.getElementById('modelBut5');
-                    modelBut5.style.display='block';
+                    prizeListFlag: true,
                 })
             }
-
         }
     }
     handleBut5=(e)=>{
-        let modelBut5= document.getElementById('modelBut5');
-        modelBut5.style.display='none';
-        this.handleResertTurn();
+        if(e.target.tagName === 'SECTION'){
+            this.setState({prizeListFlag: false},()=>{
+                this.handleResertTurn();
+            })
+        }
     }
 
     renderPrizeList(){
@@ -449,17 +449,20 @@ class RotaryDraw extends React.Component{
             if(result.success){
                 //10元U行优惠券跳转页面到 /coupons
                 if(result.prizeName === '10元U行优惠券'){
-                    this.handleBut5();
-                    this.handleBut22Open();
+                    this.setState({prizeListFlag: false},()=>{
+                        this.handleBut22Open();
+                    })
                     return;
                 } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
                     //实物跳转到填写地址是窗口
-                    this.handleBut5();
-                    this.setState({otherInformationFlag: true});
+                    this.setState({prizeListFlag: false},()=>{
+                        this.setState({otherInformationFlag: true});
+                    })
                     return;
                 } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
-                    this.handleBut5();
-                    this.handleBut11Open();
+                    this.setState({prizeListFlag: false},()=>{
+                        this.handleBut11Open();
+                    })
                     return;
                 } else if(result.prizeName === '交通意外险'){
                     userInfo={
@@ -667,15 +670,19 @@ class RotaryDraw extends React.Component{
                             <button type="button" onClick={e=>{this.handleBut4(e)}}><img src={button02} alt="" /></button>
                         </div>
                     </section>
-                    <section className="modal" id='modelBut5' onClick={e=>{this.handleBut5()}} style={{
-                        display: 'none',
-                    }}>
-                        <div className="Active-over-prize1">
-                            <ul>
-                                {this.renderPrizeList()}
-                            </ul>
-                        </div>
-                    </section>
+                    {
+                        this.state.prizeListFlag
+                        ?
+                        (
+                            <section className="modal" id='modelBut5' onClick={e=>{this.handleBut5(e)}}>
+                                <div className="Active-over-prize1">
+                                    <ul>
+                                        {this.renderPrizeList()}
+                                    </ul>
+                                </div>
+                            </section>
+                        ): ''
+                    }
                     {
                         this.state.insuranceFlag
                             ?
