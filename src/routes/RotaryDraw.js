@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
+import { Prompt } from 'react-router-dom';
 import Top from '../component/Top';
 import logo from '../static/images/logo.png';
 import logo2 from '../static/images/logo2.png';
@@ -49,6 +49,7 @@ class RotaryDraw extends React.Component{
     }
     componentDidMount(){
         console.info(this.props.history);
+        console.info(this.props);
         // this.props.router.setRouteLeaveHook(
         //     this.props.route,
         //     this.routerWillLeave
@@ -659,6 +660,7 @@ class RotaryDraw extends React.Component{
         let luckDrawNum=sessionStorage.getItem('luckDrawNum');
         return (
             <div>
+                <Prompt message="确定要离开？"  when={true}/>
                 <Top/>
                 <main className="Active-main" id="Active-main" style={{
                     height: 'auto'
@@ -843,4 +845,4 @@ class RotaryDraw extends React.Component{
         )
     }
 }
-export default withRouter(RotaryDraw);
+export default RotaryDraw;
