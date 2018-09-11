@@ -1,6 +1,7 @@
 import React from 'react';
 import {loginIn, sendVlidateCode} from '../api/loginApi';
 import logo from '../static/images/logo.png';
+import logo2 from '../static/images/logo2.png';
 import close01 from'../static/images/close01.png';
 import person from '../static/images/person.png';
 import password from '../static/images/password.png';
@@ -155,7 +156,7 @@ class Login extends React.Component{
             <main className="main-bac" id="Main" >
                 <section className="login-head clearfix">
                     <div className="login-head-logo">
-                        <h1><img src={logo} alt="" /></h1>
+                        <h1><img src={logo2} alt="" /></h1>
                     </div>
                 </section>
                 <section className="logo-input">

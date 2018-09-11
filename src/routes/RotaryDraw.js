@@ -1,7 +1,8 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 import Top from '../component/Top';
 import logo from '../static/images/logo.png';
-import logo1 from '../static/images/logo1.png';
+import logo2 from '../static/images/logo2.png';
 import table from '../static/images/table.png';
 import button04 from '../static/images/button04.png';
 import button02 from '../static/images/button02.png';
@@ -48,8 +49,14 @@ class RotaryDraw extends React.Component{
     }
     componentDidMount(){
         console.info(this.props.history);
+        // this.props.router.setRouteLeaveHook(
+        //     this.props.route,
+        //     this.routerWillLeave
+        // )
     }
-
+    routerWillLeave=(nextLocation)=>{
+        return '确认要离开？';
+    }
     handleRotating= (e)=>{
         e.preventDefault();
         if(this.state.isRotate){
@@ -657,8 +664,7 @@ class RotaryDraw extends React.Component{
                     height: 'auto'
                 }}>
                     <section className="Active-main-logo">
-                        <img src={logo} alt="" />
-                        <img src={logo1} alt="" className="Active-main-logo-r" />
+                        <img src={logo2} alt="" />
                     </section>
                     <section className="Active-turntable">
                         <img src={chassis} alt="" className="Active-turntable-rotary" />
@@ -837,4 +843,4 @@ class RotaryDraw extends React.Component{
         )
     }
 }
-export default RotaryDraw;
+export default withRouter(RotaryDraw);

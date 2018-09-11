@@ -49,7 +49,6 @@ textarea {
 .login-head-logo img{
     display: block;
     width:4.3rem;
-    height: 2.375rem;
 }
 .login-head-close{
     float: right;
@@ -303,20 +302,13 @@ textarea {
 }
 /*转盘样式*/
 .Active-main-logo{
-    margin-bottom: 18rem;
-    position: relative;;
-    overflow: hidden;
+    margin-bottom: 21rem;
 }
 .Active-main-logo img{
     display: block;
-    width: 3.3rem;
+    width: 4.3rem;
 }
-.Active-main-logo-r{
-    position: absolute;
-    right: 0.5rem;
-    top:0.4rem;
-    width:4.5rem !important;
-}
+
 .active-frequency{
     padding: 0.3rem 0;
     text-align: center;
