@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM, {render} from 'react-dom';
-import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 /*REDUX STORE*/
 import {Provider} from 'react-redux';
 import store from './store';
@@ -32,8 +32,8 @@ render(
                 <div>
                     <main className='container'>
                         <Switch>
-                            <Route path='/login' component={Login} onEnter={checkAuth()}/>
-                            <Route path='/rotaryDraw' component={RotaryDraw} onEnter={checkAuth()}/>
+                            <Route path='/login' component={Login} />
+                            <Route path='/rotaryDraw' component={RotaryDraw} />
                             <Redirect from="/" to='/rotaryDraw'/>
                         </Switch>
                     </main>
