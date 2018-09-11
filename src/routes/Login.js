@@ -25,7 +25,7 @@ class Login extends React.Component{
         }
     }
     componentDidMount(){
-
+        console.info(this.props.history);
     }
     loginFail =(flag, messageTip) =>{
         if(flag){

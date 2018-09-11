@@ -303,13 +303,20 @@ textarea {
 }
 /*转盘样式*/
 .Active-main-logo{
-    margin-bottom: 21rem;
+    margin-bottom: 18rem;
+    position: relative;;
+    overflow: hidden;
 }
 .Active-main-logo img{
     display: block;
     width: 3.3rem;
 }
-
+.Active-main-logo-r{
+    position: absolute;
+    right: 0.5rem;
+    top:0.4rem;
+    width:4.5rem !important;
+}
 .active-frequency{
     padding: 0.3rem 0;
     text-align: center;
@@ -1042,5 +1049,11 @@ textarea {
 .am-modal-wrap{
     z-index: 9998!important;
 }
+
+
+
+
+
+
 /*活动 end */
 

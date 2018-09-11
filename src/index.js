@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM, {render} from 'react-dom';
-import {HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-
+import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 /*REDUX STORE*/
 import {Provider} from 'react-redux';
 import store from './store';
@@ -21,15 +20,20 @@ import Login from './routes/Login';/*登录*/
 import RotaryDraw from './routes/RotaryDraw';/*转盘抽奖*/
 
 moment.locale('en');
+
+function checkAuth(){
+   console.info('进来了');
+}
+
 render(
     <Provider store={store}>
-    <Router>
+        <Router>
             <LocaleProvider locale={zh_CN}>
                 <div>
                     <main className='container'>
                         <Switch>
-                            <Route path='/login' component={Login} />
-                            <Route path='/rotaryDraw' component={RotaryDraw} />
+                            <Route path='/login' component={Login} onEnter={checkAuth()}/>
+                            <Route path='/rotaryDraw' component={RotaryDraw} onEnter={checkAuth()}/>
                             <Redirect from="/" to='/rotaryDraw'/>
                         </Switch>
                     </main>
