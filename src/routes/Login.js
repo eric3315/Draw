@@ -9,6 +9,7 @@ import logoBtn from '../static/images/logo-btn.png';
 import button01 from '../static/images/button01.png';
 import {Form, Checkbox} from 'antd';
 import {Toast} from'antd-mobile';
+import {queryURLParameter} from '../utils/utils';
 
 
 const FormItem = Form.Item;
@@ -23,10 +24,14 @@ class Login extends React.Component{
             checkFlag: true,
             clickFlag: true,
             phoneFlag: true,
+            urlChannel: '',
         }
     }
     componentDidMount(){
-        console.info(this.props.history);
+        let obj = queryURLParameter(window.location.href);
+        if(typeof obj.urlChannel!=='undefined'){
+            this.setState({urlChannel: obj.urlChannel});
+        }
     }
     loginFail =(flag, messageTip) =>{
         if(flag){
@@ -66,7 +71,7 @@ class Login extends React.Component{
                         userMobile: values.phone,
                         validateCode: values.verificationCode,
                         isAgreement: values.remember,
-                        urlChannel: 'c22',
+                        urlChannel: this.state.urlChannel,
                     });
                     if(result.success){
                         //记录手机号和次数到sessionStorage
@@ -141,7 +146,7 @@ class Login extends React.Component{
 
     handleVerificationCode=(phone)=>{
         sendVlidateCode({
-            urlChannel: 'c22',
+            urlChannel: this.state.urlChannel,
             userMobile: phone,
         }).then(res=>{
             if(!res.success){

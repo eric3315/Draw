@@ -1,7 +1,5 @@
 import React from 'react';
-import { Prompt } from 'react-router-dom';
 import Top from '../component/Top';
-import logo from '../static/images/logo.png';
 import logo2 from '../static/images/logo2.png';
 import table from '../static/images/table.png';
 import button04 from '../static/images/button04.png';
@@ -15,7 +13,7 @@ import InsuranceForm from '../component/InsuranceForm';
 import InformationForm from '../component/InformationForm';
 import OtherForm from '../component/OtherForm';
 import OtherInformationForm from '../component/OtherInformationForm';
-import {format} from '../utils/utils';
+import {format,queryURLParameter} from '../utils/utils';
 
 const alert = Modal.alert;
 let rotateArr = [25.7,77.1,128.5,180,231.4,283,334];
@@ -37,6 +35,7 @@ class RotaryDraw extends React.Component{
             modelBut22Flag: false,
             modelBut3Flag: false,
             modelBut4Flag: false,
+            urlChannel: '',
             userInfo:{
                 winPrizeRecordId: '',
                 userXingMing: '',
@@ -48,15 +47,10 @@ class RotaryDraw extends React.Component{
         }
     }
     componentDidMount(){
-        console.info(this.props.history);
-        console.info(this.props);
-        // this.props.router.setRouteLeaveHook(
-        //     this.props.route,
-        //     this.routerWillLeave
-        // )
-    }
-    routerWillLeave=(nextLocation)=>{
-        return '确认要离开？';
+        let obj = queryURLParameter(window.location.href);
+        if(typeof obj.urlChannel!=='undefined'){
+            this.setState({urlChannel: obj.urlChannel});
+        }
     }
     handleRotating= (e)=>{
         e.preventDefault();
@@ -72,7 +66,7 @@ class RotaryDraw extends React.Component{
                 if(luckDrawNum == null || luckDrawNum > 0){
                     let result = await luckDraw({
                         userMobile: userMobile,
-                        urlChannel: 'c22',
+                        urlChannel: this.state.urlChannel,
                     });
                     if(result.success){
                         if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
@@ -192,7 +186,7 @@ class RotaryDraw extends React.Component{
         if(userXingMing && userIDNumber){
             obj={
                 userMobile,
-                urlChannel: 'c22',
+                urlChannel: this.state.urlChannel,
                 isFirstLuckDraw,
                 prizeName,
                 winPrizeRecordId,
@@ -203,7 +197,7 @@ class RotaryDraw extends React.Component{
         } else {
             obj={
                 userMobile,
-                urlChannel: 'c22',
+                urlChannel: this.state.urlChannel,
                 isFirstLuckDraw,
                 prizeName,
                 winPrizeRecordId,
@@ -247,7 +241,7 @@ class RotaryDraw extends React.Component{
         let userMobile=sessionStorage.getItem('userMobile');
         let obj={
             userMobile,
-            urlChannel: 'c22',
+            urlChannel: this.state.urlChannel,
             prizeName,
             winPrizeRecordId,
             addrXiming: userName,
@@ -423,7 +417,7 @@ class RotaryDraw extends React.Component{
         let userMobile=sessionStorage.getItem('userMobile');
         let obj={
             userMobile,
-            urlChannel: 'c22',
+            urlChannel: this.state.urlChannel,
             isFirstLuckDraw,
             prizeName,
             winPrizeRecordId,
@@ -467,7 +461,7 @@ class RotaryDraw extends React.Component{
         }
         let result = await myPrize({
             userMobile: userMobile,
-            urlChannel: 'c22',
+            urlChannel: this.state.urlChannel,
         });
         if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
             //跳转登录页
@@ -534,7 +528,7 @@ class RotaryDraw extends React.Component{
             let userMobile=sessionStorage.getItem('userMobile');
             let obj={
                 userMobile,
-                urlChannel: 'c22',
+                urlChannel: this.state.urlChannel,
                 isFirstLuckDraw,
                 prizeName,
                 winPrizeRecordId,
@@ -584,7 +578,7 @@ class RotaryDraw extends React.Component{
         if(userXingMing && userIDNumber){
             obj={
                 userMobile,
-                urlChannel: 'c22',
+                urlChannel: this.state.urlChannel,
                 winPrizeRecordId,
                 prizeName,
                 insuranceXiMing: userXingMing,
@@ -594,7 +588,7 @@ class RotaryDraw extends React.Component{
         } else {
             obj={
                 userMobile,
-                urlChannel: 'c22',
+                urlChannel: this.state.urlChannel,
                 isFirstLuckDraw,
                 prizeName,
                 winPrizeRecordId,
@@ -620,7 +614,7 @@ class RotaryDraw extends React.Component{
         let userMobile=sessionStorage.getItem('userMobile');
         let obj={
             userMobile,
-            urlChannel: 'c22',
+            urlChannel: this.state.urlChannel,
             prizeName,
             winPrizeRecordId,
             addrXiming: userName,
@@ -660,7 +654,6 @@ class RotaryDraw extends React.Component{
         let luckDrawNum=sessionStorage.getItem('luckDrawNum');
         return (
             <div>
-                <Prompt message="确定要离开？"  when={true}/>
                 <Top/>
                 <main className="Active-main" id="Active-main" style={{
                     height: 'auto'

@@ -21,9 +21,11 @@ import RotaryDraw from './routes/RotaryDraw';/*转盘抽奖*/
 
 moment.locale('en');
 
-function checkAuth(){
-   console.info('进来了');
-}
+//防止页面后退
+window.history.pushState(null, null, document.URL);
+window.addEventListener('popstate', function () {
+    window.history.pushState(null, null, document.URL);
+});
 
 render(
     <Provider store={store}>

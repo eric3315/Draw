@@ -66,3 +66,13 @@ export function format(date, format){
   v = v.replace(/E/g, weekDayString);
   return v;
 }
+
+export function queryURLParameter(url){
+  let obj={},
+      reg=/([^=?&#]+)=([^=?&#]+)/g;
+  url.replace(reg, function(){
+    let arg = arguments;
+    obj[arg[1]] = arg[2];
+  });
+  return obj;
+}
