@@ -43,3 +43,12 @@ export function getRecInsurance(payload){
         data: payload,
     });
 }
+
+//获取用户抽奖次数
+export function getLuckDrawNumber(payload){
+    return axios({
+        method: 'GET',
+        url: '/getLuckDrawNumber',
+        params: payload,
+    });
+}

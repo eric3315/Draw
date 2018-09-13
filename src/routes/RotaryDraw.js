@@ -8,7 +8,7 @@ import chassis from '../static/images/chassis.png';
 import pointer from '../static/images/pointer.png';
 import turn from '../static/images/turn.png';
 import {Toast, Modal} from'antd-mobile';
-import {luckDraw, getMyPrize, myPrize, getRecAddr, getRecInsurance} from '../api/serverAPi';
+import {luckDraw, getMyPrize, myPrize, getRecAddr, getRecInsurance, getLuckDrawNumber} from '../api/serverAPi';
 import InsuranceForm from '../component/InsuranceForm';
 import InformationForm from '../component/InformationForm';
 import OtherForm from '../component/OtherForm';
@@ -36,6 +36,7 @@ class RotaryDraw extends React.Component{
             modelBut3Flag: false,
             modelBut4Flag: false,
             urlChannel: '',
+            luckDrawFLag: false,
             userInfo:{
                 winPrizeRecordId: '',
                 userXingMing: '',
@@ -46,10 +47,25 @@ class RotaryDraw extends React.Component{
             prizeList:[],
         }
     }
-    componentDidMount(){
+    async componentDidMount(){
         let obj = queryURLParameter(window.location.href);
+        let userMobile=sessionStorage.getItem('userMobile');
         if(typeof obj.urlChannel!=='undefined'){
             this.setState({urlChannel: obj.urlChannel});
+        }
+        if(userMobile){
+            let result = await getLuckDrawNumber({
+                userMobile: userMobile,
+                urlChannel: obj.urlChannel,
+            });
+            console.info(JSON.stringify(result));
+            if(result.success){
+                //更新抽奖次数
+                sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
+                this.setState({
+                    luckDrawFLag: !this.state.luckDrawFLag
+                })
+            }
         }
     }
     handleRotating= (e)=>{
