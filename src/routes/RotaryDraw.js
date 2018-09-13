@@ -146,7 +146,7 @@ class RotaryDraw extends React.Component{
                                     //第一次抽奖
                                     if(typeof result.userXingMing!=='undefined' && typeof result.userIDNumber!=='undefined'){
                                         userInfo = {
-                                            winPrizeRecordId: result.prizeRecordId,
+                                            winPrizeRecordId: result.winPrizeRecordId,
                                             userXingMing: result.userXingMing,
                                             userIDNumber: result.userIDNumber,
                                             prizeName: result.prizeName,
@@ -154,7 +154,7 @@ class RotaryDraw extends React.Component{
                                         }
                                     } else {
                                         userInfo = {
-                                            winPrizeRecordId: result.prizeRecordId,
+                                            winPrizeRecordId: result.winPrizeRecordId,
                                             userXingMing: '',
                                             userIDNumber: '',
                                             prizeName: result.prizeName,
@@ -166,7 +166,7 @@ class RotaryDraw extends React.Component{
                                     })
                                 } else {
                                     userInfo = {
-                                        winPrizeRecordId: result.prizeRecordId,
+                                        winPrizeRecordId: result.winPrizeRecordId,
                                         prizeName: result.prizeName,
                                         isFirstLuckDraw: result.isFirstLuckDraw,
                                     }
