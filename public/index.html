@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>抽奖</title>
 </head>
 <body style="overflow-x: hidden">
@@ -21,6 +22,29 @@
         //doc.addEventListener('DOMContentLoaded', recalc, false);
         recalc();
     })(document, window);
+</script>
+<script>
+    function queryURLParameter(url){
+        let obj={},
+            reg=/([^=?&#]+)=([^=?&#]+)/g;
+        url.replace(reg, function(){
+            let arg = arguments;
+            obj[arg[1]] = arg[2];
+        });
+        return obj;
+    }
+    let obj = queryURLParameter(window.location.href);
+    let urlChannel='';
+    if(typeof obj.urlChannel!=='undefined'){
+        urlChannel = obj.urlChannel;
+    }
+    axios({
+        method: 'GET',
+        url: 'http://test.admin.skepay.com/api/index',
+        params: {
+            urlChannel: urlChannel,
+        },
+    });
 </script>
 <div id="root"></div>
 </body>
