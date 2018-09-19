@@ -227,20 +227,20 @@ class RotaryDraw extends React.Component{
             //10元U行优惠券跳转页面到 /coupons
             if(result.prizeName === '10元U行优惠券'){
                 this.setState({insuranceFlag: false},()=>{
-                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
+                    Toast.info(result.insuranceMessageTip, 2);
                     this.handleBut2Open();
                 });
                 return;
             } else if(result.prizeName === '手机' || result.prizeName === '旅行颈枕' || result.prizeName === '旅行收纳包'){
                 //实物跳转到填写地址是窗口
                 this.setState({insuranceFlag: false},()=>{
-                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
+                    Toast.info(result.insuranceMessageTip, 2);
                     this.setState({informationFlag: true});
                 });
                 return;
             } else if(result.prizeName === '电子导游' || result.prizeName === '快速安检通道' || result.prizeName === '机场贵宾厅'){
                 this.setState({insuranceFlag: false},()=>{
-                    Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
+                    Toast.info(result.insuranceMessageTip, 2);
                     this.handleBut1Open();
                 });
                 return;
@@ -732,7 +732,7 @@ class RotaryDraw extends React.Component{
                         (
                             <section className="modal" id='modelBut1' onClick={e=>{this.handleModelBut1Close(e)}}>
                                 <div className="Active-over-wrap">
-                                    <p>我们将在活动结束后20个工作日内向您的手机发送电子码,请注意查收。</p>
+                                    <p>您将收到包含奖品电子码的短信，请注意查收。</p>
                                     <button type="button" onClick={e=>{this.handleBut1()}}><img src={button04} alt="" /></button>
                                 </div>
                             </section>
