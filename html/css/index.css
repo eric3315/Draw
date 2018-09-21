@@ -1,90 +1,126 @@
-/*REM*/
-html{
-    font-size: 100px!important; /*750中一个rem=100px*/
+html,body{
+    font-size: 100px;
+    width: 100%;
+    height: 100%;
 }
 .main-kappa{
-	width: 100%;
+    width: 100%;
     height: 100%;
-    box-sizing: border-box;
 }
 .kappa-head{
+    position: relative;
+}
+.kappa-head img{
     position: absolute;
+    width: 1.5rem;
+    left: 50%;
     top: 1rem;
-    left: 2.6rem;
+    margin-left: -0.75rem;
 }
 .kappa-brand{
-	position: absolute;
-    top: 3.5rem;
-    left: 2.6rem;
+    position: relative;
 }
-.kappa-headline{
-	position: absolute;
-    top: 6rem;
-    left: 2.6rem;
-}
-.kappa-name{
-	position: absolute;
-    top: 8rem;
-    left: 2.6rem;
-}
-.kappa-name input[type='text'] {
-	border-color: #878787; 
-	border-style: solid; 
-	border-top-width: 0px;
-	border-right-width: 0px; 
-	border-bottom-width: 1px;
-	border-left-width: 0px;
-	font-size: 0.35rem;
-	width: 4.5rem;
-}
-.kappa-phone{
-	position: absolute;
-    top: 9.2rem;
-    left: 2.6rem;
-}
-.kappa-phone input[type='text'] {
-	border-color: #878787; 
-	border-style: solid; 
-	border-top-width: 0px;
-	border-right-width: 0px; 
-	border-bottom-width: 1px;
-	border-left-width: 0px;
-	font-size: 0.35rem;
-	width: 4.5rem;
-}
-.kappa-city{
-	position: absolute;
-    top: 10.5rem;
-    left: 2.6rem;
-}
-.kappa-city input[type='text'] {
-	border-color: #878787; 
-	border-style: solid; 
-	border-top-width: 0px;
-	border-right-width: 0px; 
-	border-bottom-width: 1px;
-	border-left-width: 0px;
-	font-size: 0.35rem;
-	width: 4.5rem;
-}
-.kappa-btn{
-	position: absolute;
-    top: 12.5rem;
-    left: 2.6rem;
-}
-.kappa-btn button {
-    display: inline-block;
-    border: 0;
-    outline: none;
-    background-color: transparent;
-}
-.kappa-foot{
-	position: absolute;
-    top: 15.5rem;
-    left: 2.6rem;
+.kappa-brand img{
+    position: absolute;
+    width: 3.74rem;
+    left: 50%;
+    top: 2.7rem;
+    margin-left: -1.87rem;
 }
 .kappa-left{
-	position: absolute;
-    top: 6.05rem;
-    left: 0;
+    position: relative;
+}
+.kappa-left img{
+    position: absolute;
+    width: 0.25rem;
+    height: 5.42rem;
+    top: 5rem;
+}
+.kappa-headline{
+    position: relative;
+}
+.kappa-headline img{
+    position: absolute;
+    width: 3.74rem;
+    left: 50%;
+    top: 5rem;
+    margin-left: -1.87rem;
+}
+
+.kappa-name{
+    position: relative;
+}
+
+.kappa-name input[type='text'] {
+    position: absolute;
+    width: 3.74rem;
+    top: 6.5rem;
+    left: 50%;
+    margin-left: -1.87rem;
+    border-color: #878787;
+    border-style: solid;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    font-size: 0.35rem;
+}
+.kappa-phone{
+    position: relative;
+}
+.kappa-phone input[type='text'] {
+    position: absolute;
+    width: 3.74rem;
+    top: 7.5rem;
+    left: 50%;
+    margin-left: -1.87rem;
+    border-color: #878787;
+    border-style: solid;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    font-size: 0.35rem;
+}
+.kappa-city{
+    position: relative;
+}
+.kappa-city input[type='text'] {
+    position: absolute;
+    width: 3.74rem;
+    top: 8.5rem;
+    left: 50%;
+    margin-left: -1.87rem;
+    border-color: #878787;
+    border-style: solid;
+    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    font-size: 0.35rem;
+}
+.kappa-btn{
+    position: relative;
+}
+.kappa-btn button {
+    position: absolute;
+    width: 3.74rem;
+    height: 0.7rem;
+    background: #000;
+    top: 9.5rem;
+    left: 50%;
+    margin-left: -1.87rem;
+    border: 0;
+    font-size: 0.3rem;
+    color: #fff;
+}
+.kappa-foot{
+    position: relative;
+}
+.kappa-foot img{
+    position: absolute;
+    width: 3.74rem;
+    top: 12.5rem;
+    left: 50%;
+    margin-left: -1.87rem;
 }
