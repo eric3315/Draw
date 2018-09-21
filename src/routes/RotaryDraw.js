@@ -58,13 +58,22 @@ class RotaryDraw extends React.Component{
                 userMobile: userMobile,
                 urlChannel: obj.urlChannel,
             });
-            console.info(JSON.stringify(result));
             if(result.success){
-                //更新抽奖次数
-                sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
-                this.setState({
-                    luckDrawFLag: !this.state.luckDrawFLag
-                })
+                if(typeof result.redirect !== 'undefined' && result.redirect === 'login'){
+                    this.setState({isRotate: true});
+                    Toast.info('请您先登录再进行抽奖', 3);
+                    //跳转到登录页面
+                    setTimeout(()=>{
+                        this.props.history.push('/login');
+                    },2000);
+                    return;
+                } else {
+                    //更新抽奖次数
+                    sessionStorage.setItem('luckDrawNum',result.luckDrawNum);
+                    this.setState({
+                        luckDrawFLag: !this.state.luckDrawFLag
+                    })
+                }
             }
         }
     }
@@ -755,7 +764,7 @@ class RotaryDraw extends React.Component{
                         ?
                         (  <section className="modal" id='modelBut11' onClick={e=>{this.handleModelBut11Close(e)}}>
                             <div className="Active-over-wrap">
-                                <p>我们将在活动结束后20个工作日内向您的手机发送电子码,请注意查收。</p>
+                                <p>您将收到包含奖品电子码的短信，请注意查收。</p>
                                 <button type="button" onClick={e=>{this.handleBut11(e)}}><img src={button04} alt="" /></button>
                             </div>
                         </section>

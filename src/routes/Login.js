@@ -104,14 +104,15 @@ class Login extends React.Component{
     handleGetCode=()=>{
         let phone = this.props.form.getFieldValue('phone');
         if(typeof phone!=='undefined'){
-          if(/^1[3|4|5|8][0-9]\d{4,8}$/.test(phone)){
+          if(/^1[3|4|5|8][0-9]\d{4,8}$/.test(phone) && phone.length ===11){
               this.handleVerificationCode(phone);
               this.handleTimer();
           } else {
+              this.setState({phoneFlag: false});
               return;
           }
         } else {
-            this.setState({phoneFlag: false})
+            this.setState({phoneFlag: false});
             return;
         }
     }
