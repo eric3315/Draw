@@ -28,15 +28,26 @@ html{
     left: 2.6rem;
 }
 .kappa-name input[type='text'] {
-	border-color: #878787; 
-	border-style: solid; 
+	outline: none;
+	width: 4.5rem;
+	height: 0.3rem;
+	line-height: 0.3rem;
+	text-indent: 0.1rem;
+	font-size: 0.18rem;
+	border-color: #000;
+	border-style: solid;
 	border-top-width: 0px;
-	border-right-width: 0px; 
+	border-right-width: 0px;
 	border-bottom-width: 1px;
 	border-left-width: 0px;
-	font-size: 0.35rem;
-	width: 4.5rem;
+	display: block;
+	margin: 0 auto;
 }
+.kappa-name input[type='text']:focus{
+	outline: none;
+}
+
+
 .kappa-phone{
 	position: absolute;
     top: 9.2rem;
