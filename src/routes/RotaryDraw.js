@@ -117,7 +117,7 @@ class RotaryDraw extends React.Component{
                                     rotate=0;
                                 }
                                 turnId.style.transform = `rotate(${rotate+=count}deg)`;
-                            },1);
+                            },17);
 
                             setTimeout(()=>{
                                 clearInterval(timer);
@@ -186,7 +186,7 @@ class RotaryDraw extends React.Component{
                                 }
                                 this.setState({isRotate: true});
                                 return;
-                            },3000);
+                            },2000);
                         }
                     } else {
                         this.setState({isRotate: true});
