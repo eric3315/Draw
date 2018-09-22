@@ -56,15 +56,10 @@ html,body{
     top: 5.7rem;
     left: 50%;
     margin-left: -1.87rem;
-    border-top-color: #fff;
-    border-left-color: #fff;
-    border-right-color: #fff;
-    border-bottom-color: #000;
-    border-style: solid;
-    border-top-width: 0px;
-    border-right-width: 0px;
-    border-bottom-width: 1px;
-    border-left-width: 0px;
+    border-bottom: 1px solid #000;
+    border-top:0;
+    border-left:0;
+    border-right:0;
     font-size: 0.26rem;
 }
 .kappa-phone{
@@ -76,15 +71,10 @@ html,body{
     top: 6.6rem;
     left: 50%;
     margin-left: -1.87rem;
-    border-top-color: #fff;
-    border-left-color: #fff;
-    border-right-color: #fff;
-    border-bottom-color: #000;
-    border-style: solid;
-    border-top-width: 0px;
-    border-right-width: 0px;
-    border-bottom-width: 1px;
-    border-left-width: 0px;
+    border-bottom: 1px solid #000;
+    border-top:0;
+    border-left:0;
+    border-right:0;
     font-size: 0.26rem;
 }
 .kappa-city{
@@ -96,15 +86,10 @@ html,body{
     top: 7.5rem;
     left: 50%;
     margin-left: -1.87rem;
-    border-top-color: #fff;
-    border-left-color: #fff;
-    border-right-color: #fff;
-    border-bottom-color: #000;
-    border-style: solid;
-    border-top-width: 0px;
-    border-right-width: 0px;
-    border-bottom-width: 1px;
-    border-left-width: 0px;
+    border-bottom: 1px solid #000;
+    border-top:0;
+    border-left:0;
+    border-right:0;
     font-size: 0.26rem;
 }
 .kappa-btn{
