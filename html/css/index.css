@@ -90,6 +90,7 @@ html,body{
     top: 7.5rem;
     left: 50%;
     margin-left: -1.87rem;
+    border:0;
     border-bottom: #000 1px solid;
     border-top-style: none;
     border-right-style: none;
