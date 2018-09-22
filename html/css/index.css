@@ -61,6 +61,7 @@ html,body{
     border-right-style: none;
     border-left-style: none;
     background-color: transparent;
+    -webkit-appearance: none;
     font-size: 0.26rem;
 }
 .kappa-phone{
@@ -77,6 +78,7 @@ html,body{
     border-right-style: none;
     border-left-style: none;
     background-color: transparent;
+    -webkit-appearance: none;
     font-size: 0.26rem;
 }
 .kappa-city{
@@ -93,6 +95,7 @@ html,body{
     border-right-style: none;
     border-left-style: none;
     background-color: transparent;
+    -webkit-appearance: none;
     font-size: 0.26rem;
 }
 .kappa-btn{
