@@ -62,7 +62,10 @@ html,body{
     border-right-style: none;
     border-left-style: none;
     background-color: transparent;
+    outline: none;
+    border-radius: 0;
     -webkit-appearance: none;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
     font-size: 0.26rem;
 }
 .kappa-phone{
@@ -79,7 +82,10 @@ html,body{
     border-right-style: none;
     border-left-style: none;
     background-color: transparent;
+    outline: none;
+    border-radius: 0;
     -webkit-appearance: none;
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
     font-size: 0.26rem;
 }
 .kappa-city{
