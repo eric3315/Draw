@@ -90,13 +90,13 @@ html,body{
     top: 7.5rem;
     left: 50%;
     margin-left: -1.87rem;
-    border:0;
     border-bottom: #000 1px solid;
     border-top-style: none;
     border-right-style: none;
     border-left-style: none;
     background-color: transparent;
     -webkit-appearance: none;
+    -webkit-tap-highlight-color:rgba(255,255,255,0);
     font-size: 0.26rem;
 }
 .kappa-btn{
