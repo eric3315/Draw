@@ -89,20 +89,20 @@ class InsuranceForm extends React.Component{
                     <Form onSubmit={this.handleSubmit}>
                         <FormItem>
                             {getFieldDecorator('cardName', {
-                                rules: [{ required: true, message: '请输入姓名' , pattern:/^[\u4E00-\u9FA5]{2,4}$/ }],
+                                rules: [{ required: true, message: '请输入真实姓名' , pattern:/^[\u4E00-\u9FA5]{2,4}$/ }],
                             })(
-                                <Input placeholder="姓名"/>
+                                <Input placeholder="真实姓名"/>
                             )}
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('identityCard', {
-                                rules: [{ required: true, message: '请输入身份证', pattern: /^.{18}$/}],
+                                rules: [{ required: true, message: '请输入真实身份证信息', pattern: /^.{18}$/}],
                             })(
-                                <Input placeholder="身份证"/>
+                                <Input placeholder="真实身份证信息"/>
                             )}
                         </FormItem>
                         <div>
-                            <input type="text" placeholder="生效日期(有效期7天)" value={this.state.time} readOnly onClick={e=>{this.handleDatePicker(e)}}/>
+                            <input type="text" placeholder="选择保障生效日期(有效期7天)" value={this.state.time} readOnly onClick={e=>{this.handleDatePicker(e)}}/>
                             <DatePicker
                                 isOpen={this.state.isOpen}
                                 onSelect={this.handleDatePickerSelect}
@@ -116,7 +116,7 @@ class InsuranceForm extends React.Component{
                                 fontSize: '0.6rem',
                                 color: '#fff',
                                 marginTop: '-0.5rem',
-                            }}>请选择生效日期(有效期7天)</div>
+                            }}>请选择保障生效日期(有效期7天)</div>
                         }
                         <FormItem>
                             <button type="submit">

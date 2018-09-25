@@ -186,7 +186,7 @@ class RotaryDraw extends React.Component{
                                 }
                                 this.setState({isRotate: true});
                                 return;
-                            },2000);
+                            },1400);
                         }
                     } else {
                         this.setState({isRotate: true});

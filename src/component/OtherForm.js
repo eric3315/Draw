@@ -83,7 +83,7 @@ class OtherForm extends React.Component{
         const { getFieldDecorator } = this.props.form;
         return (
             <section className="modal" onClick={e=>{this.handleHideModal(e)}}>
-                <div className="Active-prize-wrap13" style={{
+                <div className="Active-prize-wrap133" style={{
                     height: '19.5rem',
                     paddingTop: '3rem',
                 }}>
@@ -94,20 +94,20 @@ class OtherForm extends React.Component{
                     <Form onSubmit={this.handleSubmit}>
                         <FormItem>
                             {getFieldDecorator('cardName', {
-                                rules: [{ required: true, message: '请输入姓名' }],
+                                rules: [{ required: true, message: '请输入真实姓名' }],
                             })(
-                                <Input placeholder="姓名"/>
+                                <Input placeholder="真实姓名"/>
                             )}
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('identityCard', {
-                                rules: [{ required: true, message: '请输入身份证', pattern: /^.{18}$/}],
+                                rules: [{ required: true, message: '请输入真实身份证信息', pattern: /^.{18}$/}],
                             })(
-                                <Input placeholder="身份证"/>
+                                <Input placeholder="真实身份证信息"/>
                             )}
                         </FormItem>
                         <div>
-                            <input type="text" placeholder="生效日期(有效期7天)" value={this.state.time} readOnly onClick={e=>{this.handleDatePicker(e)}}/>
+                            <input type="text" placeholder="选择保障生效日期(有效期7天)" value={this.state.time} readOnly onClick={e=>{this.handleDatePicker(e)}}/>
                             <DatePicker
                                 isOpen={this.state.isOpen}
                                 onSelect={this.handleDatePickerSelect}
@@ -121,7 +121,7 @@ class OtherForm extends React.Component{
                                 fontSize: '0.6rem',
                                 color: '#fff',
                                 marginTop: '-0.5rem',
-                            }}>请选择生效日期(有效期7天)</div>
+                            }}>请选择保障生效日期(有效期7天)</div>
                         }
                         <FormItem>
                             <button type="submit" style={{marginTop: '1rem'}}>
