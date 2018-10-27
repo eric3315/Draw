@@ -26,7 +26,7 @@ textarea {
     width: 100%;
     height: 100%;
     padding-top: 15.5rem;
-    background:url("../images/logobac.png") top center no-repeat;
+    background:url("../images/logobac1.png") top center no-repeat;
     background-size: cover;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -294,7 +294,7 @@ textarea {
 }
 
 .Active-main{
-    background:url("../images/bac01.jpg") top center no-repeat;
+    background:url("../images/bac011.jpg") top center no-repeat;
     background-size:cover;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -853,7 +853,7 @@ textarea {
     z-index: 9992;
     width: 100%;
     height: 24.3rem;
-    background:url("../images/bac022.png") top center no-repeat;
+    background:url("../images/bac02.png") top center no-repeat;
     background-size: auto 22.5rem;
     padding:7rem 2rem 0 2rem;
     -webkit-box-sizing: border-box;
@@ -1005,7 +1005,7 @@ textarea {
     z-index: 9992;
     width: 100%;
     height: 18.5rem;
-    background:url("../images/bac044.png") top center no-repeat;
+    background:url("../images/bac04.png") top center no-repeat;
     background-size: auto 17.8rem;
     padding:2rem 2rem 0 2rem;
     -webkit-box-sizing: border-box;

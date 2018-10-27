@@ -162,7 +162,7 @@ class Login extends React.Component{
             <main className="main-bac" id="Main" >
                 <section className="login-head clearfix">
                     <div className="login-head-logo">
-                        <h1><img src={logo2} alt="" /></h1>
+                        <h1><img src={logo} alt="" /></h1>
                     </div>
                 </section>
                 <section className="logo-input">

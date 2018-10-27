@@ -1,6 +1,6 @@
 import React from 'react';
 import Top from '../component/Top';
-import logo2 from '../static/images/logo2.png';
+import logo from '../static/images/logo.png';
 import table from '../static/images/table.png';
 import button04 from '../static/images/button04.png';
 import button02 from '../static/images/button02.png';
@@ -624,7 +624,7 @@ class RotaryDraw extends React.Component{
         }
         let result = await getRecInsurance(obj);
         if(result.success){
-            Toast.info('您的交通意外险已投保成功，请注意查收短信', 2);
+            Toast.info('您的交通意外险已领取成功，请注意查收短信', 2);
             this.setState({otherInsuranceFlag: false},()=>{
                 this.handleBut5Open();
             });
@@ -684,8 +684,8 @@ class RotaryDraw extends React.Component{
                     height: 'auto'
                 }}>
                     <section className="Active-main-logo">
-                        <img src={logo2} alt="" />
-                    </section>
+                    <img src={logo} alt="" />
+                </section>
                     <section className="Active-turntable">
                         <img src={chassis} alt="" className="Active-turntable-rotary" />
                         <img src={turn} alt="" className="Active-turntable-pointer" id='turnId'/>
@@ -708,8 +708,8 @@ class RotaryDraw extends React.Component{
                     <section className="active-detail">
                         <div className="active-detail-wrap">
                             <h2>活动详情</h2>
-                            <p>(1)本次活动奖品由太平保险提供；</p>
-                            <p>(2)活动时间：2018年9月15日至2018年11月30日；</p>
+                            <p>(1)本次活动奖品由太平金服提供并负责承保；</p>
+                            <p>(2)活动时间：2018年10月01日至2019年03月31日；</p>
                             <p>(3)活动期间用户拨打114/116114电话查询或预定产品可获得抽奖机会，关注U行公众号可获得1次抽奖机会，具体兑换规则如下：</p>
                             <img src={table} alt="" />
                             <p>
