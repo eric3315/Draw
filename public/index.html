@@ -38,13 +38,13 @@
     if(typeof obj.urlChannel!=='undefined'){
         urlChannel = obj.urlChannel;
     }
-    // axios({
-    //     method: 'GET',
-    //     url: 'http://hd.114utrip.com/api/index',
-    //     params: {
-    //         urlChannel: urlChannel,
-    //     },
-    // });
+    axios({
+        method: 'GET',
+        url: 'http://hd.114utrip.com/api/index',
+        params: {
+            urlChannel: urlChannel,
+        },
+    });
 </script>
 <div id="root"></div>
 </body>
