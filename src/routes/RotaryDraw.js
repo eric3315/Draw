@@ -708,7 +708,7 @@ class RotaryDraw extends React.Component{
                     <section className="active-detail">
                         <div className="active-detail-wrap">
                             <h2>活动详情</h2>
-                            <p>(1)本次活动奖品由太平金服提供并负责承保；</p>
+                            <p>(1)本次活动奖品由太平金服提供，投保人为太平金服；</p>
                             <p>(2)活动时间：2018年10月01日至2019年03月31日；</p>
                             <p>(3)活动期间用户拨打114/116114电话查询或预定产品可获得抽奖机会，关注U行公众号可获得1次抽奖机会，具体兑换规则如下：</p>
                             <img src={table} alt="" />
